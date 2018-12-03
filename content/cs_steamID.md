@@ -45,7 +45,7 @@ Best way to find location of SteamID (local one) is therefore to create local se
 
 Since we know location of our SteamID we can automate process of changing it.
 CheatEngine gives us ability to write Lua scripts (`Table->Show Cheat Table Lua Script`).
-CheatEngine is not most documented software, but browsign trough forum it is easy to find enough to write our exploit.
+CheatEngine is not most documented software, but browsing trough forum it is easy to find enough to write our exploit.
 
 ~~~lua
     function openCS()

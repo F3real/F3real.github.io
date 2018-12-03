@@ -1,3 +1,4 @@
 [submodule "pelican-twitchy"]
 	path = pelican-twitchy
 	url = https://github.com/ingwinlu/pelican-twitchy.git
+	ignore = dirty
