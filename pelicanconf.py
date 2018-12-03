@@ -34,3 +34,5 @@ DEFAULT_PAGINATION = 10
 
 # Theme
 THEME = "pelican-twitchy"
+SITESUBTITLE = "Security && programming randomness"
+BOOTSTRAP_THEME = "sandstone"
