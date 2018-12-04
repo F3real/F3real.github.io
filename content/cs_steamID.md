@@ -40,6 +40,7 @@ As we see address is not fixed, rather it is in form base dll  + offset
 </p>
 
 Now we can simply change this value to get ourselfs unbanned from most servers, but there are few interesting things worth mentioning.
+
 * SteamID is only set after you first enter server (either local or online). Changing value before will just result in it being overwritten after we enter server.
 * If server is using custom way to calculate SteamID we won't be able to find that value in memory (at least in my testing), but still changing our local SteamID will affect it so it is probably derived in some way from it.
 Best way to find location of SteamID (local one) is therefore to create local server and check it.
