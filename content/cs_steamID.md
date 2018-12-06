@@ -8,7 +8,7 @@ Authors: F3real
 Summary: How to change steamID for non-steam CS 1.6 version
 
 Cs 1.6 is FPS that got released in 2000, but it is still played both on steam and non-steam servers.
-This post will be focused on finding way to unban ourselfs while using non-steam version of game.
+This post will be focused on finding way to unban ourselves while using non-steam version of game.
 Required software:
 
 * Cheat Engine 6.8.1
@@ -21,12 +21,12 @@ Browsing posts about SteamID internet we see that there are few different ways b
 * IP
 * HWID (Hard disk volume ID)
 
-SteamID is not static value for non-steam players, even reinstaling game can change it. Plugins can also use custom ways of calculating it so same player can have 2 different SteamIDs on two different servers.
+SteamID is not static value for non-steam players, even reinstalling game can change it. Plugins can also use custom ways of calculating it so same player can have 2 different SteamIDs on two different servers.
 
 To check our SteamID, we can just type `status` in console (opens with `~`)
 after connecting to game (either local or online).
 
-First step of changing our ID is to locate it in memory. For this, we can use Cheat Engine. After connection to process we can just search for value we have gotten from `status` command.
+First step of changing our ID is to locate it in memory. For this, we can use Cheat Engine. After connecting to process we can just search for value we have gotten from `status` command.
 
 <p align="center">
 <img class="img-fluid" alt="Opening process in CheatEngine" src="{static}/images/3_12_OpeningProcess_CheatEngine.png">
@@ -39,7 +39,7 @@ As we see address is not fixed, rather it is in form base dll  + offset
 <img class="img-fluid" alt="Opening process in CheatEngine" src="{static}/images/3_12_FindingMemoryAddress_CheatEngine.png">
 </p>
 
-Now we can simply change this value to get ourselfs unbanned from most servers, but there are few interesting things worth mentioning.
+Now we can simply change this value to get ourselves unbanned from most servers, but there are few interesting things worth mentioning.
 
 * SteamID is only set after you first enter server (either local or online). Changing value before will just result in it being overwritten after we enter server.
 * If server is using custom way to calculate SteamID we won't be able to find that value in memory (at least in my testing), but still changing our local SteamID will affect it so it is probably derived in some way from it.
