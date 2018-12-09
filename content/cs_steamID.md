@@ -29,14 +29,14 @@ after connecting to game (either local or online).
 First step of changing our ID is to locate it in memory. For this, we can use Cheat Engine. After connecting to process we can just search for value we have gotten from `status` command.
 
 <p align="center">
-<img class="img-fluid" alt="Opening process in CheatEngine" src="{static}/images/3_12_OpeningProcess_CheatEngine.png">
+<img class="img-fluid" alt="Opening process in CheatEngine" src="{static}/images/2018_12_3_OpeningProcess_CheatEngine.png">
 </p>
 
 As we see address is not fixed, rather it is in form base dll  + offset
 (`steamclient.dll + 0x5AC4C`).
 
 <p align="center">
-<img class="img-fluid" alt="Opening process in CheatEngine" src="{static}/images/3_12_FindingMemoryAddress_CheatEngine.png">
+<img class="img-fluid" alt="Opening process in CheatEngine" src="{static}/images/2018_12_3_FindingMemoryAddress_CheatEngine.png">
 </p>
 
 Now we can simply change this value to get ourselves unbanned from most servers, but there are few interesting things worth mentioning.
