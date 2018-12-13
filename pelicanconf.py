@@ -40,4 +40,4 @@ BOOTSTRAP_THEME = "sandstone"
 DISQUS_SITENAME = "https-f3real-github-io"
 DISQUS_LOAD_LATER = True
 
-PYGMENTS_STYLE = 'paraiso-light'
+PYGMENTS_STYLE = 'monokai'
