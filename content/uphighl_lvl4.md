@@ -27,7 +27,7 @@ Trying to inject commands instead of color, gives us no results but looking at n
 ```
 V0n3XL7d=011101010000111000001010000000110001100101000011000011010101000001000001000011000000111100010011000010100000101001000100;
 ```
-Now looking at the html source and at the cookie value, could it be some sort of Vigenere cipher ?
+Now looking at the html source and at the cookie value, could it be some sort of Vigenère cipher ?
 
 ~~~python
 import binascii
@@ -56,4 +56,4 @@ Result:         #adfacd#adfacd#
 ```
 Trying result we obtained as color gives us our flag :D
 
-![soleved challenge screen]({static}/images/2018_8_23_VonexResult.png){: .img-fluid .centerimage}
+![solved challenge screen]({static}/images/2018_8_23_VonexResult.png){: .img-fluid .centerimage}

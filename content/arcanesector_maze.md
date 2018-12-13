@@ -41,7 +41,7 @@ END = (309, 597)
 Since maze is huge recursive solution will quickly run out of stack.
 We could try raising the limit with `sys.setrecursionlimit(5000)` (default is usually `1k`) but it won't be enough. Raising it further will just cause python to crash, so lets look at iterative solution.
 
-Algorith is just BFS (Breadth-First Search):
+Algorithm is just BFS (Breadth-First Search):
 
 1. add start tile location to queue
 2. take first path from queue (if empty exit) 
