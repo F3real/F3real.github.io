@@ -28,9 +28,7 @@ def load_map():
 
 Looking at data, we see that most of the values are in range [0 - 10]. To visualize the map we have gotten we can use Python image library Pillow and map these values to colors. After tweaking right colours and values we get:
 
-<p align="center">
-<img class="img-fluid" alt="MMO(RPG) map" src="{static}/images/2018_12_9_map.png">
-</p>
+![MMO(RPG) map]({static}/images/2018_12_9_map.png){: .img-fluid .centerimage}
 
 And also we have gotten one of the flags by simply displaying map `DrgnS{LookBeyondTheHorizon}`.
 
@@ -79,9 +77,8 @@ def solve_maze(maze):
 ~~~
 
 And let's look at our solution in action:
-<p align="center">
-<img class="img-fluid" alt="MMO(RPG) map" src="{static}/images/2018_12_9_maze.gif">
-</p>
+![Maze solving gif]({static}/images/2018_12_9_maze.gif){: .img-fluid .centerimage}
+
 It takes around 7.6k steps to get to exit.
 
 Full solution can be found 
