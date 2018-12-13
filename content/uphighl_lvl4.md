@@ -5,7 +5,7 @@ Category: ctf
 Tags: ctf, crypto
 Slug: uphigh_lvl4
 Authors: F3real
-Summary: How to solve Uphight CTF lvl. 4
+Summary: How to solve Uphigh CTF lvl. 4
 
 This is fourth level of CTF found at 
 [http://uphigh.com.au/4/](http://uphigh.com.au/4/)
