@@ -25,7 +25,8 @@ AUTHOR_FEED_RSS = None
 LINKS = ()
 
 # Social widget
-SOCIAL = (('Github', 'https://github.com/F3real'),)
+SOCIAL = (('Github', 'https://github.com/F3real'),
+          ('Linkedin', 'https://www.linkedin.com/in/stefan-ili%C4%87-61a004111'),)
 
 DEFAULT_PAGINATION = 10
 
