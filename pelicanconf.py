@@ -12,7 +12,10 @@ TIMEZONE = 'Europe/Belgrade'
 
 DEFAULT_LANG = 'en'
 
-STATIC_PATHS = ['images']
+STATIC_PATHS = ['images', 'extra/robots.txt',]
+EXTRA_PATH_METADATA = {
+    'extra/robots.txt': {'path': 'robots.txt'},
+}
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
