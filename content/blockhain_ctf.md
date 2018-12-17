@@ -2,8 +2,8 @@ Title: Blockchain CTF Lvl. 1-5
 Date: 2018-12-17 10:01
 Modified: 2018-12-17 10:01
 Category: ctf
-Tags: ctf, etherium, solidity
-Slug: blockchain_ctf16
+Tags: ctf, ethereum, solidity
+Slug: blockchain_ctf15
 Authors: F3real
 Summary: How to solve Blockchain CTF lvl. 1-5
 
@@ -355,7 +355,7 @@ Some notes:
 * both slot and key need to be expanded, like in example, to 64 characters
 
 Looking carefully at source, we can see that function `withdraw` has different signature in `SecureBank` which means it is not overloading `withdraw` from `MembersBank`.
-In `MembersBank` there is no address check in `withdraw` we have two new problems. First we need to pass `isMember` modifier. This is done simply by registering any username with `0x2272071889eDCeACABce7dfec0b1E017c6Cad120` address. Second problem is how to call this function, `web3.js` is terrible at handling functions with same name and it will just call `withdraw` in `SecureBank` no matter which parameters we pass.
+In `MembersBank` there is no address check in `withdraw` but we have two new problems. First we need to pass `isMember` modifier. This is done simply by registering any username with `0x2272071889eDCeACABce7dfec0b1E017c6Cad120` address. Second problem is how to call this function, `web3.js` is terrible at handling functions with same name and it will just call `withdraw` in `SecureBank` no matter which parameters we pass.
 
 To get around this we need to make our own call payload and send it.
 If we look at `etherscan` data of function call is something like:

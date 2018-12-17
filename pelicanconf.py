@@ -11,6 +11,7 @@ PATH = 'content'
 TIMEZONE = 'Europe/Belgrade'
 
 DEFAULT_LANG = 'en'
+LOCALE = ('usa')
 
 STATIC_PATHS = ['images', 'extra/robots.txt',]
 EXTRA_PATH_METADATA = {
