@@ -10,6 +10,8 @@ pylint = "*"
 pelican = "*"
 markdown = "*"
 invoke = "*"
+pygments = "*"
+pygments-lexer-solidity = "*"
 
 [requires]
-python_version = "3.7.1"
+python_version = "3.7"

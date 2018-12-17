@@ -31,16 +31,28 @@ LINKS = ()
 SOCIAL = (('Github', 'https://github.com/F3real'),
           ('Linkedin', 'https://www.linkedin.com/in/stefan-ili%C4%87-61a004111'),)
 
-DEFAULT_PAGINATION = 10
+DEFAULT_PAGINATION = 6
 
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
 
+MARKDOWN = {
+    'extension_configs': {
+        'markdown.extensions.codehilite': {'css_class': 'highlight'},
+        'markdown.extensions.extra': {},
+        'markdown.extensions.meta': {},
+        'markdown.extensions.meta': {},
+        'markdown.extensions.toc': {},
+    },
+    'output_format': 'html5',
+}
+
 # Theme
 THEME = "pelican-twitchy"
+
+# Theme settings
+PYGMENTS_STYLE = 'monokai'
 SITESUBTITLE = "Security && programming randomness"
 BOOTSTRAP_THEME = "sandstone"
 DISQUS_SITENAME = "https-f3real-github-io"
 DISQUS_LOAD_LATER = True
-
-PYGMENTS_STYLE = 'monokai'
