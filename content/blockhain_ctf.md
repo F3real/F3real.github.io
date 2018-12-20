@@ -62,7 +62,7 @@ web3.eth.defaultAccount = web3.eth.accounts[0];
 contract.withdrawDonationsFromTheSuckersWhoFellForIt((err,res)=>{console.log(err,res);});
 ~~~
 
-## Lvl 2 Lock box
+## Lvl 2 Lock Box
 
 ~~~solidity
 pragma solidity 0.4.24;
@@ -88,7 +88,7 @@ Second, challenge is also pretty simple. Key is in usage of `now` (an alias for 
 
 In metamask we can open our last transaction (that is transaction used to create this contract), check exact time, convert it to unix timestamp and just enter last 4 digits to win.
 
-## Lvl 3 Piggy bank
+## Lvl 3 Piggy Bank
 
 ~~~solidity
 pragma solidity 0.4.24;
