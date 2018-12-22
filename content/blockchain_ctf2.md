@@ -157,7 +157,7 @@ In function `withdraw` we see that gas limit is not set and that `withdrewThisYe
                       +--------+ | call withdraw |
                       |          +---------------+
                 +-----v------+
-                |call()+-----|-----------+
+                |call() +----|-----------+
                 |withdraw set|           |
                 +------------+           |
                                  +-------v-------+
@@ -254,9 +254,9 @@ This happens since both calls will be done in same block. We can write our attac
     }
 ~~~
 
-Don't forget fallback function so our contract can recieve eth as well as withdraw function.
+Don't forget fallback function so our contract can receive eth as well as withdraw function.
 
-## Lvl 8 Record Label
+## Lvl 9 Record Label
 
 ~~~solidity
 pragma solidity 0.4.24;
@@ -368,10 +368,11 @@ contract RecordLabel is CtfFramework{
 }
 ~~~
 
-Well this was the strange one, just calling `withdrawFundsAndPayRoyalties` with 1 eth as amount will clear all balance from contract and give us win. Bad thing is that we lose 0.8 eth doing it.
+Well this was the strange one, just calling `withdrawFundsAndPayRoyalties` with 1 eth as amount will clear all balance from contract and give us win. Bad thing is that we lose 0.8 eth doing it, but that's the easiest way to do it.
 
-I tried messing with amount of gas but with no effect, so I guess it's either something not obvious to me paired with bug in CTF logic or just silly troll challenge.
-We can also run analyser on code of this challenge, but we don't get helpful results:
+Correct way to solve it is to call `addRoyaltyReceiver` with address of `Manager` contract, and 0 as percent he gets. Since mapping is used to connect addresses to percentages we will overwrite original 80% with 0%. After this we can call `withdrawFundsAndPayRoyalties` to get all of the money from contract.
+
+We can also run analyser on code of this challenge:
 ```
 docker run -v $(pwd):/tmp mythril/myth -x /tmp/RecordLabel.sol --solv 0.4.24
 ```
