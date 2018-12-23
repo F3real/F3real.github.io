@@ -42,7 +42,7 @@ contract SlotMachine is CtfFramework{
 
 To win we need to make contract balance greater or equal 5 eth. But we see that, we can only send 1 `szabo` (0.000001 eth) at the time to contract. 
 
-There are two ways to avoid activating fallback function:
+There are three ways to avoid activating fallback function:
 
 1. miner block rewards
 2. using `selfdestruct`
@@ -146,4 +146,4 @@ Looking at the source, we see that we need to calculate new address two times:
 1. first find current nonce of `developer` contract and calculate address of new `RainyDayFund` contract that will be created.
 2. since `RainyDayFund` contract will create new contract `DebugAuthorizer` in constructor, we need to calculate address of that contract as well (`nonce` will be 1 since it is first contract created from `RainyDayFund`)
 
-After getting both addresses we need to send 1.337 eth to address we calculated for `DebugAuthorizer` contract and reset challenge from dashboard to redeploy `RainyDayFund`. If we did everythin correctly we can just call withdraw and win :D
+After getting both addresses we need to send 1.337 eth to address we calculated for `DebugAuthorizer` contract and reset challenge from dashboard to redeploy `RainyDayFund`. If we did everything correctly we can just call withdraw and win :D

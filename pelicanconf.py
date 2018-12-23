@@ -13,9 +13,10 @@ TIMEZONE = 'Europe/Belgrade'
 DEFAULT_LANG = 'en'
 LOCALE = ('usa')
 
-STATIC_PATHS = ['images', 'extra/robots.txt',]
+STATIC_PATHS = ['images', 'extra/robots.txt', 'extra/google26d6dbcb9aa6bb14.html']
 EXTRA_PATH_METADATA = {
     'extra/robots.txt': {'path': 'robots.txt'},
+    'extra/google26d6dbcb9aa6bb14.html': {'path': 'google26d6dbcb9aa6bb14.html'},
 }
 
 # Feed generation is usually not desired when developing
