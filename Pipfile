@@ -12,6 +12,7 @@ markdown = "*"
 invoke = "*"
 pygments = "*"
 pygments-lexer-solidity = "*"
+pelican-extended-sitemap = "*"
 
 [requires]
 python_version = "3.7"

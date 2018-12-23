@@ -13,11 +13,20 @@ TIMEZONE = 'Europe/Belgrade'
 DEFAULT_LANG = 'en'
 LOCALE = ('usa')
 
-STATIC_PATHS = ['images', 'extra/robots.txt', 'extra/google26d6dbcb9aa6bb14.html']
+STATIC_PATHS = ['images', 'extra']
 EXTRA_PATH_METADATA = {
     'extra/robots.txt': {'path': 'robots.txt'},
     'extra/google26d6dbcb9aa6bb14.html': {'path': 'google26d6dbcb9aa6bb14.html'},
+    'extra/yandex_7992e0c81815ff69.html': {'path': 'yandex_7992e0c81815ff69.html'},
+    'extra/BingSiteAuth.xml': {'path': 'BingSiteAuth.xml'},
 }
+# Directories excluded from pelican processing
+PAGE_EXCLUDES = ['extra']
+ARTICLE_EXCLUDES = ['extra']
+
+PLUGINS = [
+    'extended_sitemap'
+]
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
