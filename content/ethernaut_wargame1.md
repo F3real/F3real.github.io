@@ -48,8 +48,9 @@ contract AlienCodex is Ownable {
 }
 ~~~
 
-Looking at the code we see that first problem we have to overcome is modifier `contacted`. Length of content we need to send has to be greater then 2^200, which is impossible. We can bypass this due to fact that EVM doesn't validate an array's ABI-encoded length vs its actual payload. We will manually encode payload to send in similar way we have done in Blockchain CTF challenges.
+Looking at the code we see that first problem we have to overcome is modifier `contacted`. Length of content we need to send has to be greater then 2^200, which is impossible. We can bypass this due to fact that EVM doesn't validate an array's ABI-encoded length vs its actual payload. We will manually encode payload to send in similar way we have done in [Blockchain CTF]({filename}/blockchain_ctf.md) challenges.
 
+Payload:
 ~~~text
 1d3d4c0b
 0000000000000000000000000000000000000000000000000000000000000020
@@ -57,7 +58,7 @@ Looking at the code we see that first problem we have to overcome is modifier `c
 ~~~
 
 First line is function identifier. It consists of first 32bits of `sha3("make_contact(bytes32[])")`.
-Second line shows us offset of array content, in our case it points to second line. Array content starts with length of array, after which actual array elements come (in our case we will just leave it empty).
+Second line shows us offset of array content, in our case it points to third line. Array content starts with length of array, after which actual array elements come (in our case we will just leave it empty).
 
 A lot of values for array length greater then 2^200 cause out of gas exception on CALLDATACOPY instruction. It is probably related to internal way EVM handles it, and is actually really interesting and probably worth looking into more.
 
