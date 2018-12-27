@@ -352,7 +352,7 @@ web3.eth.getStorageAt(
 Some notes:
 
 * Slot depends on place of state variable we are trying to access. I expected slot to be 0 for balances but it turned out to be 1, probably due the way variables are ordered when they are inherited.
-* both slot and key need to be expanded, like in example, to 64 characters
+* both slot and key need to be padded, like in example, to 64 hex characters
 
 Looking carefully at source, we can see that function `withdraw` has different signature in `SecureBank` which means it is not overloading `withdraw` from `MembersBank`.
 In `MembersBank` there is no address check in `withdraw` but we have two new problems. First we need to pass `isMember` modifier. This is done simply by registering any username with `0x2272071889eDCeACABce7dfec0b1E017c6Cad120` address. Second problem is how to call this function, `web3.js` is terrible at handling functions with same name and it will just call `withdraw` in `SecureBank` no matter which parameters we pass.
@@ -367,7 +367,7 @@ MethodID: 0x32434a2e
 [2]:  0000000000000000000000000000000000000000000000000000000000000005
 [3]:  456f733932000000000000000000000000000000000000000000000000000000
 ```
-First we have  function ID, this is just first 32 bytes of sha256 of function name and parameter types.
+First we have  function ID, this is just first 32 bits of sha256 of function name and parameter types.
 We can calculate it using web3.js:
 
 ~~~javascript
@@ -375,7 +375,7 @@ web3.sha3('withdraw(address,uint256)')
 "0xf3fef3a3f44f9c277339b67d54f015748bd8d6b77a985b0ab6e71126b018c34a"
 ~~~
 After ID, parameters come in order they are declared:
-* we have address expanded to 64 bytes in line 0
+* we have address expanded to 32 bytes in line 0
 * then in lines 1,2,3 we have string. String are passed a bit differently first, on line of parameter we have offset to actual data (0x40 = 64), then on line given by offset he have number of characters in string (5) and on line\[s\] after that we have actual hex encoded string.
 
 In our case encoded data and call are:
