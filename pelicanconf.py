@@ -43,8 +43,8 @@ LINKS = ()
 SOCIAL = (('Github', 'https://github.com/F3real'),
           ('Linkedin', 'https://www.linkedin.com/in/stefan-ili%C4%87-61a004111'),)
 
-DEFAULT_PAGINATION = 6
-
+# Sets pagination for different types
+PAGINATED_TEMPLATES = {'index': 6, 'tag': 12, 'category': 12, 'author': None}
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
 
