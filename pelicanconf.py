@@ -65,6 +65,6 @@ THEME = "pelican-twitchy"
 # Theme settings
 PYGMENTS_STYLE = 'monokai'
 SITESUBTITLE = "Security && programming randomness"
-BOOTSTRAP_THEME = "sandstone"
+BOOTSTRAP_THEME = "slate"
 DISQUS_SITENAME = "https-f3real-github-io"
 DISQUS_LOAD_LATER = True
