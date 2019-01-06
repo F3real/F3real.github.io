@@ -366,7 +366,7 @@ int main()
     }
 
     for(i=4; i<16; i++){
-        tmp = (0xFFFFFF00 & tmp)+ (((0xFF & tmp) + hardcoded_add[i]) & 0xFF);
+        tmp = (0xFFFFFF00 & tmp)+ ((tmp + hardcoded_add[i]) & 0xFF);
         uint8_t test1 = tmp & 15;
         test1 = test1 + hardcoded_add2[i-4];
 		input[i] = test1;
@@ -437,10 +437,7 @@ int main()
            :"r"(hardcoded_add2[i-4]), "r"(tmp)
            :"eax", "ecx", "edx"
         );
-        if (test1 != input[i]) {
-            //printf("0x%X  %c\n", test1, test1);
-            input[i] = test1;
-        }
+        input[i] = test1;       
         tmp = rotl32(tmp, hardcoded_roll[i]);
         asm(
            "xor %1, %%dl;"
@@ -459,7 +456,113 @@ int main()
 ~~~
 
 Btw, there is also cave filled with spiders north from the desert with boss to beat :D
+
 ![Spider boss]({static}/images/2018_4_1_sourcery.png){: .img-fluid .centerimage}
+
+## Lab door 3
+
+Source code of third lab door has ~6k lines of code. But fortunately most of it is in `decipher` function and represents unrolled loop.
+
+Full source code can be found [here](https://github.com/F3real/ctf_solutions/blob/master/2018/pwn_adventure_sourcery/LabDoor3/LabDoor3.asm)
+
+Lets look at important few code snippets:
+
+~~~asm
+	; read in the input, expect "XXXXXXXX-XXXXXXXX"
+	mov     edi, inbuf
+	call    input
+
+	; check input format
+	mov		esi, inbuf
+	cmp		byte [esi+8], '-'
+	jne		.fail
+	mov		byte [esi+8], 0
+
+	; parse first ctext
+	push	v0
+	push	inbuf
+	call	parse_uint32_hex
+	cmp		eax, -1
+	je		.fail
+
+	; parse second ctext
+	push	v1
+	push	inbuf+9
+	call	parse_uint32_hex
+	cmp		eax, -1
+	je		.fail
+
+	; decipher
+	push	v0
+	call	decipher
+
+	; check
+	cld                         ; clear direction flag so that string pointers auto increment after each string operation
+	mov		esi, v0             
+	lodsd                       ; load string instructions (loads to EAX)
+	cmp		eax, 0x57415343		; 'CSAW'
+	jne		.fail
+	lodsd
+	cmp		eax, 0x41484148		; 'HAHA'
+	jne		.fail
+
+...
+
+decipher:
+	push   ebp                    ; esp - 4
+	mov    ebp,esp
+	push   esi
+	push   ebx
+
+	mov    ecx,dword [ebp+0x8]    ; input address
+	mov    edx,dword [ecx]        ; first part of input     i0 = y1
+	mov    esi,dword [ecx+0x4]    ; second part of input    i1 = y0
+	mov    eax,edx                
+	mov    ebx,edx
+	shr    ebx,0x5                ; y0 >> 5 
+	shl    eax,0x4                ; y0 << 4 
+	xor    eax,ebx                
+	add    eax,edx
+	xor    eax,0x2913260a         
+	sub    esi,eax                ; y2 = y0 - ((y1 >> 5) ^ (y1 << 4) + y1 ) ^ v0
+	
+    mov    ebx,esi
+	mov    eax,esi
+	shr    esi,0x5
+	shl    ebx,0x4
+	xor    ebx,esi
+	add    ebx,eax
+	xor    ebx,0x37dbdd6f        
+	sub    edx,ebx               ; y3 = y1 - ((y2 >> 5) ^ (y2 << 4) + y2 ) ^ v1
+
+~~~
+
+Looking at the algorithm used for pin derivation, we see that it calculates each new step based on two previous ones. Since in the end results are compared to `0x57415343` and `0x41484148`, results of two last steps, we have everything we need to run derivation backwards and get required inputs.
+
+Python solver:
+~~~python
+x = 0x57415343
+y = 0x41484148
+
+def step(x):
+    return (((x >> 5)^(x<<4)) + x) & 0xffffffff
+
+for val in values[::-1]:
+    tmp = (x + (step(y) ^ val)) & 0xffffffff
+    x = y
+    y = tmp
+
+print("0x%X  0x%X" %(x, y))
+~~~
+
+Full code can be found [here](https://github.com/F3real/ctf_solutions/blob/master/2018/pwn_adventure_sourcery/LabDoor3/sol.py)
+
+Some things to note:
+
+* inputs are taken in reverse order, first part of input is used as y1 and second as y0
+* program treats inputted string as hex number
+
+Calculated pin: `9b916917-b6117336`
 
 ## Swamp maze entrace
 
