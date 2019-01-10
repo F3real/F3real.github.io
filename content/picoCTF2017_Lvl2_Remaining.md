@@ -1,11 +1,11 @@
-Title: PicoCTF 2017 Lvl2 Remaining challenges
+Title: PicoCTF 2017 Lvl2 Remaining binary challenges
 Date: 2018-7-29 10:02
 Modified: 2018-7-29 10:02
 Category: ctf
 Tags: ctf, pwnable, binary exploitation
 Slug: picoCTF_lvl2Remaining
 Authors: F3real
-Summary: How to solve picoCTF remaining challenges
+Summary: How to solve picoCTF Lvl2 remaining binary challenges
 
 
 In this post we are going to take a look at three challenges from picoCTF 2017, which I think are simple enough that they can be grouped together.
