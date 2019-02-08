@@ -1,3 +1,2 @@
-User-agent: * 
-Disallow: /theme/
+User-agent: *
 Disallow: /images/
