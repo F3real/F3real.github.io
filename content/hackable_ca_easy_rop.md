@@ -66,7 +66,7 @@ When we give this pattern (if it is long enough) to program it will crash with `
 
     gdb-peda$ pattern search
 
-![Easy rop pattern search]({static}/images/2018_8_30_easyRop1.png){: .img-fluid .centerimage}
+![Easy rop pattern search]({static}/images/2018_7_30_easyRop1.png){: .img-fluid .centerimage}
 
 We see that `EIP` offset is at 16 and that we also have `EBX` at 8. One of things to note is that `gdb` can modify stack a bit (because of environment variables) so it is better to run program and then attach `gdb` to it then to run it inside `gdb`.
 
@@ -141,7 +141,7 @@ r.interactive()
 
 And running it, we get the flag :D
 
-![Easy rop flag]({static}/images/2018_8_30_easyRop2.png){: .img-fluid .centerimage}
+![Easy rop flag]({static}/images/2018_7_30_easyRop2.png){: .img-fluid .centerimage}
 
 ***
 

@@ -457,7 +457,7 @@ int main()
 
 Btw, there is also cave filled with spiders north from the desert with boss to beat :D
 
-![Spider boss]({static}/images/2018_4_1_sourcery.png){: .img-fluid .centerimage}
+![Spider boss]({static}/images/2019_1_4_sourcery.png){: .img-fluid .centerimage}
 
 ## Lab door 3
 

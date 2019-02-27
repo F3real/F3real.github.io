@@ -59,7 +59,7 @@ We need to capture one of request we send to server and forward it to repeater, 
 
 First I tried running find for flag, which failed for some reason so I decided to simply check directories bellow our current one.
 
-![ping ls]({static}/images/2018_8_27_Ping.png){: .img-fluid .centerimage}
+![ping ls]({static}/images/2018_7_27_Ping.png){: .img-fluid .centerimage}
 
 
 Parameters of request if URL decoded are simply `;cd..;ls`. And it seems we were in luck since Flag.txt is just one sub-directory bellow. We simply `cat Flag.txt` and that’s it.

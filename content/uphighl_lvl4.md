@@ -12,7 +12,7 @@ This is fourth level of CTF found at
 
 In this challenge we have simple website asking as for background color code.
 
-![challenge start screen]({static}/images/2018_8_23_Vonex.png){: .img-fluid .centerimage}
+![challenge start screen]({static}/images/2018_7_23_Vonex.png){: .img-fluid .centerimage}
 
 Looking at the page source code we don’t see much:
 ~~~html
@@ -56,4 +56,4 @@ Result:         #adfacd#adfacd#
 ```
 Trying result we obtained as color gives us our flag :D
 
-![solved challenge screen]({static}/images/2018_8_23_VonexResult.png){: .img-fluid .centerimage}
+![solved challenge screen]({static}/images/2018_7_23_VonexResult.png){: .img-fluid .centerimage}

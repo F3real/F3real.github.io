@@ -51,7 +51,7 @@ We see that user input is being stored to `uintptr_t val` after which it is call
 
     objdump -d guess_num -M intel
 
-![objdump disasembly of win function]({static}/images/2018_8_28_Guess.png){: .img-fluid .centerimage}
+![objdump disasembly of win function]({static}/images/2018_7_28_Guess.png){: .img-fluid .centerimage}
 
 `win` function has address of `0x0804852b` but we also need to shift address value 4 bits to left since in code they are doing opposite. Doing so gives us 2152223408, but now we have problem since according to documentation of `strtol`, if the value read is out of the range of representable values by a `long int`, the function returns **LONG_MAX**(2147483647) or **LONG_MIN** (-2147483647). This means we can’t just simply send this value since it’s to big.
 
@@ -107,4 +107,4 @@ r.interactive()
 
 Running our script gives us the flag.
 
-![objdump disasembly of win function]({static}/images/2018_8_28_Guess2.png){: .img-fluid .centerimage}
+![objdump disasembly of win function]({static}/images/2018_7_28_Guess2.png){: .img-fluid .centerimage}

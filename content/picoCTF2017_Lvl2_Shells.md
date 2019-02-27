@@ -65,7 +65,7 @@ First we need to find address of `win` function in shells binary, we can use **o
 
     objdump -d shells -M intel
 
-![objdump disasembly of win function]({static}/images/2018_8_27_Shells.png){: .img-fluid .centerimage}
+![objdump disasembly of win function]({static}/images/2018_7_27_Shells.png){: .img-fluid .centerimage}
 
 And we get function address `0x08048540`.
 

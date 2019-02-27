@@ -93,7 +93,7 @@ r.close()
 
 And running it, we see that our assumption is right and that we get the flag.
 
-![Shell result of Ive Got A Secret]({static}/images/2018_8_29_Secret.png){: .img-fluid .centerimage}
+![Shell result of Ive Got A Secret]({static}/images/2018_7_29_Secret.png){: .img-fluid .centerimage}
 
 ## 2. Flagsay 1
 
@@ -178,7 +178,7 @@ At first program may look confusing, but looking carefully we see that this is a
 
     ";ls; echo "
 
-![Shell result of Flagsay ls]({static}/images/2018_8_29_Flagsay1.png){: .img-fluid .centerimage}
+![Shell result of Flagsay ls]({static}/images/2018_7_29_Flagsay1.png){: .img-fluid .centerimage}
 
 We add `echo` at the end just to finish printing the rest of the flag but in any case, now we know location of flag and we can print it in same way.
 
@@ -186,7 +186,7 @@ We add `echo` at the end just to finish printing the rest of the flag but in any
 
 and we get our flag.
 
-![Shell result of Flagsay cat]({static}/images/2018_8_29_Flagsay2.png){: .img-fluid .centerimage}
+![Shell result of Flagsay cat]({static}/images/2018_7_29_Flagsay2.png){: .img-fluid .centerimage}
 
 ## 3. VR Gear Console
 
@@ -262,4 +262,4 @@ This is last binary exploitation challenge at level 2 of picoCTF. Program ask us
 
 Looking at the login function we see that `username` buffer is declared just after `accessLevel` and that program uses `gets` function which doesn’t check for length of input. This means that if we input more then 16 bytes as username we are going to overflow `accessLevel`. Since we know that `!` is `0x21` in hex we can use `17 * !` to overflow `accessLevel`, pass the check and get the flag.
 
-![vgear console output]({static}/images/2018_8_29_vgear.png){: .img-fluid .centerimage}
+![vgear console output]({static}/images/2018_7_29_vgear.png){: .img-fluid .centerimage}
