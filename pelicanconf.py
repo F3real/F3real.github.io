@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 
 AUTHOR = 'F3real'
 SITENAME = 'EnSec blog'
-SITEURL = 'https://f3real.github.io'
+#SITEURL = 'https://f3real.github.io'
+SITEURL = 'https://ens3c.netlify.com'
 
 PATH = 'content'
 
