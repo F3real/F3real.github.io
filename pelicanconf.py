@@ -67,5 +67,6 @@ THEME = "pelican-twitchy"
 PYGMENTS_STYLE = 'monokai'
 SITESUBTITLE = "Security && programming randomness"
 BOOTSTRAP_THEME = "darkly2"
-DISQUS_SITENAME = "https-f3real-github-io"
+#DISQUS_SITENAME = "https-f3real-github-io"
+DISQUS_SITENAME = "https-ens3c-netlify-com"
 DISQUS_LOAD_LATER = True
