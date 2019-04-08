@@ -5,7 +5,7 @@ Category: tutorial
 Tags: windows, binary exploitation
 Slug: ghost_dll_injection
 Authors: F3real
-Summary: Simple example of dll injection
+Summary: Example of simple dll injection
 
 [TOC]
 
