@@ -5,7 +5,7 @@ Category: misc
 Tags: sorting, algorithm
 Slug: timsort
 Authors: F3real
-Summary: What is timsort
+Summary: Quick intro to timsort
 
 
 
@@ -17,6 +17,7 @@ Timsort is a stable, hybrid sorting algorithm combining merge sort and insertion
 Best:     O(n)
 Average:  O(n logn)
 Worst:    O(n logn)
+Memory    O(n)
 ~~~
 
 Algorithm starts by finding sequences of sorted elements `runs`. If run is descending it is simply reversed in place. 
@@ -51,6 +52,6 @@ Timsort also implements galloping optimization for merge sort, which I won't go 
 
 If algorithm seems interesting and you want to dive in more details, I suggest you to also look at following resources:
 
-[Rust stdlib implementation](https://github.com/rust-lang/rust/blob/07133ac70cca85b2f91aedb76a21ece524bc0cb4/src/liballoc/slice.rs)
+[Rust stdlib implementation of modified timsort](https://github.com/rust-lang/rust/blob/master/src/liballoc/slice.rs)
 
 [Original python post](https://svn.python.org/projects/python/trunk/Objects/listsort.txt)
