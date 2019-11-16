@@ -1,0 +1,25 @@
+diff --git a/pelicanconf.py b/pelicanconf.py
+index d7b68e5..324167a 100644
+--- a/pelicanconf.py
++++ b/pelicanconf.py
+@@ -4,8 +4,8 @@ from __future__ import unicode_literals
+ 
+ AUTHOR = 'F3real'
+ SITENAME = 'EnSec blog'
+-#SITEURL = 'https://f3real.github.io'
+-SITEURL = 'https://ens3c.netlify.com'
++SITEURL = 'https://f3real.github.io'
++#SITEURL = 'https://ens3c.netlify.com'
+ 
+ PATH = 'content'
+ 
+@@ -67,6 +67,6 @@ THEME = "pelican-twitchy"
+ PYGMENTS_STYLE = 'monokai'
+ SITESUBTITLE = "Security && programming randomness"
+ BOOTSTRAP_THEME = "darkly2"
+-#DISQUS_SITENAME = "https-f3real-github-io"
+-DISQUS_SITENAME = "https-ens3c-netlify-com"
++DISQUS_SITENAME = "https-f3real-github-io"
++#DISQUS_SITENAME = "https-ens3c-netlify-com"
+ DISQUS_LOAD_LATER = True
+\ No newline at end of file

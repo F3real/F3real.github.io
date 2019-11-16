@@ -60,9 +60,9 @@ After this change we can use simply debug given exe. I used x64dbg. We can just 
 
 ![x64dbg]({static}/images/2019_11_16_debugger.png){: .img-fluid .centerimage}
 
-One interesting detail is that program is using [Ftring](https://github.com/7eRoM/Ftring) to encrypt strings. Ftring will generate instructions to set flags corresponding to given letter and then use `lahf` instruction to transfer them to `al` register. For example to generate letter `a` following instruction sequence will be used:
-~~~assembly
-xor al, al
+One interesting detail is that program is using [Ftring](https://github.com/7eRoM/Ftring) to encrypt strings. Ftring will generate instructions to set flags corresponding to given letter and then use `lahf` instruction to transfer them to `al` register. For example to generate letter `A` following instruction sequence will be used:
+~~~asm
+		xor al, al
 
 		mov cl, 225
 		add cl, 9
