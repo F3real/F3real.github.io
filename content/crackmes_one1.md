@@ -1,6 +1,6 @@
 Title: Crackmes one Mexican
-Date: 2019-11-9 10:01
-Modified: 2019-11-9 10:01
+Date: 2019-11-9 10:02
+Modified: 2019-11-9 10:02
 Category: reversing
 Tags: reversing, crackme, windows, radare2 
 Slug: crackmes_one1
@@ -9,7 +9,7 @@ Summary: Solutions to Mexican crackme
 
 Recently, I've found interesting [post](https://medium.com/syscall59/solved-solving-mexican-crackme-82d71a28e189) about solving [Mexican](https://crackmes.one/crackme/5d63011533c5d46f00e2c305) crackme.
 
-Let's look in more depth how solution works and how to automatically solve it with radare2 using python.
+Let's look in depth how solution works and how is it automatically solving this crackme with radare2 and python.
 
 To analyze binary we can use:
 
