@@ -11,7 +11,7 @@ Recently, I've been playing with converting images to ascii art and creating fra
 
 If you want to refer to my implementation, in case you get stuck here are the links:
 
-* Simple intensity based conversion (with a bit added contouring) [here](https://github.com/F3real/ctf_solutions/tree/master/2019/python_ascii).
+* Simple intensity-based conversion (with a bit added contouring) [here](https://github.com/F3real/ctf_solutions/tree/master/2019/python_ascii).
 
 * Julia fractal generator [here](https://github.com/F3real/ctf_solutions/tree/master/2019/julia_fractal).
 

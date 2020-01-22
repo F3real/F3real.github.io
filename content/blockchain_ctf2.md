@@ -7,7 +7,7 @@ Slug: blockchain_ctf69
 Authors: F3real
 Summary: How to solve Blockchain CTF lvl. 6-9
 
-In this post we will take a look at challenges from 6 to 9.
+In this post, we will take a look at challenges from 6 to 9.
 To solve these challenges we will use [Remix](https://remix.ethereum.org), an online IDE for solidity. It will also enable us to publish new contracts and interact with them (or other preexisting contracts).
 
 Useful tools to analyse contracts for vulnerabilities and bad practices:
@@ -61,8 +61,8 @@ contract Lottery is CtfFramework{
 }
 ~~~
 
-Vulnerability is that contract is using `block.blockhash(block.number)` as source of entropy.
-When transaction gets executed in the EVM, the blockhash of the block that is being created is still unknown and EVM will always yield zero. Block number only  becomes known when miner picks up a transaction that executes contract code.
+Vulnerability is that the contract is using `block.blockhash(block.number)` as source of entropy.
+When a transaction gets executed in the EVM, the blockhash of the block that is being created is still unknown and EVM will always yield zero. Block number only  becomes known when miner picks up a transaction that executes contract code.
 
 Knowing this we see, that our `_seed` should actually only be equal to `keccak256(abi.encodePacked(msg.sender))` (since xor with 0 has no effect).
 
@@ -131,8 +131,8 @@ contract TrustFund is CtfFramework{
 }
 ~~~
 
-This time we have one of classic solidity vulnerabilities, reentrancy.
-In solidity we have few different ways to call other contracts:
+This time we have one of the classic solidity vulnerabilities, reentrancy.
+In solidity we have a few different ways to call other contracts:
 
 * `<address>.send(x)`
     Only 2300 Gas is passed for calls to prevent reentrancy. Returns `false` in case of failure.
@@ -144,7 +144,7 @@ In solidity we have few different ways to call other contracts:
     The executed code is given all available gas and is vulnerable to reentrancy.
     We can manually limit amount of gas sent with `<address>.call.value(x).gas(gasAmount)()`
 
-In function `withdraw` we see that gas limit is not set and that `withdrewThisYear` flag is only being set after call returns.
+In function `withdraw` we see that the gas limit is not set and that `withdrewThisYear` flag is only being set after call returns.
 
 ```text
                 Trust Fund     Attacker contract
@@ -169,8 +169,8 @@ In function `withdraw` we see that gas limit is not set and that `withdrewThisYe
                 +------------+
 ```
 
-We can write contract that will have fallback function which calls `withdraw()`. This will create loop, allowing us to withdraw all eth before `withdrewThisYear` gets set.
-We just need to pass enough gas in first call we make to start the loop. For example in my transaction:
+We can write a contract that will have a fallback function which calls `withdraw()`. This will create a loop, allowing us to withdraw all eth before `withdrewThisYear` gets set.
+We just need to pass enough gas in the first call we make to start the loop. For example in my transaction:
 ```text
 Gas Limit: 300000
 Gas Used By Transaction: 195406 (65.14%)
@@ -233,11 +233,11 @@ contract HeadsOrTails is CtfFramework{
 }
 ~~~
 
-This time contract is using `block.blockhash(block.number-1)` as source of entropy which at first looks better.
+This time contract is using `block.blockhash(block.number-1)` as a source of entropy which at first looks better.
 
 But this approach is also flawed: an attacker can make an exploit contract with the same random number generating code in order to call the contract via an internal message. The "random" numbers for the two contracts will be the same.
 
-This happens since both calls will be done in same block. We can write our attack function as follows:
+This happens since both calls will be done in the same block. We can write our attack function as follows:
 
 ~~~solidity
     function guess() payable external{
@@ -368,9 +368,9 @@ contract RecordLabel is CtfFramework{
 }
 ~~~
 
-Well this was the strange one, just calling `withdrawFundsAndPayRoyalties` with 1 eth as amount will clear all balance from contract and give us win. Bad thing is that we lose 0.8 eth doing it, but that's the easiest way to do it.
+Well, this was the strange one, just calling `withdrawFundsAndPayRoyalties` with 1 eth as the amount will clear all balance from the contract and give us win. Bad thing is that we lose 0.8 eth doing it, but that's the easiest way to do it.
 
-Correct way to solve it is to call `addRoyaltyReceiver` with address of `Manager` contract, and 0 as percent he gets. Since mapping is used to connect addresses to percentages we will overwrite original 80% with 0%. After this we can call `withdrawFundsAndPayRoyalties` to get all of the money from contract.
+The correct way to solve it is to call `addRoyaltyReceiver` with the address of `Manager` contract, and 0 as percent he gets. Since mapping is used to connect addresses to percentages we will overwrite the original 80% with 0%. After this, we can call `withdrawFundsAndPayRoyalties` to get all of the money from the contract.
 
 We can also run analyser on code of this challenge:
 ```

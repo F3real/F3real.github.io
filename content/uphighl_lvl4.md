@@ -10,7 +10,7 @@ Summary: How to solve Uphigh CTF lvl. 4
 This is fourth level of CTF found at 
 [http://uphigh.com.au/4/](http://uphigh.com.au/4/)
 
-In this challenge we have simple website asking as for background color code.
+In this challenge, we have a simple website asking for background color code.
 
 ![challenge start screen]({static}/images/2018_7_23_Vonex.png){: .img-fluid .centerimage}
 
@@ -27,7 +27,7 @@ Trying to inject commands instead of color, gives us no results but looking at n
 ```
 V0n3XL7d=011101010000111000001010000000110001100101000011000011010101000001000001000011000000111100010011000010100000101001000100;
 ```
-Now looking at the html source and at the cookie value, could it be some sort of Vigenère cipher ?
+Now looking at the html source and the cookie value, could it be some sort of Vigenère cipher?
 
 ~~~python
 import binascii

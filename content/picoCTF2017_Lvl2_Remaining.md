@@ -8,7 +8,7 @@ Authors: F3real
 Summary: How to solve picoCTF Lvl2 remaining binary challenges
 
 
-In this post we are going to take a look at three challenges from picoCTF 2017, which I think are simple enough that they can be grouped together.
+In this post, we are going to take a look at three challenges from picoCTF 2017, which I think are simple enough that they can be grouped together.
 
 [TOC]
 
@@ -59,18 +59,18 @@ int main(int argc, char** argv) {
 }
 ~~~
 
-We see that program is generating random number and asking us for input, if we get the number right it prints us the flag. Vulnerability lies in:
+We see that the program is generating a random number and asking us for input, if we get the number right it prints us the flag. The vulnerability lies in:
 
     printf(buffer);
 
-Since no format string is specified, we can add `%x` to our input to read from stack. This works because, if `printf` finds format string parameters (`%x` or similar) it expects arguments after it, if no arguments are given it will just read first thing off the stack.
+Since no format string is specified, we can add `%x` to our input to read from the stack. This works because, if `printf` finds format string parameters (`%x` or similar) it expects arguments after it, if no arguments are given it will just read first thing off the stack.
 
-Since we are not sure where is `secret` written on the stack we can just specify enough `%x` to read as much as we can from stack (keeping in mind size of `buffer`). We are going to use `12 * %08x`. so we can easier read the output.
+Since we are not sure where is `secret` written on the stack we can just specify enough `%x` to read as much as we can from the stack (keeping in mind size of `buffer`). We are going to use `12 * %08x`. so we can easier read the output.
 
     1)00000040.f7fc7c20.08048792.00000001.ffffdd34.552bcb3a.00000003.f7fc73c4.ffffdca0.00000000.f7e37a63.08048740.
     2)00000040.f7fc7c20.08048792.00000001.ffffdd34.aa7d05a6.00000003.f7fc73c4.ffffdca0.00000000.f7e37a63.08048740.
 
-As we see most of stack remains the same expect 6 byte which changes, so could that be the answer ? Lets write **pwntool** script to automate this.
+As we see most of the stack remains the same expect 6 byte which changes, so could that be the answer? Let's write **pwntool** script to automate this.
 
 ~~~python
 from pwn import *
@@ -174,13 +174,13 @@ int main(int argc, char **argv){
 }
 ~~~
 
-At first program may look confusing, but looking carefully we see that this is actually simple. It takes user input, inserts it into flag and prints result it using `system` and `echo`. Since user input is just passed to `system` call without modification we can just chain new commands by escaping `echo` using `“` and adding new commands. So let’s try it:
+At first, the program may look confusing, but looking carefully we see that this is actually simple. It takes user input, inserts it into flag and prints result  using `system` and `echo`. Since user input is just passed to `system` call without modification we can just chain new commands by escaping `echo` using `“` and adding new commands. So let’s try it:
 
     ";ls; echo "
 
 ![Shell result of Flagsay ls]({static}/images/2018_7_29_Flagsay1.png){: .img-fluid .centerimage}
 
-We add `echo` at the end just to finish printing the rest of the flag but in any case, now we know location of flag and we can print it in same way.
+We add `echo` at the end just to finish printing the rest of the flag but in any case, now we know the location of the flag and we can print it in the same way.
 
     "; cat flag.txt;echo "
 
@@ -190,7 +190,7 @@ and we get our flag.
 
 ## 3. VR Gear Console
 
->    Here's the VR gear admin console. See if you can  figure out a way to log in. The problem is found here:  /problems/1444de144e0377e55e5c7fea042d7f01
+>    Here's the VR gear admin console. See if you can figure out a way to log in. The problem is found here:  /problems/1444de144e0377e55e5c7fea042d7f01
 
 Let’s look at the source code:
 
@@ -258,8 +258,8 @@ int main(int argc, char **argv) {
 }
 ~~~
 
-This is last binary exploitation challenge at level 2 of picoCTF. Program ask us for username and password, checks if our access level is bellow `0x30` and if so prints the flag.
+This is the last binary exploitation challenge at level 2 of picoCTF. Program asks us for username and password, checks if our access level is bellow `0x30` and if so prints the flag.
 
-Looking at the login function we see that `username` buffer is declared just after `accessLevel` and that program uses `gets` function which doesn’t check for length of input. This means that if we input more then 16 bytes as username we are going to overflow `accessLevel`. Since we know that `!` is `0x21` in hex we can use `17 * !` to overflow `accessLevel`, pass the check and get the flag.
+Looking at the login function we see that `username` buffer is declared just after `accessLevel` and that program uses `gets` function which doesn’t check for the length of the input. This means that if we input more then 16 bytes as username we are going to overflow `accessLevel`. Since we know that `!` is `0x21` in hex we can use `17 * !` to overflow `accessLevel`, pass the check and get the flag.
 
 ![vgear console output]({static}/images/2018_7_29_vgear.png){: .img-fluid .centerimage}

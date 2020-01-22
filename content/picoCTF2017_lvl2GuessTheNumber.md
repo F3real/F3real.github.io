@@ -7,11 +7,11 @@ Slug: picoCTF_lvl2GuessTheNumber
 Authors: F3real
 Summary: How to solve picoCTF Lvl2 Guess the number
 
-Lets look at another of challenges from picoCTF:
+Let's look at another of the challenges from picoCTF:
 
 >    Just a simple number-guessing game. How hard could it be? [Binary](https://webshell2017.picoctf.com/static/69834a84e2bf2d2953093f5d24d12fa0/guess_num) [Source](https://webshell2017.picoctf.com/static/69834a84e2bf2d2953093f5d24d12fa0/guess_num.c). Connect on shell2017.picoctf.com:44930.
 
-We are given following source code:
+We are given the following source code:
 
 ~~~c
 /* How well do you know your numbers? */
@@ -47,13 +47,13 @@ int main(int argc, char **argv) {
 }
 ~~~
 
-We see that user input is being stored to `uintptr_t val` after which it is called and that we have `win` function giving shell. On first look it looks like we have just to send address of `win` and we get a flag. The problem is that they are using `strtol` to read user input and fact that they shift bits, but first lets find address of `win` function:
+We see that user input is being stored to `uintptr_t val` after which it is called and that we have `win` function giving shell. On first look it looks like we have just to send the address of `win` and we get a flag. The problem is that they are using `strtol` to read user input and the fact that they shift bits, but first, let's find the address of `win` function:
 
     objdump -d guess_num -M intel
 
 ![objdump disasembly of win function]({static}/images/2018_7_28_Guess.png){: .img-fluid .centerimage}
 
-`win` function has address of `0x0804852b` but we also need to shift address value 4 bits to left since in code they are doing opposite. Doing so gives us 2152223408, but now we have problem since according to documentation of `strtol`, if the value read is out of the range of representable values by a `long int`, the function returns **LONG_MAX**(2147483647) or **LONG_MIN** (-2147483647). This means we can’t just simply send this value since it’s to big.
+`win` function has address of `0x0804852b` but we also need to shift address value 4 bits to left since in code they are doing the opposite. Doing so gives us 2152223408, but now we have a problem since according to documentation of `strtol`, if the value read is out of the range of representable values by a `long int`, the function returns **LONG_MAX**(2147483647) or **LONG_MIN** (-2147483647). This means we can’t just simply send this value since it’s too big.
 
 To solve this, we have to use negative numbers:
 ~~~text

@@ -41,7 +41,7 @@ contract Azino777 {
 }
 ~~~
 
-We need to call `spin` function with correct bet. We see that it will be calculated based on `block.number - 1` in `random` function. To finish this challenge easily we just need to create contract with same random function. Transactions are going to execute in same block (and share same block variables) so both our contract and target will generate same random number.
+We need to call `spin` function with a correct bet. We see that it will be calculated based on `block.number - 1` in `random` function. To finish this challenge easily we just need to create a contract with the same random function. Transactions are going to execute in the same block (and share the same block variables) so both our contract and the target will generate a same random number.
 
 We can convert address of contract to proper form from console using:
 ~~~javascript
@@ -97,7 +97,7 @@ contract PrivateRyan {
 }
 ~~~
 
-Is almost the same challenge, but this time there is also random seed being used in calculating correct guess. We need to read it from contract storage before we create our contract to finish this challenge.
+It is almost the same challenge, but this time there is also random seed being used in calculating correct guess. We need to read it from contract storage before we create our contract to finish this challenge.
 
 ~~~javascript
 web3.eth.getStorageAt(
@@ -162,13 +162,13 @@ contract WheelOfFortune {
 }
 ~~~
 
-This time `blockhash` is used as random number generator seed. We see that every new game entry checks if previous entry guess was correct.
+This time `blockhash` is used as a random number generator seed. We see that every new game entry checks if the previous entry guess was correct.
 
-The `blockhash` of current block, as a reminder, is always 0. 
+The `blockhash` of the current block, as a reminder, is always 0. 
 
-We can abuse this fact since there is nothing stopping us simply calling this function twice in a row from our contract and triggering blockhash calculation for current block.
+We can abuse this fact since there is nothing stopping us simply calling this function twice in a row from our contract and triggering the blockhash calculation for the current block.
 
-Other way would be abusing the fact that `blockhash` is saved only for last 256 blocks (older block number values will just return 0).
+Another way would be abusing the fact that `blockhash` is saved only for the last 256 blocks (older block number values will just return 0).
 
 Solution:
 
@@ -213,11 +213,11 @@ contract CallMeMaybe {
 }
 ~~~
 
-We have two different checks to bypass, first we have modifier `CallMeMaybe` which checks if code size of `msg.sender` is greater then 0 and reverts. Second we have check that `tx.origin == msg.sender`.
+We have two different checks to bypass, first we have modifier `CallMeMaybe` which checks if the code size of `msg.sender` is greater then 0 and reverts. Second we have check that `tx.origin == msg.sender`.
 
-Usually `tx.origin` is same as `msg.sender`, but if there are chained calls they will differ. For example if we have chain of calls A -> B -> C, for C, `msg.sender` will be address of B while `tx.origin` will be A.
+Usually `tx.origin` is the same as `msg.sender`, but if there are chained calls they will differ. For example, if we have a chain of calls A -> B -> C, for C, `msg.sender` will be the address of B while `tx.origin` will be A.
 
-To bypass these checks we will call target contract from constructor, since during contract initialization code size is 0. This will also bypass second check since we will have  `wallet -> attack contract -> target contract`.
+To bypass these checks we will call the target contract from the constructor since during contract initialization code size is 0. This will also bypass second check since we will have  `wallet -> attack contract -> target contract`.
 
 ~~~solidity
     CallMeMaybe target = CallMeMaybe(targetAddress);

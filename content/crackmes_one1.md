@@ -9,7 +9,7 @@ Summary: Solutions to Mexican crackme
 
 Recently, I've found interesting [post](https://medium.com/syscall59/solved-solving-mexican-crackme-82d71a28e189) about solving [Mexican](https://crackmes.one/crackme/5d63011533c5d46f00e2c305) crackme.
 
-Let's look in depth how solution works and how is it automatically solving this crackme with radare2 and python.
+Let's look in-depth how the solution works and how is it automatically solving this crackme with radare2 and python.
 
 To analyze binary we can use:
 
@@ -17,9 +17,9 @@ To analyze binary we can use:
 radare2 Untitled1.exe
 ~~~
 
-We can analyze all symbols and entry points with `aa`. After this we can list functions using `afl` (all functions list).
+We can analyze all symbols and entry points with `aa`. After this, we can list functions using `afl` (all functions list).
 
-With `s main` (seek) we can position ourself at start of main and we can disassemble function with `pdf` (print disassembly of function).
+With `s main` (seek) we can position ourselves at the start of main and we can disassemble function with `pdf` (print disassembly of function).
 We can also use `pdf @main`.
 
 Disassembly:
@@ -79,7 +79,7 @@ If we look at function flag with `pdf @sym.flag`, we see:
 ...
 ~~~
 
-It will add all chars of flag to array and print them. So lets take a look at solution 1. We need to have r2pipe installed (`pip install r2pipe`).
+It will add all chars of a flag to the array and print them. So let's take a look at solution 1. We need to have r2pipe installed (`pip install r2pipe`).
 
 ~~~python
 #!/usr/bin/env python3
@@ -116,7 +116,7 @@ print(f"FLAG: {flag}")
 
 We will set search range to function we want to analyse and then search for all move eax instructions (`c600xx move eax, xx`) and extract byte being moved.
 
-Solution 2, we can patch `cmp` instruction so that program will print the flag for us.
+Solution 2, we can patch `cmp` instruction so that the program will print the flag for us.
 
 ~~~python
 #!/usr/bin/env python3
@@ -156,5 +156,5 @@ print("[!] BINARY PATCHED")
 print_addr_content(0x00401642)
 ~~~
 
-After this we can simply run patched binary to get the flag.
+After this, we can simply run the patched binary to get the flag.
 Both solutions are really nice way to get more familiar with radare2 scripting.

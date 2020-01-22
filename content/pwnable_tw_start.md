@@ -25,7 +25,7 @@ And let’s run decompiler:
 
 ![Decompilation result]({static}/images/2018_9_1_start1.png){: .img-fluid .centerimage}
 
-We see that binary is very simple, it makes two linux syscalls, first write (`0x04`) and then it takes user input using `read` (Ox03) . Type of call depends on value in `EAX`, if you want more information about parameters for syscalls you can take a look at [https://syscalls.kernelgrok.com/](https://syscalls.kernelgrok.com/).
+We see that binary is very simple, it makes two Linux syscalls, first write (`0x04`) and then it takes user input using `read` (Ox03). Type of call depends on the value in `EAX`, if you want more information about parameters for syscalls you can take a look at [https://syscalls.kernelgrok.com/](https://syscalls.kernelgrok.com/).
 
 Now, we can run binary :
 
@@ -33,7 +33,7 @@ Now, we can run binary :
     Let's start the CTF:test
     root@kali:~/ctf/pwnable.tw_start#
 
-We can use **gdb-peda** like we did in previous post to detect offset of `EIP`.
+We can use **gdb-peda** as we did in the previous post to detect offset of `EIP`.
 
     gdb-peda$ pattern search
     Registers contain pattern buffer:
@@ -45,7 +45,7 @@ We can use **gdb-peda** like we did in previous post to detect offset of `EIP`.
     0xffffd304 : offset    0 - size   40 ($sp + -0x18 [-6 dwords])
     Reference to pattern buffer not found in memory
 
-We see that offset of `EIP` is 20. Since binary is very small there is only one `ret;` instruction so it is probably not exploitable using ROP. Other problem is that we have **NX** bit set which means we also can’t use shellcode. At this point I was stuck. Challenge looked way harder then first challenge in series should be, so I decided to inspect binary a bit more. Let’s run `readelf`:
+We see that the offset of `EIP` is 20. Since binary is very small there is only one `ret;` instruction so it is probably not exploitable using ROP. Another problem is that we have **NX** bit set which means we also can’t use shellcode. At this point I was stuck. Challenge looked way harder then the first challenge in series should be, so I decided to inspect binary a bit more. Let’s run `readelf`:
 
     root@kali:~/ctf/pwnable.tw_start# readelf -l ./start
 
@@ -73,7 +73,7 @@ It is interesting to see that there is no `GNU_STACK` header. And if we look at 
 fi
 ~~~
 
-Since it greps for **GNU_STACK** and checks for **RWE** permission on result, even in case that no **GNU_STACK** header is defined in binary, it will report that **NX** is enabled. So in the end it seems that we should try shellcode. Let’s just quickly fix **checksec**:
+Since it greps for **GNU_STACK** and checks for **RWE** permission on the result, even in the case that no **GNU_STACK** header is defined in binary, it will report that **NX** is enabled. So in the end it seems that we should try shellcode. Let’s just quickly fix **checksec**:
 
 ~~~bash
   # check for NX support
@@ -89,11 +89,11 @@ Since it greps for **GNU_STACK** and checks for **RWE** permission on result, ev
 fi
 ~~~
 
-First, we need to find stack address so we can point `EIP` to right place. Fortunately for us, one of first instructions is `push esp;` which saves stack pointer to stack. If we look at flow of program we see that:
+First, we need to find a stack address so we can point `EIP` to the right place. Fortunately for us, one of the first instructions is `push esp;` which saves stack pointer to the stack. If we look at the flow of program we see that:
 
-1. `mov ecx, esp;` will make `write` syscall read from current stack address.
+1. `mov ecx, esp;` will make `write` syscall read from the current stack address.
 
-2. before `retn;` we have `add esp, 14h;` which removes all of that data pushed on stack after stack pointer (5 `push` instructions setting strings on stack) making `ESP` point to saved stack pointer.
+2. before `retn;` we have `add esp, 14h;` which removes all of that data pushed on stack after stack pointer (5 `push` instructions setting strings on the stack) making `ESP` point to the saved stack pointer.
 
 So if we trigger write again it will read saved stack pointer address. To do that we can use following **ROP** gadget:
 
@@ -103,7 +103,7 @@ So first payload we use is going to be:
 
     'A'* 20 + p32(0x08048087)
 
-After our first input program will give us stack pointer address and trigger next `read` syscall (since first `ret;` instruction, if we look at original assembly, is after `read`). This time we are going to put shellcode on stack and point `EIP` to leaked stack pointer address. Let’s use simple `execve` syscall:
+After our first input, the program will give us a stack pointer address and trigger the next `read` syscall (since first `ret;` instruction, if we look at the original assembly, is after `read`). This time we are going to put shellcode on the stack and point `EIP` to leaked stack pointer address. Let’s use simple `execve` syscall:
 
     shellcode = asm('\n'.join([
         'push %d' % u32('/sh\0'),

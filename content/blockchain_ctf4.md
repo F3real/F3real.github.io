@@ -7,7 +7,7 @@ Slug: blockchain_ctf1213
 Authors: F3real
 Summary: How to solve Blockchain CTF lvl. 12-13
 
-In this post we will take a look at two new challenges posted in blockchain CTF.
+In this post, we will take a look at two new challenges posted in blockchain CTF.
 
 [TOC]
 
@@ -111,7 +111,7 @@ require(msg.sender==admin || rewards[msg.sender]>0);
 ~~~
 So how can we exploit this?
 
-Problem lies in using `blockhash`, it saves values only up to last 256 blocks. Calling it on older block will yield 0. This means we can just wait for 256 blocks after which we know the value of winning ticket. Only problem letf to handle is fact that account that closses raffle is unable to call `collectReward` function, but this can be bypassed by creating two different attack contracts.
+The problem lies in using `blockhash`, it saves values only up to the last 256 blocks. Calling it on the older block will yield 0. This means we can just wait for 256 blocks after which we know the value of winning ticket. The only problem letf to handle is the fact that account that closes raffle is unable to call `collectReward` function, but this can be bypassed by creating two different attack contracts.
 
 Solution:
 
@@ -183,7 +183,7 @@ contract AttackContract2{
 }
 ~~~
 
-After creating both attack contract we need to call `attack` from both, wait 256 blocks and then close raffle and claim our reward.
+After creating both attack contract we need to call `attack` from both, wait for 256 blocks and then close raffle and claim our reward.
 
 ##Scratchcard
 
@@ -255,16 +255,16 @@ contract Scratchcard is CtfFramework{
 }
 ~~~
 
-This contract is a bit trickier, we see a bit of inline assembly being used to check code size of calling address.
+This contract is a bit trickier, we see a bit of inline assembly being used to check the code size of calling address.
 
 ~~~solidity
     uint256 size;
     assembly { size := extcodesize(account) }
 ~~~
 
-This can be used to show us if we are being called from contract, but it can be bypassed. We can do this by calling victim contract from constructor of our attack contract (since constructor sets contract code during it's runtime `extcodesize` is going to be 0).
+This can be used to show us if we are being called from the contract, but it can be bypassed. We can do this by calling victim contract from the constructor of our attack contract (since constructor sets contract code during its runtime `extcodesize` is going to be 0).
 
-Another thing to note is that `(now%10**8)*10**10 == msg.value` is being used to check if we are winner. But since, with our contract check bypass, we can call Raffle from contract if we do same calculation we will get required message value. The `now` is just alias for `block.timestamp` and will be same for all transactions/function calls in same block.
+Another thing to note is that `(now%10**8)*10**10 == msg.value` is being used to check if we are the winner. But since, with our contract check bypass, we can call Raffle from the contract if we do the same calculation we will get the required message value. The `now` is just alias for `block.timestamp` and will be the same for all transactions/function calls in the same block.
 
 So let's write attack code:
 

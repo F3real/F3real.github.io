@@ -7,9 +7,9 @@ Slug: Ret2systems_theheist
 Authors: F3real
 Summary: How to solve Ret2systems the heist
 
-This is simple reversing challenge hosted [here](https://wargames.ret2.systems/level/shmoo).
+This is a simple reversing challenge hosted [here](https://wargames.ret2.systems/level/shmoo).
 
-Site offers pretty nice interface with GDB, dissasembly view and python shell.
+The site offers a pretty nice interface with GDB, dissasembly view and python shell.
 
 We are given part of source code:
 ~~~c
@@ -117,7 +117,7 @@ We also see it makes call to is `is_valid_length` function:
 0x400989:  retn    
 ~~~
 
-This is simple function calling `strlen` and checking if length is 10.
+This is a simple function calling `strlen` and checking if the length is 10.
 
 If we look at register values during `strtoul` calls we see that `qword [rbp-0x20]` is `seed` and that `qword [rbp-0x18]` is our input. Both get converted from string to 32 bit int. 
 
@@ -125,9 +125,9 @@ After conversion to int, `seed` gets saved to `dword [rbp-0x8]` and our input to
 
 We can use GDB they provided to read `seed` value.
 
-If we look at rest of function we see that we have loop which adds `0x52455432` 10 times after which we `rol`, `xor` and finally comparison with `0xc0ffee`.
+If we look at the rest of the function we see that we have a loop that adds `0x52455432` 10 times after which we `rol`, `xor` and finally comparison with `0xc0ffee`.
 
-We can write C program to follow these steps backwards and generate required input.
+We can write C program to follow these steps backwards and generate the required input.
 
 ~~~c
 #include <stdio.h>

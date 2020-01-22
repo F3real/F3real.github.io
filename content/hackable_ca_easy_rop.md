@@ -12,7 +12,7 @@ In this post we are going to take a look at one of challenges from [http://hacka
     root@kali:~/ctf/hackable.ca_easyROP# file ropeasy_updated 
     ropeasy_updated: ELF 32-bit LSB executable, Intel 80386, version 1 (GNU/Linux), statically linked, for GNU/Linux 2.6.32, BuildID[sha1]=61d5d8b74151b4dfa900d5e2d66b9c2e0adcfa85, not stripped
 
-We see it is 32bit non stripped ELF program, since we don’t have source code we can use IDA to get pseudocode (`F5` hotkey while in function).
+We see it is 32bit non-stripped ELF program, since we don’t have source code we can use IDA to get pseudocode (`F5` hotkey while in function).
 
 ~~~c
 int __cdecl main(int argc, const char **argv, const char **envp)
@@ -44,7 +44,7 @@ It is really simple executable with obvious overflow in `smashMe` (`gets` functi
     PIE       : disabled
     RELRO     : Partial
 
-We see that only NX (Non-executable memory) bit is set. Good thing is that, since PIE is disabled, addresses won’t change which makes our job easier. I am using `checksec` command from `gdb-peda` (really helpful extension for `gdb`), but there is also standalone script for it. Let’s try running the binary:
+We see that only NX (Non-executable memory) bit is set. Good thing is that, since PIE is disabled, addresses won’t change which makes our job easier. I am using `checksec` command from `gdb-peda` (really helpful extension for `gdb`), but there is also a standalone script for it. Let’s try running the binary:
 
     root@kali:~/ctf/hackable.ca_easyROP# ./ropeasy_updated
 
@@ -52,12 +52,12 @@ We see that only NX (Non-executable memory) bit is set. Good thing is that, sinc
 
     user input: test
 
-Program asks us for input and immediately quits. First let’s try to find address of `system` and `/bin/sh`.
+Program asks us for input and immediately quits. First, let’s try to find the address of `system` and `/bin/sh`.
 
     gdb-peda$ p system
     No symbol table is loaded.  Use the "file" command.
 
-It seems that `system` is not linked in this binary. This makes ROP harder but we can use `execve` syscall to run `/bin/sh`. One of other things we have to do is find offset of `EIP`. We can create pattern in `gdb-peda`:
+It seems that `system` is not linked in this binary. This makes ROP harder but we can use `execve` syscall to run `/bin/sh`. One of the other things we have to do is find the offset of `EIP`. We can create a pattern in `gdb-peda`:
 
     gdb-peda$ pattern create 20
     'AAA%AAsAABAA$AAnAACA'
@@ -68,7 +68,7 @@ When we give this pattern (if it is long enough) to program it will crash with `
 
 ![Easy rop pattern search]({static}/images/2018_7_30_easyRop1.png){: .img-fluid .centerimage}
 
-We see that `EIP` offset is at 16 and that we also have `EBX` at 8. One of things to note is that `gdb` can modify stack a bit (because of environment variables) so it is better to run program and then attach `gdb` to it then to run it inside `gdb`.
+We see that `EIP` offset is at 16 and that we also have `EBX` at 8. One of the things to note is that `gdb` can modify stack a bit (because of environment variables) so it is better to run the program and then attach `gdb` to it then to run it inside `gdb`.
 
 To get `execve` syscall we need following arguments:
 
@@ -77,7 +77,7 @@ To get `execve` syscall we need following arguments:
     ECX      0
     EDX      0
 
-To find ROP gadgets we need we are going to use [**ropper**](https://github.com/sashs/Ropper). Lets look for `int 0x80; ret;` first since it is required for syscall.
+To find ROP gadgets we need we are going to use [**ropper**](https://github.com/sashs/Ropper). Let's look for `int 0x80; ret;` first since it is required for syscall.
 
 ~~~text
 root@kali:~/ctf/hackable.ca_easyROP# ropper --file ropeasy_updated --search "int 0x80; ret;"
@@ -149,4 +149,4 @@ Making ROP chain involves a lot of tinkering and failing so it is really helpful
 
     gdb ./ropeasy_updated ./core
 
-After that we can inspect register state at time of crash with `i r` and stack state with `i s`.
+After that, we can inspect the register state at the time of crash with `i r` and stack state with `i s`.

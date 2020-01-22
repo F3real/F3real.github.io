@@ -7,17 +7,17 @@ Slug: implicit_dll_linking
 Authors: F3real
 Summary: How to implicitly link dll
 
-In windows we can link dlls in two different ways to our program, implicitly and explicitly.
+In windows, we can link dlls in two different ways to our program, implicitly and explicitly.
 
-In explicit linking, during runtime of our program, we make call to `LoadLibrary` or similar function to obtain module handle.
+In explicit linking, during runtime of our program, we make a call to `LoadLibrary` or similar function to obtain module handle.
 
-In implicit linking we link our program to `.lib` file and include headers containing declarations of exported data and functions.
+In implicit linking, we link our program to `.lib` file and include headers containing declarations of exported data and functions.
 
-Now interestingly Windows has two types of `.lib` files. Usually, they represent static libraries and linking them copies code stored in them to our executable. Second type of `.lib` files in Windows are import libraries which contain only stub code of dll functions and make our executable load required dll at startup.
+Now interestingly Windows has two types of `.lib` files. Usually, they represent static libraries and linking them copies code stored in them to our executable. The second type of `.lib` files in Windows are import libraries that contain only stub code of dll functions and make our executable load required dll at startup.
 
 So how to create required import `.lib` file from dll?
 
-First we have to get list of exported functions from dll. For this we can use `dumpbin` utility included with visual studio.
+First, we have to get a list of exported functions from dll. For this, we can use `dumpbin` utility included with visual studio.
 In Visual Studio 2017 path to dumpbin is:
 ~~~text
 \Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.13.26128\bin\Hostx64\x64\dumpbin.exe
@@ -54,8 +54,8 @@ File Type: DLL
           ....
 ~~~
 
-Hint is used by loader as attempt to find location of function faster.
-Now to create lib file we have first to create export definition file (`.def`). Standard form of def file is:
+The hint is used by the loader as an attempt to find the location of function faster.
+Now to create lib file we have first to create an export definition file (`.def`). The standard form of def file is:
 
 ~~~text
 LIBRARY   ourdll.dll
@@ -64,7 +64,7 @@ EXPORTS
    funcName2
 ~~~
 
-To generate lib file itself we use lib.exe utility (located in same folder as dumpbin). Let's do this on example `.def` file:
+To generate lib file itself we use lib.exe utility (located in the same folder as dumpbin). Let's do this on example `.def` file:
 
 ~~~text
 PS> cat mylib.def
@@ -80,7 +80,7 @@ Copyright (C) Microsoft Corporation.  All rights reserved.
    Creating library mylib.lib and object mylib.exp
 ~~~
 
-Executables linked to `.lib` files created in this way contain strings of function names exported from dll. To remove these strings we can use ordinal import. In `.def` files we need to add ordinal number of function after function name (funcName1 @ordNumber).
+Executables linked to `.lib` files created in this way contain strings of function names exported from dll. To remove these strings we can use ordinal import. In `.def` files we need to add an ordinal number of function after function name (funcName1 @ordNumber).
 
 
 ~~~text
@@ -97,4 +97,4 @@ Copyright (C) Microsoft Corporation.  All rights reserved.
    Creating library mylib2.lib and object mylib2.exp  
 ~~~
 
-The ordinal represents the position of the function's address pointer in the DLL Export Address table. Ordinal values for Windows API functions don't have to be exactly same between different Windows versions so they are not most reliable way to import functions from dlls, but on upside this way of importing also provides slight performance increase.
+The ordinal represents the position of the function's address pointer in the DLL Export Address table. Ordinal values for Windows API functions don't have to be exactly the same between different Windows versions so they are not the most reliable way to import functions from dlls. But on the upside, this way of importing also provides a slight performance increase.

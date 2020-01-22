@@ -7,13 +7,13 @@ Slug: pwnadventure_sourcery1
 Authors: F3real
 Summary: How to solve Pwn Adventure Sourcery start challenges
 
-Pwn Adventure Sourcery is really interesting game made for CSAW finals 2018. Game was made using Rust and WebAssembly.
+Pwn Adventure Sourcery is a really interesting game made for CSAW finals 2018. The game was made using Rust and WebAssembly.
 
-Commands are simple, we walk using arrow keys, interact using `E` key and use weapons/items with `SPACE` key. To play game properly we (sadly) need to use Chrome browser, otherwise `CTRL+C/CTRL+V` won't work which will make game much harder.
+Commands are simple, we walk using arrow keys, interact using `E` key and use weapons/items with `SPACE` key. To play the game properly we (sadly) need to use Chrome browser, otherwise `CTRL+C/CTRL+V` won't work which will make the game much harder.
 
 [TOC]
 
-In brief tutorial, we see get assembly code for fire spell that we need to use to break builder standing in our way.
+In a brief tutorial, we see get assembly code for fire spell that we need to use to break builder standing in our way.
 ~~~asm
 mov eax, SYS_FIRE
 mov ebx, 16   ; energy to use
@@ -21,7 +21,7 @@ int 0x80
 hlt
 ~~~
 
-Going foward we get to `Spell extractor` which we can use to get source code of doors and our first challenge **Jail Storage Door**.
+Going forward we get to `Spell extractor` which we can use to get source code of doors and our first challenge **Jail Storage Door**.
 
 ## Jail Storage Door
 
@@ -100,7 +100,7 @@ entered_code:
 	db 0, 0, 0, 0
 ~~~
 
-Only confusing part was way in which data was loaded in memory. Characters are loaded in last position in `entered_code` array and then moved towards first position after each new character is entered.
+The only confusing part was the way in which data was loaded in memory. Characters are loaded in the last position in `entered_code` array and then moved towards the first position after each new character is entered.
 
 We also see that `correct_code` is hardcoded to `5129` which is our solution.
 
@@ -273,9 +273,9 @@ invalid:
 end_invalid:
 ~~~
 
-This time pin is read from secure storage and we can't see it in source code. The `input_loop` is pretty simple it reads a char, checks if it is backspace or return, increments number of chars and saves our input.
+This time pin is read from secure storage and we can't see it in source code. The `input_loop` is pretty simple it reads a char, checks if it is backspace or return, increments the number of chars and saves our input.
 
-Since no checks are being made for length of input we have classic buffer overflow.
+Since no checks are being made for the length of input we have classic buffer overflow.
 Let's see what's the offset to overwrite EIP.
 
 ~~~asm
@@ -290,7 +290,7 @@ ask_and_verify_pin:
 
 We see that `esp + 48` will give us ability to overwrite EIP. Input starts from `ebp + .input`  that is `ebp - 32` or `esp + 4`.  This means that offset from input we control is `44` to EIP. Address of `open_door` function is 0x10a7.
 
-Our assembly solution we need to write in `Pwn tool`:
+The assembly solution we need to write in `Pwn tool`:
 
 ~~~asm
 mov esi, data
@@ -307,11 +307,11 @@ db "\n"
 end:
 ~~~
 
-After leaving jail, we can go visit town (just north) and go right to zombie map. This part is just classic game, we need to kill zombie boss to unlock new spell. 
+After leaving jail, we can go visit town (just north) and go right to zombie map. This part is just a classic game, we need to kill zombie boss to unlock a new spell. 
 
-There are 3 buttons that need to be pressed to unlock boss room. Upon entering room with boss doors lock and fight is triggered but only if you move more then two steps from the door, which we can use to clear all other zombies before boss fight itself.
+There are 3 buttons that need to be pressed to unlock the boss room. Upon entering the room with the boss, doors lock and fight is triggered but only if you move more then two steps from the door, which we can use to clear all other zombies before the boss fight itself.
 
-After the figt we get `Explode` spell:
+After the fight we get `Explode` spell:
 
 ~~~asm
 	mov ecx, 24
@@ -324,7 +324,7 @@ wait:
 	hlt 
 ~~~
 
-Now we have to go back to map we entered after leaving jail and then left and down to enter desert area and down again to enter Lab.
+Now we have to go back to the map we entered after leaving jail and then left and down to enter the desert area and down again to enter Lab.
 
 ## Lab Door 1
 
@@ -538,11 +538,11 @@ invalid:
 end_invalid:
 ~~~
 
-We have another reversing challenge that we need to pass to unlock the door. Length of input is checked so we need to understand how the code works to bypass pink check. I have left some comments that should make code a bit clearer. 
+We have another reversing challenge that we need to pass to unlock the door. The length of the input is checked so we need to understand how the code works to bypass the pin check. I have left some comments that should make code a bit clearer. 
 
-Basically we can only enter characters between `' '` and `~`. Length of input has to be 16 and each of the first eight characters from input are XORed with the input characters 8 positions ahead from them. Result we get is then checked with `valid` array.
+Basically, we can only enter characters between `' '` and `~`. The length of input has to be 16 and each of the first eight characters from the input are XORed with the input characters 8 positions ahead from them. The result we get is then checked with `valid` array.
 
-Bruteforce python solution:
+Brute-force python solution:
 
 ~~~python
 alphabet = [x for x in range(0x20, 0xFE + 1)]

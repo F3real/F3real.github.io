@@ -9,7 +9,7 @@ Summary: How to solve picoCTF Lvl2 Shells
 
 picoCTF is another interesting CTF competition found at [https://2017.picoctf.com/](https://2017.picoctf.com)
 
-We will take a look at one of binary exploitation challenges, Shells.
+We will take a look at one of the binary exploitation challenges, Shells.
 
 >How much can a couple bytes do? Use [shells](https://webshell2017.picoctf.com/static/8ee8b9f60eb42472a741748770af94ff/shells) ! [Source](https://webshell2017.picoctf.com/static/8ee8b9f60eb42472a741748770af94ff/shells.c). Connect on shell2017.picoctf.com:55049.
 
@@ -55,13 +55,13 @@ int main(int argc, char*argv[]){
 }
 ~~~
 
-From source code we can see that we need to call `win` function. In `vuln` we see that program maps memory for user input and sets read/write/execute permission on it. After that it, in this strange looking line of code,
+From source code, we can see that we need to call `win` function. In `vuln` we see that program maps memory for user input and sets read/write/execute permission on it. After that it, in this strange looking line of code,
 
     void (*func)() = (void (*)())stuff;
 
 casts input buffer to `void f()` and assigns it to function pointer. For example if we wanted to cast to something like `int f(char a, int b)` we would use `(int (*)(char,int))`.
 
-First we need to find address of `win` function in shells binary, we can use **objdump** for this:
+First, we need to find the address of `win` function in shells binary, we can use **objdump** for this:
 
     objdump -d shells -M intel
 
@@ -69,7 +69,7 @@ First we need to find address of `win` function in shells binary, we can use **o
 
 And we get function address `0x08048540`.
 
-My first idea was just to pass function address but it didn’t work since we need actual assembly code. So lets write some shellcode using **pwntools**:
+My first idea was just to pass function address but it didn’t work since we need actual assembly code. So let's write some shellcode using **pwntools**:
 
 ~~~python
 from pwn import *
@@ -85,16 +85,16 @@ print r.recvall()
 r.close()
 ~~~
 
-We just set context so **pwntools** knows arch of the system, connect to server and send our shellcode:
+We just set the context so **pwntools** knows arch of the system, connect to the server and send our shellcode:
 
     move eax, 0x08048540
     call eax
 
-We call from register since in that case value is interpreted as absolute address offset instead of relative (if we just used `call 0x08048540`).
+We call from register since in that case value is interpreted as an absolute address offset instead of relative (if we just used `call 0x08048540`).
 
-Also we could have just used push/ret shellcode.
+Also, we could have just used push/ret shellcode.
 
     push 0x08048540
     ret
 
-In any case running our python scripts gives us the flag :D
+In any case, running our python scripts gives us the flag :D

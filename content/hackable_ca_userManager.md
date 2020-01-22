@@ -220,7 +220,7 @@ int main()
 }
 ~~~
 
-At first look there are no obvious bugs, no obvious buffer overflows or format string exploits. Looking trough code I noticed that only function that stands out is `setUserAge` since it doesn’t allocate memory dynamically and it does different checks. So lets examine it more carefully:
+At first look there are no obvious bugs, no obvious buffer overflows or format string exploits. Looking through code I noticed that only function that stands out is `setUserAge` since it doesn’t allocate memory dynamically and it does different checks. So let's examine it more carefully:
 
 ~~~c
     void setUserAge() 
@@ -235,7 +235,7 @@ At first look there are no obvious bugs, no obvious buffer overflows or format s
     }
 ~~~
 
-At first function looks safe, but if we take a look at docs of `strlen` and `strcpy` we see:
+At first, function looks safe, but if we take a look at docs of `strlen` and `strcpy` we see:
 
     The C library function size_t **strlen**(const char *str) computes the length of the string str up to, **but not including the terminating null character.**
 
@@ -243,7 +243,7 @@ At first function looks safe, but if we take a look at docs of `strlen` and `str
 
 And since functions only checks for `len > maxage` if we insert `8 * a` (8 is the size of buffer holding age) check will still pass. This will cause `strcpy` to copy 9 bytes to destination buffer overwriting one byte of data. If we take a look at user struct we will see that it will overwrite `id` of next user since they are stored in array.
 
-Looking at how `viewUser()` and `displayUserInfo()` work. We see that `viewUser()` sets `current_user` to id of first user with the given name, while `displayUserInfo()` uses that `current_user` as index to user array. This means that if we create user, overwrite his `id` to 0, then select him program will actually print information of systemAccount giving us flag. So let’s write short script implementing this (although in this case, it is easy to do manually as well):
+Looking at how `viewUser()` and `displayUserInfo()` work. We see that `viewUser()` sets `current_user` to id of first user with the given name, while `displayUserInfo()` uses that `current_user` as index to user array. This means that if we create a user, overwrite his `id` to 0, then select him program will actually print information of systemAccount giving us flag. So let’s write short script implementing this (although in this case, it is easy to do manually as well):
 
 ~~~python
 from pwn import *

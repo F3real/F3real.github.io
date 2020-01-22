@@ -7,7 +7,7 @@ Slug: pwnadventure_sourcery2
 Authors: F3real
 Summary: How to solve Pwn Adventure Sourcery swamp challenges
 
-In this writeup we will take a look at second lab door and swap maze entrace challenges.
+In this writeup, we will take a look at the second lab door and swap maze entrance challenges.
 
 [TOC]
 
@@ -330,9 +330,9 @@ invalid:
 end_invalid:
 ~~~
 
-If we look at the `verify_code` function carefully we see, that key is calculated based on first 4 characters. There is a lot of code, but basically there are just 2 unrolled for loops. If you don't want to look at assembly C solver will give you good overview of way in which key is being calculated.
+If we look at the `verify_code` function carefully we see, that the key is calculated based on the first 4 characters. There is a lot of code, but basically there are just 2 unrolled for loops. If you don't want to look at assembly, C solver will give you a good overview of the way in which the key is being calculated.
 
-But still this challenge took some time to solve mostly due to bug caused by not properly emulating 8 bit addition. To track it down I actually had to write inline assembly version of the same code.
+But still, this challenge took some time to solve mostly due to bug caused by not properly emulating 8 bit addition. To track it down I actually had to write inline assembly version of the same code.
 
 C solver:
 
@@ -461,11 +461,11 @@ Btw, there is also cave filled with spiders north from the desert with boss to b
 
 ## Lab door 3
 
-Source code of third lab door has ~6k lines of code. But fortunately most of it is in `decipher` function and represents unrolled loop.
+The source code of the third lab door has ~6k lines of code. But fortunately, most of it is in `decipher` function and represents the unrolled loop.
 
 Full source code can be found [here](https://github.com/F3real/ctf_solutions/blob/master/2018/pwn_adventure_sourcery/LabDoor3/LabDoor3.asm)
 
-Lets look at important few code snippets:
+Let's look at important few code snippets:
 
 ~~~asm
 	; read in the input, expect "XXXXXXXX-XXXXXXXX"
@@ -537,7 +537,7 @@ decipher:
 
 ~~~
 
-Looking at the algorithm used for pin derivation, we see that it calculates each new step based on two previous ones. Since in the end results are compared to `0x57415343` and `0x41484148`, results of two last steps, we have everything we need to run derivation backwards and get required inputs.
+Looking at the algorithm used for pin derivation, we see that it calculates each new step based on two previous ones. Since in the end results are compared to `0x57415343` and `0x41484148`, the results of two last steps, we have everything we need to run derivation backwards and get required inputs.
 
 Python solver:
 ~~~python
@@ -559,8 +559,8 @@ Full code can be found [here](https://github.com/F3real/ctf_solutions/blob/maste
 
 Some things to note:
 
-* inputs are taken in reverse order, first part of input is used as y1 and second as y0
-* program treats inputted string as hex number
+* inputs are taken in reverse order, the first part of the input is used as y1 and second as y0
+* program treats inputted string as a hex number
 
 Calculated pin: `9b916917-b6117336`
 
@@ -601,7 +601,7 @@ It executes input we pass to it. To solve this challenge we can use `SYS_WALK` s
   hlt
 ~~~
 But we can't use null byte since it is used to trigger execution. 
-So we have to change `mov eax, SYS_WALK` with `xor eax, eax; mov al, SYS_WALK`. Also we don't need y-vel so we will set ecx to 0 with `xor ecx, ecx` and in ebx we will write max value (-1)
+So we have to change `mov eax, SYS_WALK` with `xor eax, eax; mov al, SYS_WALK`. Also, we don't need y-vel so we will set ecx to 0 with `xor ecx, ecx` and in ebx we will write max value (-1)
 
 Solution:
 ~~~asm

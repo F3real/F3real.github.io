@@ -24,7 +24,7 @@ This time we are given zip file containing few different, suspiciously large, co
        3068109 Verifier7.class
 ~~~
 
-We can run given program with `java Authenticator <password>` from cmd.
+We can run a given program with `java Authenticator <password>` from cmd.
 
 Looking at the source of the `Authenticator` in Ghidra we see that there is `checkFlag` function.
 
@@ -54,10 +54,10 @@ Looking at the source of the `Authenticator` in Ghidra we see that there is `che
   ...
 ~~~
 
-It checks if our passed string starts with `utflag{` and ends with `}`. Rest of input is split on `_` and passed to different Verifier classes.
-So our flag has format of `utflag{x_x_x_x_x_x_x}` and each Verifier is tasked with checking one part.
+It checks if our passed string starts with `utflag{` and ends with `}`. The rest of input is split on `_` and passed to different Verifier classes.
+So our flag has the format of `utflag{x_x_x_x_x_x_x}` and each Verifier is tasked with checking one part.
 
-Looking at the source code of `Verifer0` we can't see much. It dynamically loads new class from hardcoded array and calls `verifyFlag` function it provides.
+Looking at the source code of `Verifer0` we can't see much. It dynamically loads the new class from hardcoded array and calls `verifyFlag` function it provides.
 
 ~~~java
   ....
@@ -73,19 +73,19 @@ Looking at the source code of `Verifer0` we can't see much. It dynamically loads
 
 To make matters a bit harder, `arr0` is encoded in Z85 (a format for representing binary data as printable text).
 
-After saving first dynamically loaded class and decompiling it, we get almost identical code as with original class. This lead me to assume that classes are probably nested in manner similar to matryoshka dolls and that we need to automate this process.
+After saving the first dynamically loaded class and decompiling it, we get almost identical code as with the original class. This led me to assume that classes are probably nested in a manner similar to matryoshka dolls and that we need to automate this process.
 
-First we can see which version of java is used to compile this class files.
-For this we are going to use `javap` disassembler which is part of JDK.
+First, we can see which version of java is used to compile these class files.
+For this, we are going to use `javap` disassembler which is part of JDK.
 
 ~~~text
 javap -v .\Authenticator.class | findstr "major"
   major version: 52
 ~~~
 
-Major version 52 corresponds to java 8. We can use same procedure to see minor version as well.
+Major version 52 corresponds to java 8. We can use the same procedure to view the minor version as well.
 
-To dynamically load classes and access fields we are going to use java reflection. Since we can write solution in same folder as extracted classes we don't have to worry about imports. 
+To dynamically load classes and access fields we are going to use java reflection. Since we can write the solution in the same folder as extracted classes we don't have to worry about imports. 
 
 Solution code should be pretty understandable:
 
@@ -139,7 +139,7 @@ public class Sol extends ClassLoader{
 We can compile our solution with `javac`.
 
 After running our program we see that each verifier had 28 nested classes. 
-Almost all of final classes also implements some simpler form of encryption.
+Almost all of the final classes also implement some simpler form of encryption.
 
 Looking at decompiled source of last class from `Verifier0` we see that it just uses XOR, which is easily reversible.
 
@@ -224,7 +224,7 @@ z    fbade9e36a3f36d3d676c1b808451dd7
 z    fbade9e36a3f36d3d676c1b808451dd7
 ~~~
 
-`Verifier6` uses SHA1 to hash input string and compare it with hardcoded hash value `1B480158E1F30E0B6CEE7813E9ECF094BD6B3745`. We can quickly find solution by just googling it. Solution is string `stop`.
+`Verifier6` uses SHA1 to hash input string and compare it with hardcoded hash value `1B480158E1F30E0B6CEE7813E9ECF094BD6B3745`. We can quickly find a solution by just googling it. The solution is the string `stop`.
 
 `Verifier7` just checks if provided string equals to `goodbye`.
 

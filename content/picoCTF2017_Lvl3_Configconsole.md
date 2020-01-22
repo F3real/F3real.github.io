@@ -114,7 +114,7 @@ int main(int argc, char **argv) {
 }
 ~~~
 
-We have format string vulnerability in `set_exit_message`. But the problem is that programs closes after executing it once, and we can’t make exploit work in single run. To work around this we can overwrite **GOT **entry of exit function. First we need to find address of exit:
+We have format string vulnerability in `set_exit_message`. But the problem is that programs closes after executing it once, and we can’t make the exploit work in a single run. To work around this we can overwrite **GOT **entry of exit function. First, we need to find the address of exit:
 
 ~~~text
     pwndbg> break exit@plt
@@ -128,11 +128,11 @@ We have format string vulnerability in `set_exit_message`. But the problem is th
     0x601258 <exit@got.plt>: 0x00400736
 ~~~
 
-In snippet above we set breakpoint on address of `exit@plt` and then we examine memory it points to.
+In the snippet above we set a breakpoint on the address of `exit@plt` and then we examine memory it points to.
 
-If you are not familiar with how **GOT/PLT** works, basically library functions are not called directly. Instead in **.txt** section we have calls to `func@plt` which call real functions using address in **GOT**. **PLT** function addresses are fixed in **.txt** section while **GOT** entries are resolved at run-time. This enables things like dynamic loading and **ASLR**. First time function is called, **GOT** will contain only address of **PLT** resolver code which is tasked with getting real address of function and updating **GOT**. Subsequent calls will read **GOT** value and call function directly.
+If you are not familiar with how **GOT/PLT** works, basically library functions are not called directly. Instead in **.txt** section we have calls to `func@plt` which call real functions using the address in **GOT**. **PLT** function addresses are fixed in **.txt** section while **GOT** entries are resolved at run-time. This enables things like dynamic loading and **ASLR**. The first time function is called, **GOT** will contain the only address of **PLT** resolver code which is tasked with getting the real address of function and updating **GOT**. Subsequent calls will read **GOT** value and call the function directly.
 
-We also need to find address of `loop` function.
+We also need to find the address of `loop` function.
 
 ~~~text
     pwndbg> p loop
@@ -143,7 +143,7 @@ Since address of `loop` is similar to value found in GOT entry for `exit` we don
 
     AAAAAAAA.0x7f0c3ea13323.0x7f0c3ea147a0.0x7f0c3e748c00.0x7f0c3ea147a0.0x70252e70252e7025.(nil).0x7ffeb5112115.0x7ffeb5112520.0x400aa6.(nil).0x7ffeb5112110.0x7ffeb5112110.0x7ffeb5112115.0x2020200074697865.0x4141414141414141.0x252e70252e70252e.0x2e70252e70252e70.0x70252e70252e7025.0x252e70252e70252e.0x2e70252e70252e70
 
-`ljust` is used to align data we put on stack won’t be split between two memory addresses. From the output, we see that our input is on 15th position. `$` enables us to read from specified position on stack, we can use this to verify if we have right position:
+`ljust` is used to align data we put on stack won’t be split between two memory addresses. From the output, we see that our input is in 15th position. `$` enables us to read from a specified position on the stack, we can use this to verify if we have the right position:
 
     'exit'.ljust(8) + 'A' *8 + '.%15$p'
 
@@ -151,9 +151,9 @@ Now we are going to overwrite `exit` **GOT** entry with `loop` address. To overw
 
     'exit'.ljust(8) + '%{0}c|%17$hn|'.format(2493 - 6).rjust(16) + exit_got
 
-2 lower bytes of `loop` address are `0x09bd` which is 2493 decimal, but we deduct 6 since some extra characters get printed. To fine tune exact number we just use **gdb** and check for value after we overwrite. Also we put `exit` **GOT** address on the end since it contains null byte which stops `printf`.
+2 lower bytes of `loop` address are `0x09bd` which is 2493 decimal, but we deduct 6 since some extra characters get printed. To fine-tune the exact number we just use **gdb** and check for value after we overwrite. Also, we put `exit` **GOT** address on the end since it contains a null byte which stops `printf`.
 
-Now program is no longer exiting after running single command, great :D. We can use this to leak data we need to finish our exploit. First we need to get libc base address. We can do this by finding offset of some function in libc and leaking resolved address of same function during run-time, deducting offset will give us libc base address.
+Now the program is no longer exiting after running a single command, great :D. We can use this to leak data we need to finish our exploit. First, we need to get libc base address. We can do this by finding offset of some function in libc and leaking resolved address of the same function during run-time, deducting offset will give us libc base address.
 
 Let’s get address of `fgets` **GOT** entry:
 
@@ -169,7 +169,7 @@ Let’s get address of `fgets` **GOT** entry:
     End of assembler dump.
 ~~~
 
-Next we have to find offsets of `fgets` and `system` in libc.
+Next, we have to find offsets of `fgets` and `system` in libc.
 
     $readelf -s ./libc.so.6 | grep system
     1337: 0000000000041490 45 FUNC WEAK DEFAULT   12 system@@GLIBC_2.2.5
@@ -180,7 +180,7 @@ We have to use same libc as one on target system since offsets can be different 
 
     'exit'.ljust(8) + '|%16$s|'.rjust(8) + fgets_got
 
-`%s` specifier will read data from given address as a string. And now we have everything we need, last step is to overwrite `strlen` (just since it's called only in `set_prompt`) with address of `system` (system offset + libc base).
+`%s` specifier will read data from the given address as a string. And now we have everything we need, the last step is to overwrite `strlen` (just since it's called only in `set_prompt`) with the address of `system` (system offset + libc base).
 
 Pwntools script implementing all of the steps:
 
@@ -276,4 +276,4 @@ if __name__ == "__main__":
 
 ![flag]({static}/images/2018_8_8_ConfigConsole.png){: .img-fluid .centerimage}
 
-We have overwritten `strlen` address in three 16 bit writes (64 bit systems use only 48 bits for addresses). Other thing to note is that although ASLR is not enabled on binary, system uses it which causes address of libc functions to change, so we had to leak libc base.
+We have overwritten `strlen` address in three 16 bit writes (64 bit systems use only 48 bits for addresses). Another thing to note is that although ASLR is not enabled on binary, the system uses it which causes the address of libc functions to change, so we had to leak libc base.

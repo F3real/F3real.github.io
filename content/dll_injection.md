@@ -52,14 +52,14 @@ Dll search order can also be changed programmatically. More information on dll l
 
 ##dll injection
 
-Dll injection happens if we can insert our own dll in location with higher search priority then real dll or replace it. If we want to be stealthy, with this approach, we also need to export all functions that real dll provides (by loading it as dependency and re-exporting its functions).
+Dll injection happens if we can insert our own dll in a location with higher search priority then real dll or replace it. If we want to be stealthy, with this approach, we also need to export all functions that real dll provides (by loading it as a dependency and re-exporting its functions).
 
-Sometimes applications try to load dlls that don't exist on system. In this case, we don't have to worry about original functionality of dll. Usually this type of dll injection is called ghost dll injection.
+Sometimes applications try to load dlls that don't exist on the system. In this case, we don't have to worry about the original functionality of dll. Usually, this type of dll injection is called ghost dll injection.
 
 ##Finding missing dlls
 
-One of the ways to find dlls that application try to load is to use `Procmon`.
-We need to set following filters:
+One of the ways to find dlls that application tries to load is to use `Procmon`.
+We need to set the following filters:
 
 ~~~text
 Process Name    is           <target.exe>       Include
@@ -76,7 +76,7 @@ We see that `p2pvoice.dll` is not found and that is being searched for in differ
 
 #Simple practical example
 
-Since `p2pvoice.dll` doesn't exist we can create our own. For this we are going to use C++. C# dll libraries don't have straightforward way to run code as soon as dll is attached.
+Since `p2pvoice.dll` doesn't exist we can create our own. For this, we are going to use C++. C# dll libraries don't have a straightforward way to run code as soon as dll is attached.
 
 To create new dll in visual studio 2017 we go to:
 
@@ -84,7 +84,7 @@ To create new dll in visual studio 2017 we go to:
 New Project  -> Visual C++\Windows Desktop\Dynamic-Link Library(DLL)
 ~~~
 
-We can name project according to dll we want to create.
+We can name the project according to dll we want to create.
 For simple example we are just going to edit `dllmain.cpp` to: 
 
 ~~~C
@@ -108,7 +108,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 }
 ~~~
 
-This will just start windows calculator whenever dll is attached and detached to process or thread. After building solution generated dll is going to be placed in `Debug` folder. To finish with dll injection we can just copy it to CS game folder.
+This will just start the windows calculator whenever dll is attached and detached to process or thread. After building solution generated dll is going to be placed in `Debug` folder. To finish with dll injection we can just copy it to CS game folder.
 
 Now if we start hl.exe we are also going to get tons of calc.exe processes opening.
 

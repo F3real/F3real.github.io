@@ -16,14 +16,14 @@ Let's look at the challenge description:
 
 Also, we get a hint that we should write our contract hand.
 
-Contracts are created by sending transaction containing contract code and leaving recipient address empty.
+Contracts are created by sending transactions containing contract code and leaving the recipient address empty.
 
-Bytecode code sent in this transaction is split in two different parts:
+Bytecode code sent in this transaction is split into two different parts:
 
-1. *Creation code* - which is executed once during contract creation. It is tasked with setting up initial contract state and returning a copy of runtime code. This code doesn't get saved in contract storage.
+1. *Creation code* - which is executed once during contract creation. It is tasked with setting up an initial contract state and returning a copy of the runtime code. This code doesn't get saved in contract storage.
 2. *Runtime code* - contract code, saved in storage, executed on function calls.
 
-Since there is no state to set, creation code in our case just needs to return a copy of runtime code. To do this we need to use `CODECOPY` and `RETURN`.
+Since there is no state to set, creation code in our case just needs to return a copy of the runtime code. To do this we need to use `CODECOPY` and `RETURN`.
 
     codecopy(t, f, s) 	- 	copy s bytes from code at position f to mem at position t
     return(p, s) 	    - 	end execution, return data mem[p..(p+s))
@@ -43,13 +43,13 @@ Let's write our bytecode:
 0x00       ;STOP
 ~~~
 
-In snippet above we copy runtime code to memory and then return copy of it to EVM.
+In the snippet above we copy runtime code to memory and then return a copy of it to EVM.
 
-* position F is calculated based on our initialization code size. In our case we have 13 bytes of initialization code after which runtime code starts so its `0x0d`.
+* position F is calculated based on our initialization code size. In our case, we have 13 bytes of initialization code after which runtime code starts so its `0x0d`.
 
-EVM will always execute code starting from instruction 0 when contract is called. Usually this first part of runtime code contains function selector, but since we are limited with size, we will just write enough code to return required result (`42` or in hex `0x2a`) no matter what function is called.
+EVM will always execute code starting from instruction 0 when a contract is called. Usually, this first part of runtime code contains function selector, but since we are limited with size, we will just write enough code to return a required result (`42` or in hex `0x2a`) no matter what function is called.
 
-To store result in memory, before returning it we have to use `MSTORE`.
+To store the result in memory, before returning it we have to use `MSTORE`.
 
     mstore(p, v) 	    - 	mem[p..(p+32)) := v
 
@@ -80,7 +80,7 @@ var tx = {
 web3.eth.sendTransaction(tx, (err,res)=>{console.log(err,res);});
 ~~~
 
-If transaction is successful, we can use etherescan to see created contract address.
+If the transaction is successful, we can use etherescan to see created contract address.
 
 Challenge solidity code:
 ~~~solidity
@@ -109,4 +109,4 @@ contract MagicNum {
 }
 ~~~
 
-We can use remix to interact with challenge contract and call `setSolver` with address of our contract to win.
+We can use remix to interact with challenge contract and call `setSolver` with the address of our contract to win.

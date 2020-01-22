@@ -8,7 +8,7 @@ Authors: F3real
 Summary: How to use MutationObserver and MediaQuery to dynamically handle changes on page
 
 
-While trying to make blog more accessible for users especially for those who use keyboard I hit interesting problem. How to trigger JS code on CSS changes?
+While trying to make the blog more accessible for users especially for those who use the keyboard I hit an interesting problem. How to trigger JS code on CSS changes?
 
 Usually, I only used events to react to mouse clicks. For example, if we wanted to create behavior similar to boostrap collapse we could add this JS code:
 
@@ -23,9 +23,9 @@ Usually, I only used events to react to mouse clicks. For example, if we wanted 
     }, false);
 ~~~
 
-But what happens if we want to react, for example, on class being added to element? Solution is to use `MutationObserver`. We can set it up to react on attribute change (or only specific attribute), adding/removing child nodes or even setting it to observe whole subtree. It is also reasonably efficient, callback will be triggered only after DOM has finished changing.
+But what happens if we want to react, for example, on class being added to an element? The solution is to use `MutationObserver`. We can set it up to react on attribute change (or only specific attribute), adding/removing child nodes or even setting it to observe the whole subtree. It is also reasonably efficient, the callback will be triggered only after DOM has finished changing.
 
-Example of creating `MutationObserver` for all attributes on element:
+Example of creating `MutationObserver` for all attributes on the element:
 
 ~~~js
     var mutationCallback = function(mutationsList, observer) {
@@ -39,7 +39,7 @@ Example of creating `MutationObserver` for all attributes on element:
     observer.observe(element, { attributes: true});
 ~~~
 
-Also, even with `MutationObserver` we can't write code that will trigger on CSS changes themselves (unless there is class being added/removed). Changes in CSSOM are not detectable with `MutationObserver`. CSS is usually fixed but `@media` queries can trigger change on width/height/orientation changes. Solution to this problem is to create event handler for those changes using `onchange` property of the `MediaQueryList` interface.
+Also, even with `MutationObserver` we can't write code that will trigger on CSS changes themselves (unless there is class being added/removed). Changes in CSSOM are not detectable with `MutationObserver`. CSS is usually fixed but `@media` queries can trigger change on width/height/orientation changes. The solution to this problem is to create an event handler for those changes using `onchange` property of the `MediaQueryList` interface.
 
 For example to react on screen width changes, we can use:
 

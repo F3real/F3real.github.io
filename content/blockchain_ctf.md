@@ -10,7 +10,7 @@ Summary: How to solve Blockchain CTF lvl. 1-5
 Blockchain CTF can be found on
 [here](https://blockchain-ctf.securityinnovation.com/#/)
 
-To play, we just need to install and configure Metamask addon. It will give us our own etherium address (don't forget to change network to `Ropsten Test Network`) and inject web3.js library into javascript context so we can access it trough our browser console. 
+To play, we just need to install and configure Metamask addon. It will give us our own etherium address (don't forget to change the network to `Ropsten Test Network`) and inject web3.js library into javascript context so we can access it through our browser console. 
 
 To get free test etherium, required to play go to [here](https://faucet.metamask.io/) or [here](https://faucet.ropsten.be/).
 
@@ -25,7 +25,7 @@ So let's start:
 
 ## Lvl 1 Donation
 
-When we open challenge page, we are given contract address, contract ABI and solidity source code of target contract.
+When we open the challenge page, we are given contract address, contract ABI and solidity source code of target contract.
 
 ~~~solidity
 contract Donation is CtfFramework{
@@ -49,7 +49,7 @@ contract Donation is CtfFramework{
 }
 ~~~
 
-In this first contract we see that we just need to call `withdrawDonationsFromTheSuckersWhoFellForIt` since it has `external` modifier.  `external` modifier denotes that function can only be called from outside of contract.
+In this first contract, we see that we just need to call `withdrawDonationsFromTheSuckersWhoFellForIt` since it has `external` modifier.  `external` modifier denotes that function can only be called from outside of contract.
 
 Our solution:
 ~~~javascript
@@ -84,9 +84,9 @@ contract Lockbox1 is CtfFramework{
 }
 ~~~
 
-Second, challenge is also pretty simple. Key is in usage of `now` (an alias for `block.timestamp`) which is `uint256` value in seconds since the unix epoch.
+The second challenge is also pretty simple. Key is in the usage of `now` (an alias for `block.timestamp`) which is `uint256` value in seconds since the unix epoch.
 
-In metamask we can open our last transaction (that is transaction used to create this contract), check exact time, convert it to unix timestamp and just enter last 4 digits to win.
+In metamask, we can open our last transaction (that is the transaction used to create this contract), check the exact time, convert it to unix timestamp and just enter the last 4 digits to win.
 
 ## Lvl 3 Piggy Bank
 
@@ -155,7 +155,7 @@ Your wallet is ********, so you are not Charlie and you can not withdraw.
 ```
 If we look at `collectFunds` in `PiggyBank` we see `onlyOwner` modifier which checks if `msg.sender == owner` (`msg.sender` is address from which request was sent).
 
-But in `CharliesPiggyBank`, which inherits from `PiggyBank`, modifier is missing so we can just call it to win.
+But in `CharliesPiggyBank`, which inherits from `PiggyBank`, the modifier is missing so we can just call it to win.
 
 ## Lvl 4 SI Token Sale
 
@@ -223,7 +223,7 @@ contract SITokenSale is SIToken, CtfFramework {
 ~~~
 
 This challenge was far trickier then first three. Key is in `purchaseTokens` function, `balances[msg.sender] += _value - feeAmount;`.
-Only check made is that value is not 0, so by sending very small value we can actually underflow our balance.
+Only check made is that value is not 0, so by sending very small value, we can actually underflow our balance.
 After setting up contract variable our solution is (just remember to double required amount of eth since it's divided by 2 before transfer):
 
 ~~~javascript
@@ -319,11 +319,11 @@ contract SecureBank is MembersBank{
 }
 ~~~
 
-This was really interesting challenge. Problem we have to solve is that call to function `withdraw` checks if `msg.sender == _user`.
+This was a really interesting challenge. The problem we have to solve is that call to function `withdraw` checks if `msg.sender == _user`.
 
-First thing I wanted to check is mapping `balances` to get key under which 0.4 ETH where stored.
+The first thing I wanted to check is mapping `balances` to get key under which 0.4 ETH where stored.
 
-Easiest way is to use [etherscan](https://etherscan.io/) and find `Contact creator` address for this contract. We can see that creator is the key under funds are put by looking at constructor for `SimpleBank`.
+The easiest way is to use [etherscan](https://etherscan.io/) and find `Contact creator` address for this contract. We can see that the creator is the key under funds are put by looking at the constructor for `SimpleBank`.
 
 Interestingly, there is no way to get keys from mapping itself in solidity.
 To verify if key we have gotten is correct, we can use:
@@ -351,11 +351,11 @@ web3.eth.getStorageAt(
 
 Some notes:
 
-* Slot depends on place of state variable we are trying to access. I expected slot to be 0 for balances but it turned out to be 1, probably due the way variables are ordered when they are inherited.
-* both slot and key need to be padded, like in example, to 64 hex characters
+* Slot depends on the place of state variable we are trying to access. I expected slot to be 0 for balances but it turned out to be 1, probably due the way variables are ordered when they are inherited.
+* both slot and key need to be padded, like in the example, to 64 hex characters
 
-Looking carefully at source, we can see that function `withdraw` has different signature in `SecureBank` which means it is not overloading `withdraw` from `MembersBank`.
-In `MembersBank` there is no address check in `withdraw` but we have two new problems. First we need to pass `isMember` modifier. This is done simply by registering any username with `0x2272071889eDCeACABce7dfec0b1E017c6Cad120` address. Second problem is how to call this function, `web3.js` is terrible at handling functions with same name and it will just call `withdraw` in `SecureBank` no matter which parameters we pass.
+Looking carefully at the source, we can see that function `withdraw` has a different signature in `SecureBank` which means it is not overloading `withdraw` from `MembersBank`.
+In `MembersBank` there is no address check in `withdraw` but we have two new problems. First, we need to pass `isMember` modifier. This is done simply by registering any username with `0x2272071889eDCeACABce7dfec0b1E017c6Cad120` address. The second problem is how to call this function, `web3.js` is terrible at handling functions with the same name and it will just call `withdraw` in `SecureBank` no matter which parameters we pass.
 
 To get around this we need to make our own call payload and send it.
 If we look at `etherscan` data of function call is something like:
@@ -367,7 +367,7 @@ MethodID: 0x32434a2e
 [2]:  0000000000000000000000000000000000000000000000000000000000000005
 [3]:  456f733932000000000000000000000000000000000000000000000000000000
 ```
-First we have  function ID, this is just first 32 bits of sha256 of function name and parameter types.
+First we have function ID, this is just first 32 bits of sha256 of function name and parameter types.
 We can calculate it using web3.js:
 
 ~~~javascript

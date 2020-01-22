@@ -7,7 +7,7 @@ Slug: opensubtitles_addon
 Authors: F3real
 Summary: Exploring opensubtitles browser addon
 
-[Opensubtitles](https://www.opensubtitles.org/) is a site I periodically use when trying to find subtitles for movies and it usually works without any issues. But this time along with requested subtitles site also tried to serve me with an addon.
+[Opensubtitles](https://www.opensubtitles.org/) is a site I periodically use when trying to find subtitles for movies and it usually works without any issues. But this time along with the requested subtitles site also tried to serve me with an addon.
 
 Definitely sketchy behavior so I decided to see what exactly does it do.
 
@@ -46,9 +46,9 @@ So let's look at `manifest.json` first:
   ]
 ~~~
 
-Apparently, only semi-bad thing addon does is hijacking default search engine. I say semi-bad since it is clearly written on [Chrome addon page](https://chrome.google.com/webstore/detail/opensub-search/dkpeabmcccfccdlaeejhkapiofpjolaf). For some strange reason if you visit site with Firefox, as in my case, it will try to make you download addon directly.
+Apparently, only semi-bad thing addon does is hijacking default search engine. I say semi-bad since it is clearly written on [Chrome addon page](https://chrome.google.com/webstore/detail/opensub-search/dkpeabmcccfccdlaeejhkapiofpjolaf). For some strange reason, if you visit the site with Firefox, as in my case, it will try to make you download the addon directly.
 
-The permission of the addon are reasonable, it requests right to modify and access only `opensubtitles` tabs.
+The permissions of the addon are reasonable, it requests the right to modify and access only `opensubtitles` tabs.
 
 I actually was expecting at least some sort of malicious activity since they decided for this suspicious delivery method.
 
@@ -101,12 +101,12 @@ document.getElementsByTagName('head')[0].appendChild(meta);
 console.log('Pro enabled');
 ~~~
 
-Basically, check is so simple it is easily bypassed by simply injecting same `js` object on our own.
+Basically, check is so simple it is easily bypassed by simply injecting the same `js` object on our own.
 
-As a reminder if you want to test and play with addon, it is quite easy to load custom addon both in Firefox and Chrome.
+As a reminder, if you want to test and play with the addon, it is quite easy to load custom addon both in Firefox and Chrome.
 
 In Firefox you have to navigate to `about:debugging` then go  `This Firefox -> Load Temporary Add-on...` and select manifest in unpacked addon folder. (funny thing is current addon they have is not even working in current Firefox 72)
 
 In Chrome you have to navigate to `chrome://extensions/` enable `Developer mode` and then use `Load unpacked` to select addon folder.
 
-And as an end note, injecting `headerinject.js` does actually hide some advertisement but combination of `NoScript` and `AddBlockPlus` is still far superior.
+And as an endnote, injecting `headerinject.js` does actually hide some advertisement but a combination of `NoScript` and `AddBlockPlus` is still far superior.

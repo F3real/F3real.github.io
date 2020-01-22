@@ -7,7 +7,7 @@ Slug: ryanCTF_inputValidation
 Authors: F3real
 Summary: How to solve RyanCTF Input Validation
 
-Ryan CTF is nicely organized beginner CTF located at [http://ctf.ryanic.com/](http://ctf.ryanic.com/). Challenges are pretty interesting, with only thing I disliked being that they are played through web shell. So let’s start:
+Ryan CTF is a nicely organized beginner CTF located at [http://ctf.ryanic.com/](http://ctf.ryanic.com/). Challenges are pretty interesting, with the only thing I disliked being that they are played through a web shell. So let’s start:
 
 **(Ab)use the ping-tool.html page on the web server [http://ctf.ryanic.com:8080](http://ctf.ryanic.com:8080) to find the flag within the Flag.txt file.**
 
@@ -35,7 +35,7 @@ test.txt
 x.txt
 ```
 
-Now for fun we can also leak the code of this .php script running on the server with
+Now for fun, we can also leak the code of this .php script running on the server with
 
 ```http://ctf.ryanic.com:8080/ping-tool.php?ip=8.8.8.8;cat+ping-tool.php```
 
@@ -53,15 +53,15 @@ echo "$line
 ?> 
 ~~~
 
-Now for remaining part, we need to find flag. We can do this just trough browser but also we can do it through **burp**, to make it easier and it is good tool to know.
+Now for the remaining part, we need to find the flag. We can do this just through a browser but also we can do it through **burp**, to make it easier and it is a good tool to know.
 
-We need to capture one of request we send to server and forward it to repeater, in this way we can quickly modify parameters of request and URL encode them. For this we just need to start burp, turn the intercept on and set browser to use proxy (in case of burp `localhost` on the port `8080` by default).
+We need to capture one of request we send to server and forward it to the repeater, in this way we can quickly modify parameters of request and URL encode them. For this, we just need to start burp, turn the intercept on and set the browser to use a proxy (in case of burp `localhost` on the port `8080` by default).
 
-First I tried running find for flag, which failed for some reason so I decided to simply check directories bellow our current one.
+First I tried running find for the flag, which failed for some reason so I decided to simply check directories bellow our current one.
 
 ![ping ls]({static}/images/2018_7_27_Ping.png){: .img-fluid .centerimage}
 
 
-Parameters of request if URL decoded are simply `;cd..;ls`. And it seems we were in luck since Flag.txt is just one sub-directory bellow. We simply `cat Flag.txt` and that’s it.
+Parameters of the request, if URL decoded, are simply `;cd..;ls`. And it seems we were in luck since Flag.txt is just one sub-directory bellow. We simply `cat Flag.txt` and that’s it.
 
 `Flag: pluripresence`

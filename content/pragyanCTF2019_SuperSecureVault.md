@@ -9,7 +9,7 @@ Summary: How to solve Pragyan CTF 2019 Super Secure Vault reversing challenge
 
 Super secure vault was one harder challenges from Pragyan CTF and also one bringing most points. [Here](https://github.com/F3real/ctf_solutions/tree/master/2019/pragyan/SuperSecureVault) you can find full solution and binary if you want to follow along.
 
-We need to reverse program, find correct input and get the flag.
+We need to reverse the program, find correct input and get the flag.
 
 First, let's look at the source code in IDA:
 
@@ -72,9 +72,9 @@ __int64 __fastcall getNum(__int64 numString, int start, int offset)
 }
 ~~~
 
-Actually, this is rather simple functions converting portion of input string, from start to offset, to number.
+Actually, this is rather simple functions converting a portion of the input string, from start to offset, to number.
 
-Looking at the code we see that in total we have 5 different conditions that have to hold for out input:
+Looking at the code we see that in total we have 5 different conditions that have to hold for our input:
 
 ~~~text
 s = 213 mod 27644437
@@ -84,7 +84,7 @@ s = 83 mod 1046527
 s = 135 mod 16127
 ~~~
 
-Since are modulus are coprime, we can use chinese reminder theorem to solve this system of equations. I won't go into details of it, but good explanation can be found [here](http://homepages.math.uic.edu/~leon/mcs425-s08/handouts/chinese_remainder.pdf).
+Since modulus are coprime, we can use chinese reminder theorem to solve this system of equations. I won't go into details of it, but the good explanation can be found [here](http://homepages.math.uic.edu/~leon/mcs425-s08/handouts/chinese_remainder.pdf).
 
 Python solution:
 
@@ -113,7 +113,7 @@ print(f"Solution: {solution}")
 
 Running our code we get 3087629750608333480917556.
 
-Now we also have to figure second part. Let's look at the source code of the second function:
+Now we also have to figure the second part. Let's look at the source code of the second function:
 
 ~~~c
 int __fastcall func2(__int64 s2, char *s1, const char *numString)
@@ -162,9 +162,9 @@ int __fastcall func2(__int64 s2, char *s1, const char *numString)
 }
 ~~~
 
-Our first input is concatenated with string constant `numString` and later expanded with `80`. This string is used with hardcoded `matrix` to check second input we provided.
+Our first input is concatenated with string constant `numString` and later expanded with `80`. This string is used with hardcoded `matrix` to check the second input we provided.
 
-We can export `matrix` array from IDA by going `Edit->Export data`. Since we have both first input and `matrix` we can just write same code to output what should `s2` string be. Easiest way to do this is just to make copy C code we have and modify it.
+We can export `matrix` array from IDA by going `Edit->Export data`. Since we have both first input and `matrix` we can just write the same code to output what should `s2` string be. The easiest way to do this is just to make a copy C code we have and modify it.
 
 Python solver:
 

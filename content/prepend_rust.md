@@ -7,9 +7,9 @@ Slug: elf_prepender
 Authors: F3real
 Summary: Simple rust ELF prepender
 
-Recently I have found interesting post on [reddit](https://www.reddit.com/r/rust/comments/d0hbsp/linuxfe2o3_a_rust_virus/) about \`virus\` written in rust. It simply infects all ELF files in current directory using basic prepending technique. The infected program, when run, will XOR decode real code and run it from temp folder.
+Recently I have found an interesting post on [reddit](https://www.reddit.com/r/rust/comments/d0hbsp/linuxfe2o3_a_rust_virus/) about \`virus\` written in rust. It simply infects all ELF files in the current directory using the basic prepending technique. The infected program, when run, will XOR decode real code and run it from the temp folder.
 
-Since it is open source, it actually makes a pretty good exercise if you want to learn more about rust while tinkering with something. The original code is not really idiomatic but `cargo clippy` and reddit comments can serve as a guide if you want to improve it.
+Since it is open-source, it actually makes a pretty good exercise if you want to learn more about rust while tinkering with something. The original code is not really idiomatic but `cargo clippy` and reddit comments can serve as a guide if you want to improve it.
 
 My slightly modified version is bellow (proper error handling would require bigger rework).
 

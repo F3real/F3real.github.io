@@ -7,8 +7,8 @@ Slug: Ethernaut_wargame2022
 Authors: F3real
 Summary: How to solve Ethernaut wargame lvl. 20-22
 
-Ethernaut is great wargame teaching wide variety of Solidity security concepts. 
-Currently it offers 22 levels with varied difficulty. It can be found [here](https://ethernaut.zeppelin.solutions/).
+Ethernaut is a great wargame teaching a wide variety of Solidity security concepts. 
+Currently, it offers 22 levels with varying difficulty. It can be found [here](https://ethernaut.zeppelin.solutions/).
 
 [TOC]
 
@@ -48,7 +48,7 @@ contract AlienCodex is Ownable {
 }
 ~~~
 
-Looking at the code we see that first problem we have to overcome is modifier `contacted`. Length of content we need to send has to be greater then 2^200, which is impossible. We can bypass this due to fact that EVM doesn't validate an array's ABI-encoded length vs its actual payload. We will manually encode payload to send in similar way we have done in [Blockchain CTF]({filename}/blockchain_ctf.md) challenges.
+Looking at the code we see that the first problem we have to overcome is modifier `contacted`. The length of the content we need to send has to be greater then 2^200, which is impossible. We can bypass this due to the fact that EVM doesn't validate an array's ABI-encoded length vs its actual payload. We will manually encode payload to send in a similar way we have done in [Blockchain CTF]({filename}/blockchain_ctf.md) challenges.
 
 Payload:
 ~~~text
@@ -58,9 +58,9 @@ Payload:
 ~~~
 
 First line is function identifier. It consists of first 32bits of `sha3("make_contact(bytes32[])")`.
-Second line shows us offset of array content, in our case it points to third line. Array content starts with length of array, after which actual array elements come (in our case we will just leave it empty).
+The second line shows us an offset of array content, in our case it points to the third line. Array content starts with the length of the array, after which actual array elements come (in our case we will just leave it empty).
 
-A lot of values for array length greater then 2^200 cause out of gas exception on CALLDATACOPY instruction. It is probably related to internal way EVM handles it, and is actually really interesting and probably worth looking into more.
+A lot of values for array length greater then 2^200 cause out of gas exception on CALLDATACOPY instruction. It is probably related to the internal way EVM handles it and is actually really interesting and probably worth looking into more.
 
 ~~~javascript
 web3.eth.defaultAccount = web3.eth.accounts[0];
@@ -72,10 +72,10 @@ var tx = {
 web3.eth.sendTransaction(tx, (err,res)=>{console.log(err,res);});
 ~~~
 
-Anyway after we bypassed modifier second thing is to call `retract` function. This will cause underflow on `codex` array and change its length to 2^200 - 1.
-This will enable us to access and modify all of contract storage. As a reminder, storage of contract consists of `2**256` 32 byte slots.
+Anyway, after we bypassed modifier second thing is to call `retract` function. This will cause underflow on `codex` array and change its length to 2^200 - 1.
+This will enable us to access and modify all of the contract storage. As a reminder, the storage of the contract consists of `2**256` 32 byte slots.
 
-Variables are ordered in the way they are declared. Address owner (inherited from Ownable) is occupying first slot together with `boolean` variable `contacted` due to both of them being smaller then 32 bytes (`addresses` are 20 bytes and `boolean` is one byte). Second slot contains length of `codex` array.
+Variables are ordered in the way they are declared. Address owner (inherited from Ownable) is occupying the first slot together with `boolean` variable `contacted` due to both of them being smaller than 32 bytes (`addresses` are 20 bytes and `boolean` is one byte). The second slot contains the length of `codex` array.
 
 We can access both of them trough public getter or trough `getStorageAt` method of web3:
 ~~~javascript
@@ -95,7 +95,7 @@ Output:
 1: 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
 ~~~
 
-Formula for locating slot corresponding to array index is:
+The formula for locating slot corresponding to array index is:
 ```keccak256(slot) + index ```
 
 This means we have to calculate index in the way it overflows max value and points to first slot:
@@ -103,7 +103,7 @@ This means we have to calculate index in the way it overflows max value and poin
 ```index = 2**256 - keccak256(bytes32(1))```
 
 After we get our index we just have to call `revise` function and overwrite current owner address with ours to win.
-Address has to be padded to the left with zeroes.
+The address has to be padded to the left with zeroes.
 
 ## Lvl 21 Denial
 
@@ -143,9 +143,9 @@ contract Denial {
 }
 ~~~
 
-To win this level we have to prevent owner from withdrawing funds. Before funds get transferred to owner there is `partner.call.value(amountToSend)();`, which we can exploit. Since no gas amount has been specified, all gas will be sent to fallback function of partner address.
+To win this level we have to prevent the owner from withdrawing funds. Before funds get transferred to owner there is `partner.call.value(amountToSend)();`, which we can exploit. Since no gas amount has been specified, all gas will be sent to the fallback function of the partner address.
 
-We can write contract with fallback function that will trigger assert and thus spend all gas, making it so that owner can't withdraw.
+We can write a contract with a fallback function that will trigger assert and thus spend all gas, making it so that the owner can't withdraw.
 
 ~~~solidity
     function() public payable{
@@ -177,9 +177,9 @@ contract Shop {
 }
 ~~~
 
-In this level we need to exploit interface Buyer. Our function `price` has to return different values, in two different calls. 
+In this level, we need to exploit interface Buyer. Our function `price` has to return different values, in two different calls. 
 
-Only problem is that we can't use storage, since just modifying value costs 5000 gas and we have only 3000 available. Good thing is that `isSold` variable from Shop contract is public and we can access it with the gas we have.
+The only problem is that we can't use storage since just modifying value costs 5000 gas and we have only 3000 available. Good thing is that `isSold` variable from Shop contract is public and we can access it with the gas we have.
 
 ~~~solidity
 pragma solidity 0.4.24;
