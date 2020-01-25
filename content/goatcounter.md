@@ -13,7 +13,7 @@ Basically all data from visitors coming to the blog using direct links or inform
 
 And this data is definitely interesting to the owners but still, there is no need to help google track users even more (google analytics). So what are the alternatives?
 
-There are some, quite good, open source alternatives actually ([matomo](https://matomo.org/), [fathom](https://usefathom.com/)) but I found their pricing options lacking. This is especially true for hobby sites like this blog where expected visitor number per month is not more then few thousands, so why pay for 100k visitors a month. There is an option for self-hosting but it's not always the most practical solution.
+There are some, quite good, open source alternatives actually ([matomo](https://matomo.org/), [fathom](https://usefathom.com/)) but I found their pricing options lacking. This is especially true for hobby sites like this blog where the expected visitor number per month is not more than a few thousand, so why pay for 100k visitors a month. There is an option for self-hosting but it's not always the most practical solution.
 
 So while looking for privacy-friendly, open-source, web statistics I've stumbled upon [GoatCounter](https://www.goatcounter.com/). 
 It's quite a new project but for now, it looks quite promising. By default it tracks:
