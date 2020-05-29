@@ -1,6 +1,6 @@
 Title: Drow ELF patcher
-Date: 2020-12-5 10:02
-Modified: 2020-12-5  10:02
+Date: 2020-5-12 10:02
+Modified: 2020-5-12  10:02
 Category: misc
 Tags: elf, c, linux
 Slug: drow
