@@ -1,4 +1,4 @@
-git apply github.patch && ^
+git apply --whitespace=fix github.patch && ^
 invoke build && ^
 git reset --hard && ^
 git checkout master && ^
