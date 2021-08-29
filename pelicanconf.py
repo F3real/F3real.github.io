@@ -21,6 +21,8 @@ EXTRA_PATH_METADATA = {
     'extra/yandex_7992e0c81815ff69.html': {'path': 'yandex_7992e0c81815ff69.html'},
     'extra/BingSiteAuth.xml': {'path': 'BingSiteAuth.xml'},
     'extra/favicon.ico': {'path': 'favicon.ico'},
+    'extra/.well-known/brave-rewards-verification.txt': {'path': '.well-known/brave-rewards-verification.txt'},
+    'extra/.nojekyll': {'path': '.nojekyll'},
 }
 # Directories excluded from pelican processing
 PAGE_EXCLUDES = ['extra']

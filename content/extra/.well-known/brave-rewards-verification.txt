@@ -1,0 +1,4 @@
+This is a Brave Rewards publisher verification file.
+
+Domain: f3real.github.io
+Token: 51b69739edd95ed520c3ad0d2576341a53e702f87eba55e221246c9e2234a849
