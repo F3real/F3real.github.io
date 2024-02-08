@@ -1,5 +1,6 @@
 git apply --whitespace=fix github.patch && ^
 invoke build && ^
+xcopy /Y ".\.gitmodules" ".\output\" && ^
 git reset --hard && ^
 git checkout master && ^
 xcopy /s /Y .\output . && ^
