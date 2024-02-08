@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="F3real" />
+        <meta name="keywords" content="elf,c,linux" />
+        <meta name="description" content="Utility for patching ELF files post-build" />
+
+
+    <title>Drow ELF patcher - EnSec blog</title>
+
+    <link href="https://f3real.github.io/theme/css/combined.css" rel="stylesheet" />
+
+    <!-- Feeds -->
+</head>
+<body data-spy="scroll" data-target="#scrollspy">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar-wrapper-small" class="twitchy-background">
+            <ul id="accordion-small" class="sidebar-nav sidebar-nav-small">
+                <li>
+        <a href="https://f3real.github.io" title="EnSec blog" class="collapsed">
+            <span class="fas fa-home"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="https://f3real.github.io/archives.html" title="Recent Articles" class="collapsed">
+            <span class="fas fa-th-list"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion-small" href="#collapse-social-small" title="Social" class="collapsed">
+                        <i class="fas fa-users padding-small"></i>
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social-small" class="collapse ">
+                    <li>
+                        <a href="https://github.com/F3real" title="Github"><i class="fab fa-github-square padding-small"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/stefan-ili%C4%87-61a004111" title="Linkedin"><i class="fab fa-linkedin padding-small"></i></a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="#" title="Back to top" class="collapsed">
+            <span class="fas fa-arrow-up"></span>
+        </a>
+    </li>
+            </ul>
+        </nav>
+        <nav id="sidebar-wrapper" class="twitchy-background">
+            <ul id="accordion" class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="https://f3real.github.io/">
+                            <span class="fas fa-home padding-small"></span>
+                            EnSec blog
+                    </a>
+                </li>
+                    <li>
+                        <a href="https://f3real.github.io/archives.html">
+                            <span class="fas fa-th-list padding-small"></span>
+                            Archives
+                        </a>
+                    </li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-social">
+                        <i class="fas fa-users padding-small"></i>
+                        Contact
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="https://github.com/F3real" title="Github">
+                            <i class="fab fa-github-square padding-small"></i>
+                            Github
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/stefan-ili%C4%87-61a004111" title="Linkedin">
+                            <i class="fab fa-linkedin padding-small"></i>
+                            Linkedin
+                        </a>
+                    </li>
+                </ul></li>
+                
+                <li class="nav-divider"></li>
+                <li class="panel anti-panel"><ul id="collapse-pages" class="sidebar_submenu collapse ">
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-categories">
+                        <i class="fas fa-folder-open padding-small"></i>
+                        Categories
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse ">
+                    <li >
+                        <a href="https://f3real.github.io/category/ctf.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            ctf
+                            <span class="badge badge-secondary float-right categorybadge">28</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="https://f3real.github.io/category/misc.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            misc
+                            <span class="badge badge-secondary float-right categorybadge">15</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://f3real.github.io/category/reversing.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            reversing
+                            <span class="badge badge-secondary float-right categorybadge">6</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://f3real.github.io/category/tutorial.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            tutorial
+                            <span class="badge badge-secondary float-right categorybadge">5</span>
+                        </a>
+                    </li>
+                </ul></li>
+            </ul>
+        </nav>
+        <!-- /#sidebar-wrapper -->
+        <!-- open/close sidebar -->
+        <button onclick="toggleMenu();return false;" class="btn btn-primary" id="menu-toggle">
+            <span id="right-arrow" class="fas fa-chevron-right"  title="expand sidebar"></span>
+            <span id="left-arrow" class="fas fa-chevron-left" title="minimize sidebar"></span>
+        </button>
+       <!-- /open/close sidebar -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+<section id="content">
+    <article>
+        <div class="row">
+            <div class="col-lg-10">
+                <header class="page-header">
+                    <h1>
+                        <a href="https://f3real.github.io/drow.html"
+                           rel="bookmark"
+                           title="Permalink to Drow ELF patcher">
+                            Drow ELF patcher
+                        </a>
+                        <small>
+<div class="post-info">
+    <div class="publish-info-block">
+        <small>
+            <span class="published">
+                <i class="fa fa-calendar padding-small"></i><time datetime="2020-05-12T10:02:00+02:00"> Tue 12 May 2020</time>
+            </span>
+            <span class="category">
+                <i class="fa fa-folder-open padding-small"></i><a href="https://f3real.github.io/category/misc.html">misc</a>
+            </span>
+            <span class="tags">
+                <i class="fa fa-tags padding-small"></i>
+                <a href="https://f3real.github.io/tag/elf.html">elf</a> /                 <a href="https://f3real.github.io/tag/c.html">c</a> /                 <a href="https://f3real.github.io/tag/linux.html">linux</a>            </span>
+        </small>
+    </div>
+</div><!-- /.post-info -->                        </small>
+                    </h1>
+                </header>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10">
+                <div class="entry-content">
+                    <p>In the <a href="https://github.com/zznop/drow">drow</a> readme there is a short explanation on how the tool works but here I will try to provide a bit of background information regarding ELF segments and sections and how they are aligned in memory. </p>
+<h2 id="elf-segments-and-sections">ELF segments and sections</h2>
+<p>The ELF file structures are defined in <a href="http://man7.org/linux/man-pages/man5/elf.5.html">elf.h</a> header. </p>
+<p>To access the ELF header we can <code>mmap</code> executable in and assign it to the <code>Elf64_Ehdr</code> structure.</p>
+<p>Something like:</p>
+<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">mmap</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">PROT_READ</span><span class="o">|</span><span class="n">PROT_WRITE</span><span class="p">,</span><span class="w"> </span><span class="n">MAP_PRIVATE</span><span class="p">,</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="n">Elf64_Ehdr</span><span class="w"> </span><span class="o">*</span><span class="n">ehdr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Elf64_Ehdr</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">data</span><span class="p">;</span>
+</code></pre></div>
+
+<p>An executable <code>program header table</code> is an array of structures, each describing a segment or other information the system needs to prepare the program for execution. The program is mapped from disk to virtual memory according to defined segments. Each entry is <code>Elf64_Phdr</code> structure. It is important to note that there are different types (<code>p_type</code>) of segments and that only <code>PT_LOAD</code> segments get loaded in memory.
+Program headers are meaningful only for executable and shared object files.</p>
+<p>We can view all segments of ELF using:</p>
+<div class="highlight"><pre><span></span><code>readelf -l &lt;target&gt;
+</code></pre></div>
+
+<p>A file's <code>section header table</code> lets one locate all the file's sections. The section header table is an array of <code>Elf64_Shdr</code> structures. Sections contain important data for linking and relocation. Each segment contains 0 or more sections.</p>
+<p>We can view all sections of ELF using:</p>
+<div class="highlight"><pre><span></span><code>readelf -S &lt;target&gt;
+</code></pre></div>
+
+<p>Both tables can be accessed trough ELF header:</p>
+<div class="highlight"><pre><span></span><code><span class="n">Elf64_Phdr</span><span class="w"> </span><span class="o">*</span><span class="n">phdr</span><span class="p">;</span>
+<span class="n">Elf64_Shdr</span><span class="w"> </span><span class="o">*</span><span class="n">shtable</span><span class="p">;</span>
+<span class="n">phdr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Elf64_Phdr</span><span class="w"> </span><span class="o">*</span><span class="p">)((</span><span class="kt">uintptr_t</span><span class="p">)</span><span class="n">data</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ehdr</span><span class="o">-&gt;</span><span class="n">e_phoff</span><span class="p">);</span>
+<span class="n">shtable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Elf64_Shdr</span><span class="w"> </span><span class="o">*</span><span class="p">)((</span><span class="kt">uintptr_t</span><span class="p">)</span><span class="n">data</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ehdr</span><span class="o">-&gt;</span><span class="n">e_shoff</span><span class="p">);</span>
+</code></pre></div>
+
+<p>A good illustration of the relation between sections (on the left) and segments (on the right) is given in the image bellow <a href="https://intezer.com/blog/research/executable-linkable-format-101-part1-sections-segments/">source</a>.</p>
+<p><img alt="Sections and Segments" class="img-fluid centerimage" src="https://f3real.github.io/images/2020_12_5_SegmentsAndSections.png"></p>
+<p>Sections are grouped by attributes into segments in order to make the loading process of the executable more efficient, instead of loading each individual section into memory. </p>
+<p>For segments following must hold:</p>
+<div class="highlight"><pre><span></span><code>({Virt,Phys}Addr - Offset) % PageSize == 0
+</code></pre></div>
+
+<p>To align value to for example 8 bytes we need to use an alignment mask of 7 (8 - 1). The <code>drow</code> is using this procedure to align the new section size to page size.</p>
+<div class="highlight"><pre><span></span><code>value &amp; ~(alignment - 1)
+</code></pre></div>
+
+<p>To successfully modify the size of one section, we need to increase the offset of all the following sections by the same amount.  The same holds true for segment entries in <code>program header table</code> as well as offsets of tables themselves in the ELF header if they are after the modified section.</p>
+<p>And that's about it. There are few more tricks like writing stager for payload for those interested but I won't go into details how they work here. In general it's a pretty straightforward working tool that provides a nice way to get more familiar with ELF structure.</p>
+                </div>
+                <footer class="text-right">
+                    <p>- F3real</p>
+                </footer>
+    <div id="show-comments" class="span7 text-center">
+        <a href="https://f3real.github.io/drow.html#disqus_thread"
+          data-disqus-identifier="drow"
+        class="btn btn-primary twitchy-background">Show Comments</a>
+    </div>
+    <section id="comments" class="comments hidden">
+        <hr/>
+        <h2>Comments</h2>
+        <div id="disqus_thread"></div>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </section>
+            </div>
+        </div>
+    </article>
+</section>
+<footer>
+    <hr>
+    <div class="row">
+        <div class="col-lg-10 text-center">
+            <p><small>
+                Built by <a href="http://docs.getpelican.com/en/latest">Pelican</a> / <a href="https://github.com/F3real/pelican-twitchy">pelican-twitchy</a>
+                &middot;                    &copy; 2024 F3real
+            </small></p>
+        </div>
+    </div>
+</footer>            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+<!-- disqus -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'https-f3real-github-io'; // required: replace example with your forum shortname
+
+            var disqus_identifier = 'drow';
+        var disqus_url = 'https://f3real.github.io/drow.html';
+
+    var disqus_config = function () {
+        this.language = "en";
+    };
+
+        var commentsDiv = document.getElementById('show-comments');
+        commentsDiv.onclick = function() {
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+            this.style.display = 'none';        
+        };
+</script>
+<!-- /disqus -->
+    <script>
+        const wrapper = document.getElementById('wrapper');
+        const sidebarBig = document.getElementById('sidebar-wrapper');
+        const sidebarSmall = document.getElementById('sidebar-wrapper-small');
+
+        const triggers = Array.from(document.querySelectorAll('[data-toggle="collapse"]'));
+        for (var i = 0; i < triggers.length; i++) { 
+            triggers[i].addEventListener('click', (ev) => {
+                const elm = ev.currentTarget;    
+                ev.preventDefault();
+                const selector = elm.getAttribute('href').replace('#','');
+                elm.classList.toggle('collapsed');
+                document.getElementById(selector).classList.toggle('show');
+            }, false);
+        } 
+
+        function showBigNav() {;
+            sidebarBig.style.display = 'block';
+            sidebarSmall.style.display = 'none';
+        }
+        function showSmallNav() {
+            sidebarBig.style.display = 'none';
+            sidebarSmall.style.display = 'block';
+        }
+
+        const mediaQuery = window.matchMedia('(min-width:768px)');
+        mediaQuery.onchange = e => {
+            if (wrapper.classList.contains('toggled')) {
+                    wrapper.classList.remove('toggled');
+            } else {
+                if (e.matches) {
+                    showBigNav();
+                } else {
+                    showSmallNav();
+                }
+            }
+        }
+
+        function setNavbar() {
+            var condition = wrapper.classList.contains('toggled');
+            if (!mediaQuery.matches) {
+                condition = !condition;
+            }
+            if (condition) {
+                showSmallNav();
+            } else {
+                showBigNav();
+            }
+        }
+
+        function toggleMenu(){
+            wrapper.classList.toggle('toggled');
+            setNavbar();
+        }
+
+        window.onload = setNavbar;
+    </script>
+	<script data-goatcounter="https://f3real.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

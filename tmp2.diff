@@ -1,0 +1,33 @@
+diff --git a/content/asm-some_challenge.md b/content/asm-some_challenge.md
+index cdfba20..a6ca85d 100644
+--- a/content/asm-some_challenge.md
++++ b/content/asm-some_challenge.md
+@@ -9,20 +9,16 @@ Summary: Short google brainteaser
+ 
+ On Munich BSides conference Google had this flyers with asm riddle. 
+ 
+->It would be 'asm-some' to hear from you!
+->HINT: 32 bit
+->
+->25 1c1f1c22 25 e3e0e3dd 2d 4e43422e 2d 37283c22 2d 1921411f 50
+->
+->25 32322235 25 XXXXXXXX 2d 2c2f1b1b 2d 5c232129 2d 1380594c XX
+->
+->25 2c2f1b1b 25 d3d0e4e4 XX 32322235 2d 22222422 2d 3d3c523c 50
+->
+->25 XXXXXXXX 25 b1bcbdd1 2d 1c1f1c22 2d 25245424 2d 4c4c6252 50
++It would be 'asm-some' to hear from you!
++HINT: 32 bit
++25 1c1f1c22 25 e3e0e3dd 2d 4e43422e 2d 37283c22 2d 1921411f 50
++25 32322235 25 XXXXXXXX 2d 2c2f1b1b 2d 5c232129 2d 1380594c XX
++25 2c2f1b1b 25 d3d0e4e4 XX 32322235 2d 22222422 2d 3d3c523c 50
++25 XXXXXXXX 25 b1bcbdd1 2d 1c1f1c22 2d 25245424 2d 4c4c6252 50
+ 
+ We can, by just looking at the flyer, see some patterns and make some guesses.
+-For example in last column the missing value is probably 50, similarly in 4
+-column we can assume the missing value is 2d. Also we can notice that 2 and 6 column
++For example in last column the missing value is probably `50`, similarly in 4th
++column we can assume the missing value is `2d`. Also we can notice that 2nd and 6th column
+ are connected in some way, for example if in row A 2nd value is equal to 6th in row B then
+ 2nd value of row B will be equal to 6th of row A.
+  

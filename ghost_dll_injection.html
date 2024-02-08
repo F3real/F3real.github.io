@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="F3real" />
+        <meta name="keywords" content="windows,binary exploitation" />
+        <meta name="description" content="Example of simple dll injection" />
+
+
+    <title>Ghost dll injections - EnSec blog</title>
+
+    <link href="https://f3real.github.io/theme/css/combined.css" rel="stylesheet" />
+
+    <!-- Feeds -->
+</head>
+<body data-spy="scroll" data-target="#scrollspy">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar-wrapper-small" class="twitchy-background">
+            <ul id="accordion-small" class="sidebar-nav sidebar-nav-small">
+                <li>
+        <a href="https://f3real.github.io" title="EnSec blog" class="collapsed">
+            <span class="fas fa-home"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="https://f3real.github.io/archives.html" title="Recent Articles" class="collapsed">
+            <span class="fas fa-th-list"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion-small" href="#collapse-social-small" title="Social" class="collapsed">
+                        <i class="fas fa-users padding-small"></i>
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social-small" class="collapse ">
+                    <li>
+                        <a href="https://github.com/F3real" title="Github"><i class="fab fa-github-square padding-small"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/stefan-ili%C4%87-61a004111" title="Linkedin"><i class="fab fa-linkedin padding-small"></i></a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="#" title="Back to top" class="collapsed">
+            <span class="fas fa-arrow-up"></span>
+        </a>
+    </li>
+            </ul>
+        </nav>
+        <nav id="sidebar-wrapper" class="twitchy-background">
+            <ul id="accordion" class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="https://f3real.github.io/">
+                            <span class="fas fa-home padding-small"></span>
+                            EnSec blog
+                    </a>
+                </li>
+                    <li>
+                        <a href="https://f3real.github.io/archives.html">
+                            <span class="fas fa-th-list padding-small"></span>
+                            Archives
+                        </a>
+                    </li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-social">
+                        <i class="fas fa-users padding-small"></i>
+                        Contact
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="https://github.com/F3real" title="Github">
+                            <i class="fab fa-github-square padding-small"></i>
+                            Github
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/stefan-ili%C4%87-61a004111" title="Linkedin">
+                            <i class="fab fa-linkedin padding-small"></i>
+                            Linkedin
+                        </a>
+                    </li>
+                </ul></li>
+                
+                <li class="nav-divider"></li>
+                <li class="panel anti-panel"><ul id="collapse-pages" class="sidebar_submenu collapse ">
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-categories">
+                        <i class="fas fa-folder-open padding-small"></i>
+                        Categories
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse ">
+                    <li >
+                        <a href="https://f3real.github.io/category/ctf.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            ctf
+                            <span class="badge badge-secondary float-right categorybadge">28</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://f3real.github.io/category/misc.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            misc
+                            <span class="badge badge-secondary float-right categorybadge">15</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://f3real.github.io/category/reversing.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            reversing
+                            <span class="badge badge-secondary float-right categorybadge">6</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="https://f3real.github.io/category/tutorial.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            tutorial
+                            <span class="badge badge-secondary float-right categorybadge">5</span>
+                        </a>
+                    </li>
+                </ul></li>
+            </ul>
+        </nav>
+        <!-- /#sidebar-wrapper -->
+        <!-- open/close sidebar -->
+        <button onclick="toggleMenu();return false;" class="btn btn-primary" id="menu-toggle">
+            <span id="right-arrow" class="fas fa-chevron-right"  title="expand sidebar"></span>
+            <span id="left-arrow" class="fas fa-chevron-left" title="minimize sidebar"></span>
+        </button>
+       <!-- /open/close sidebar -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+<section id="content">
+    <article>
+        <div class="row">
+            <div class="col-lg-10">
+                <header class="page-header">
+                    <h1>
+                        <a href="https://f3real.github.io/ghost_dll_injection.html"
+                           rel="bookmark"
+                           title="Permalink to Ghost dll injections">
+                            Ghost dll injections
+                        </a>
+                        <small>
+<div class="post-info">
+    <div class="publish-info-block">
+        <small>
+            <span class="published">
+                <i class="fa fa-calendar padding-small"></i><time datetime="2019-03-30T10:01:00+01:00"> Sat 30 March 2019</time>
+            </span>
+            <span class="category">
+                <i class="fa fa-folder-open padding-small"></i><a href="https://f3real.github.io/category/tutorial.html">tutorial</a>
+            </span>
+            <span class="tags">
+                <i class="fa fa-tags padding-small"></i>
+                <a href="https://f3real.github.io/tag/windows.html">windows</a> /                 <a href="https://f3real.github.io/tag/binary-exploitation.html">binary exploitation</a>            </span>
+        </small>
+    </div>
+</div><!-- /.post-info -->                        </small>
+                    </h1>
+                </header>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10">
+                <div class="entry-content">
+                    <div class="toc">
+<ul>
+<li><a href="#dll-search-order">dll search order</a></li>
+<li><a href="#dll-injection">dll injection</a></li>
+<li><a href="#finding-missing-dlls">Finding missing dlls</a></li>
+<li><a href="#simple-practical-example">Simple practical example</a></li>
+</ul>
+</div>
+<p>Dynamic Link Library (<code>dll</code>) are compiled shared function libraries that can be dynamically loaded by Windows programs. Linux uses Shared Object (<code>so</code>) files for the same purpose.</p>
+<h2 id="dll-search-order">dll search order</h2>
+<p>Order of locations in which dll is searched for depends if <code>SafeDllSearchMode</code> is set to true (default) or not.</p>
+<p>To disable <code>SafeDllSearchMode</code> we can create following registry key and set its value to 0:</p>
+<div class="highlight"><pre><span></span><code>HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\SafeDllSearchMode
+</code></pre></div>
+
+<p>If <code>SafeDllSearchMode</code> is enabled, the search order for desktop applications is as follows:</p>
+<ol>
+<li>The directory from which the application loaded.</li>
+<li>The system directory. Use the <code>GetSystemDirectory</code> function to get the path of this directory.</li>
+<li>The 16-bit system directory. There is no function that obtains the path of this directory, but it is searched.</li>
+<li>The Windows directory. Use the GetWindowsDirectory function to get the path of this directory.</li>
+<li>The current directory.</li>
+<li>The directories that are listed in the PATH environment variable. Note that this does not include the per-application path specified by the App Paths registry key. The App Paths key is not used when computing the DLL search path.</li>
+</ol>
+<p>If <code>SafeDllSearchMode</code> is disabled, the search order is as follows:</p>
+<ol>
+<li>The directory from which the application loaded.</li>
+<li>The current directory.</li>
+<li>The system directory. Use the <code>GetSystemDirectory</code> function to get the path of this directory.</li>
+<li>The 16-bit system directory. There is no function that obtains the path of this directory, but it is searched.</li>
+<li>The Windows directory. Use the GetWindowsDirectory function to get the path of this directory.</li>
+<li>The directories that are listed in the PATH environment variable. Note that this does not include the per-application path specified by the App Paths registry key. The App Paths key is not used when computing the DLL search path.</li>
+</ol>
+<p>Before the system searches for a DLL, it checks the following:</p>
+<ol>
+<li>If a DLL with the same module name is already loaded in memory, the system uses the loaded DLL, no matter which directory it is in. The system does not search for the DLL.</li>
+<li>If the DLL is on the list of known DLLs for the version of Windows on which the application is running, the system uses its copy of the known DLL (and the known DLL's dependent DLLs, if any). The system does not search for the DLL. For a list of known DLLs on the current system, see the following registry key: </li>
+</ol>
+<div class="highlight"><pre><span></span><code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\KnownDLLs
+</code></pre></div>
+
+<p>Dll search order can also be changed programmatically. More information on dll load order can be found <a href="https://docs.microsoft.com/en-us/windows/desktop/dlls/dynamic-link-library-search-order">here</a>.</p>
+<h2 id="dll-injection">dll injection</h2>
+<p>Dll injection happens if we can insert our own dll in a location with higher search priority then real dll or replace it. If we want to be stealthy, with this approach, we also need to export all functions that real dll provides (by loading it as a dependency and re-exporting its functions).</p>
+<p>Sometimes applications try to load dlls that don't exist on the system. In this case, we don't have to worry about the original functionality of dll. Usually, this type of dll injection is called ghost dll injection.</p>
+<h2 id="finding-missing-dlls">Finding missing dlls</h2>
+<p>One of the ways to find dlls that application tries to load is to use <code>Procmon</code>.
+We need to set the following filters:</p>
+<div class="highlight"><pre><span></span><code>Process Name    is           &lt;target.exe&gt;       Include
+Operation       is           CreateFile         Include
+Path            ends with    .dll               Include
+Result          is not       SUCCESS            Include
+</code></pre></div>
+
+<p>For example lets try it on hl.exe:</p>
+<p><img alt="Procmon results on hl.exe" class="img-fluid centerimage" src="https://f3real.github.io/images/2019_3_30_dll.png"></p>
+<p>We see that <code>p2pvoice.dll</code> is not found and that is being searched for in different locations according to search order.</p>
+<h1 id="simple-practical-example">Simple practical example</h1>
+<p>Since <code>p2pvoice.dll</code> doesn't exist we can create our own. For this, we are going to use C++. C# dll libraries don't have a straightforward way to run code as soon as dll is attached.</p>
+<p>To create new dll in visual studio 2017 we go to:</p>
+<div class="highlight"><pre><span></span><code>New Project  -&gt; Visual C++\Windows Desktop\Dynamic-Link Library(DLL)
+</code></pre></div>
+
+<p>We can name the project according to dll we want to create.
+For simple example we are just going to edit <code>dllmain.cpp</code> to: </p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;windows.h&gt;</span>
+
+<span class="n">BOOL</span><span class="w"> </span><span class="n">APIENTRY</span><span class="w"> </span><span class="n">DllMain</span><span class="p">(</span><span class="w"> </span><span class="n">HMODULE</span><span class="w"> </span><span class="n">hModule</span><span class="p">,</span>
+<span class="w">                       </span><span class="n">DWORD</span><span class="w">  </span><span class="n">ul_reason_for_call</span><span class="p">,</span>
+<span class="w">                       </span><span class="n">LPVOID</span><span class="w"> </span><span class="n">lpReserved</span>
+<span class="w">                     </span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">ul_reason_for_call</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">DLL_PROCESS_ATTACH</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">DLL_THREAD_ATTACH</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">DLL_THREAD_DETACH</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">DLL_PROCESS_DETACH</span><span class="p">:</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">WinExec</span><span class="p">(</span><span class="s">&quot;calc&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">TRUE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>This will just start the windows calculator whenever dll is attached and detached to process or thread. After building solution generated dll is going to be placed in <code>Debug</code> folder. To finish with dll injection we can just copy it to CS game folder.</p>
+<p>Now if we start hl.exe we are also going to get tons of calc.exe processes opening.</p>
+<p>Have fun.</p>
+                </div>
+                <footer class="text-right">
+                    <p>- F3real</p>
+                </footer>
+    <div id="show-comments" class="span7 text-center">
+        <a href="https://f3real.github.io/ghost_dll_injection.html#disqus_thread"
+          data-disqus-identifier="ghost_dll_injection"
+        class="btn btn-primary twitchy-background">Show Comments</a>
+    </div>
+    <section id="comments" class="comments hidden">
+        <hr/>
+        <h2>Comments</h2>
+        <div id="disqus_thread"></div>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </section>
+            </div>
+        </div>
+    </article>
+</section>
+<footer>
+    <hr>
+    <div class="row">
+        <div class="col-lg-10 text-center">
+            <p><small>
+                Built by <a href="http://docs.getpelican.com/en/latest">Pelican</a> / <a href="https://github.com/F3real/pelican-twitchy">pelican-twitchy</a>
+                &middot;                    &copy; 2024 F3real
+            </small></p>
+        </div>
+    </div>
+</footer>            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+<!-- disqus -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'https-f3real-github-io'; // required: replace example with your forum shortname
+
+            var disqus_identifier = 'ghost_dll_injection';
+        var disqus_url = 'https://f3real.github.io/ghost_dll_injection.html';
+
+    var disqus_config = function () {
+        this.language = "en";
+    };
+
+        var commentsDiv = document.getElementById('show-comments');
+        commentsDiv.onclick = function() {
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+            this.style.display = 'none';        
+        };
+</script>
+<!-- /disqus -->
+    <script>
+        const wrapper = document.getElementById('wrapper');
+        const sidebarBig = document.getElementById('sidebar-wrapper');
+        const sidebarSmall = document.getElementById('sidebar-wrapper-small');
+
+        const triggers = Array.from(document.querySelectorAll('[data-toggle="collapse"]'));
+        for (var i = 0; i < triggers.length; i++) { 
+            triggers[i].addEventListener('click', (ev) => {
+                const elm = ev.currentTarget;    
+                ev.preventDefault();
+                const selector = elm.getAttribute('href').replace('#','');
+                elm.classList.toggle('collapsed');
+                document.getElementById(selector).classList.toggle('show');
+            }, false);
+        } 
+
+        function showBigNav() {;
+            sidebarBig.style.display = 'block';
+            sidebarSmall.style.display = 'none';
+        }
+        function showSmallNav() {
+            sidebarBig.style.display = 'none';
+            sidebarSmall.style.display = 'block';
+        }
+
+        const mediaQuery = window.matchMedia('(min-width:768px)');
+        mediaQuery.onchange = e => {
+            if (wrapper.classList.contains('toggled')) {
+                    wrapper.classList.remove('toggled');
+            } else {
+                if (e.matches) {
+                    showBigNav();
+                } else {
+                    showSmallNav();
+                }
+            }
+        }
+
+        function setNavbar() {
+            var condition = wrapper.classList.contains('toggled');
+            if (!mediaQuery.matches) {
+                condition = !condition;
+            }
+            if (condition) {
+                showSmallNav();
+            } else {
+                showBigNav();
+            }
+        }
+
+        function toggleMenu(){
+            wrapper.classList.toggle('toggled');
+            setNavbar();
+        }
+
+        window.onload = setNavbar;
+    </script>
+	<script data-goatcounter="https://f3real.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

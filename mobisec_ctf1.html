@@ -1,0 +1,709 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="F3real" />
+        <meta name="keywords" content="android,reversing,java,dex,apk" />
+        <meta name="description" content="How to solve MOBISEC CTF reversing challenges 1-5" />
+
+
+    <title>MOBISEC CTF reversing 1-5 - EnSec blog</title>
+
+    <link href="https://f3real.github.io/theme/css/combined.css" rel="stylesheet" />
+
+    <!-- Feeds -->
+</head>
+<body data-spy="scroll" data-target="#scrollspy">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar-wrapper-small" class="twitchy-background">
+            <ul id="accordion-small" class="sidebar-nav sidebar-nav-small">
+                <li>
+        <a href="https://f3real.github.io" title="EnSec blog" class="collapsed">
+            <span class="fas fa-home"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="https://f3real.github.io/archives.html" title="Recent Articles" class="collapsed">
+            <span class="fas fa-th-list"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion-small" href="#collapse-social-small" title="Social" class="collapsed">
+                        <i class="fas fa-users padding-small"></i>
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social-small" class="collapse ">
+                    <li>
+                        <a href="https://github.com/F3real" title="Github"><i class="fab fa-github-square padding-small"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/stefan-ili%C4%87-61a004111" title="Linkedin"><i class="fab fa-linkedin padding-small"></i></a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="#" title="Back to top" class="collapsed">
+            <span class="fas fa-arrow-up"></span>
+        </a>
+    </li>
+            </ul>
+        </nav>
+        <nav id="sidebar-wrapper" class="twitchy-background">
+            <ul id="accordion" class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="https://f3real.github.io/">
+                            <span class="fas fa-home padding-small"></span>
+                            EnSec blog
+                    </a>
+                </li>
+                    <li>
+                        <a href="https://f3real.github.io/archives.html">
+                            <span class="fas fa-th-list padding-small"></span>
+                            Archives
+                        </a>
+                    </li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-social">
+                        <i class="fas fa-users padding-small"></i>
+                        Contact
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="https://github.com/F3real" title="Github">
+                            <i class="fab fa-github-square padding-small"></i>
+                            Github
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/stefan-ili%C4%87-61a004111" title="Linkedin">
+                            <i class="fab fa-linkedin padding-small"></i>
+                            Linkedin
+                        </a>
+                    </li>
+                </ul></li>
+                
+                <li class="nav-divider"></li>
+                <li class="panel anti-panel"><ul id="collapse-pages" class="sidebar_submenu collapse ">
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-categories">
+                        <i class="fas fa-folder-open padding-small"></i>
+                        Categories
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse ">
+                    <li class="active">
+                        <a href="https://f3real.github.io/category/ctf.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            ctf
+                            <span class="badge badge-secondary float-right categorybadge">28</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://f3real.github.io/category/misc.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            misc
+                            <span class="badge badge-secondary float-right categorybadge">15</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://f3real.github.io/category/reversing.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            reversing
+                            <span class="badge badge-secondary float-right categorybadge">6</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://f3real.github.io/category/tutorial.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            tutorial
+                            <span class="badge badge-secondary float-right categorybadge">5</span>
+                        </a>
+                    </li>
+                </ul></li>
+            </ul>
+        </nav>
+        <!-- /#sidebar-wrapper -->
+        <!-- open/close sidebar -->
+        <button onclick="toggleMenu();return false;" class="btn btn-primary" id="menu-toggle">
+            <span id="right-arrow" class="fas fa-chevron-right"  title="expand sidebar"></span>
+            <span id="left-arrow" class="fas fa-chevron-left" title="minimize sidebar"></span>
+        </button>
+       <!-- /open/close sidebar -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+<section id="content">
+    <article>
+        <div class="row">
+            <div class="col-lg-10">
+                <header class="page-header">
+                    <h1>
+                        <a href="https://f3real.github.io/mobisec_ctf1.html"
+                           rel="bookmark"
+                           title="Permalink to MOBISEC CTF reversing 1-5">
+                            MOBISEC CTF reversing 1-5
+                        </a>
+                        <small>
+<div class="post-info">
+    <div class="publish-info-block">
+        <small>
+            <span class="published">
+                <i class="fa fa-calendar padding-small"></i><time datetime="2019-04-03T10:01:00+02:00"> Wed 03 April 2019</time>
+            </span>
+            <span class="category">
+                <i class="fa fa-folder-open padding-small"></i><a href="https://f3real.github.io/category/ctf.html">ctf</a>
+            </span>
+            <span class="tags">
+                <i class="fa fa-tags padding-small"></i>
+                <a href="https://f3real.github.io/tag/android.html">android</a> /                 <a href="https://f3real.github.io/tag/reversing.html">reversing</a> /                 <a href="https://f3real.github.io/tag/java.html">java</a> /                 <a href="https://f3real.github.io/tag/dex.html">dex</a> /                 <a href="https://f3real.github.io/tag/apk.html">apk</a>            </span>
+        </small>
+    </div>
+</div><!-- /.post-info -->                        </small>
+                    </h1>
+                </header>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10">
+                <div class="entry-content">
+                    <p>MOBISC CTF offers few different Android reversing challenges, it can be found <a href="https://challs.reyammer.io/">here</a>.</p>
+<p>To reverse Android apk files, we can use few different tools:</p>
+<ul>
+<li>Jadx</li>
+<li>dex2jar and JD-GUI</li>
+<li>Ghidra</li>
+</ul>
+<p>For most of this challenges I'll be using Jadx. It's really simple to use and works great (I suggest latest unstable version). Sometimes decompilation of methods fail, but in that case Ghidra will usually be able to help.</p>
+<p>I'll host challenge apk files <a href="https://github.com/F3real/ctf_solutions/tree/master/2019/mobisec">here</a> in case the site goes down. </p>
+<p>Challenges:</p>
+<div class="toc">
+<ul>
+<li><a href="#babyrev">Babyrev</a></li>
+<li><a href="#pincode">Pincode</a></li>
+<li><a href="#gnirts">Gnirts</a></li>
+<li><a href="#goingnative">GoingNative</a></li>
+<li><a href="#blockchain">Blockchain</a></li>
+</ul>
+</div>
+<h2 id="babyrev">Babyrev</h2>
+<p>Apk are basically zip files containing all required assets for application. Java (or Kotlin) code is compiled to Dalvik bytecode instead of regular JVM bytcode and contained in <code>classes.dex</code> files.</p>
+<p>To find start activity and other general information about app, we can look in <code>Resources\AndroindManifest.xml</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="nt">&lt;manifest</span><span class="w"> </span><span class="na">xmlns:android=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span><span class="w"> </span><span class="na">android:versionCode=</span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="na">android:versionName=</span><span class="s">&quot;1.0&quot;</span><span class="w"> </span><span class="na">android:compileSdkVersion=</span><span class="s">&quot;28&quot;</span><span class="w"> </span><span class="na">android:compileSdkVersionCodename=</span><span class="s">&quot;9&quot;</span><span class="w"> </span><span class="na">package=</span><span class="s">&quot;com.mobisec.babyrev&quot;</span><span class="w"> </span><span class="na">platformBuildVersionCode=</span><span class="s">&quot;28&quot;</span><span class="w"> </span><span class="na">platformBuildVersionName=</span><span class="s">&quot;9&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;uses-sdk</span><span class="w"> </span><span class="na">android:minSdkVersion=</span><span class="s">&quot;21&quot;</span><span class="w"> </span><span class="na">android:targetSdkVersion=</span><span class="s">&quot;28&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;application</span><span class="w"> </span><span class="na">android:theme=</span><span class="s">&quot;@style/AppTheme&quot;</span><span class="w"> </span><span class="na">android:label=</span><span class="s">&quot;@string/app_name&quot;</span><span class="w"> </span><span class="na">android:icon=</span><span class="s">&quot;@mipmap/ic_launcher&quot;</span><span class="w"> </span><span class="na">android:debuggable=</span><span class="s">&quot;true&quot;</span><span class="w"> </span><span class="na">android:allowBackup=</span><span class="s">&quot;true&quot;</span><span class="w"> </span><span class="na">android:supportsRtl=</span><span class="s">&quot;true&quot;</span><span class="w"> </span><span class="na">android:roundIcon=</span><span class="s">&quot;@mipmap/ic_launcher_round&quot;</span><span class="w"> </span><span class="na">android:appComponentFactory=</span><span class="s">&quot;android.support.v4.app.CoreComponentFactory&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span><span class="nt">&lt;activity</span><span class="w"> </span><span class="na">android:name=</span><span class="s">&quot;com.mobisec.babyrev.MainActivity&quot;</span><span class="nt">&gt;</span>
+<span class="w">            </span><span class="nt">&lt;intent-filter&gt;</span>
+<span class="w">                </span><span class="nt">&lt;action</span><span class="w"> </span><span class="na">android:name=</span><span class="s">&quot;android.intent.action.MAIN&quot;</span><span class="nt">/&gt;</span>
+<span class="w">                </span><span class="nt">&lt;category</span><span class="w"> </span><span class="na">android:name=</span><span class="s">&quot;android.intent.category.LAUNCHER&quot;</span><span class="nt">/&gt;</span>
+<span class="w">            </span><span class="nt">&lt;/intent-filter&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/activity&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/application&gt;</span>
+<span class="nt">&lt;/manifest&gt;</span>
+</code></pre></div>
+
+<p>If we look at decompiled source code of <code>com.mobisec.babyrev.MainActivity</code> we see that it just calls <code>FlagChecker.checkFlag</code> function on input we provide.</p>
+<p>In <code>FlagChecker</code> class main check is:</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span>
+<span class="o">!</span><span class="n">flag</span><span class="p">.</span><span class="na">startsWith</span><span class="p">(</span><span class="s">&quot;MOBISEC{&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span>
+<span class="k">new</span><span class="w"> </span><span class="n">StringBuilder</span><span class="p">(</span><span class="n">flag</span><span class="p">).</span><span class="na">reverse</span><span class="p">().</span><span class="na">toString</span><span class="p">().</span><span class="na">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;}&#39;</span><span class="w"> </span><span class="o">||</span>
+<span class="n">flag</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">35</span><span class="w"> </span><span class="o">||</span>
+<span class="o">!</span><span class="n">flag</span><span class="p">.</span><span class="na">toLowerCase</span><span class="p">().</span><span class="na">substring</span><span class="p">(</span><span class="mi">8</span><span class="p">).</span><span class="na">startsWith</span><span class="p">(</span><span class="s">&quot;this_is_&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span>
+<span class="o">!</span><span class="k">new</span><span class="w"> </span><span class="n">StringBuilder</span><span class="p">(</span><span class="n">flag</span><span class="p">).</span><span class="na">reverse</span><span class="p">().</span><span class="na">toString</span><span class="p">().</span><span class="na">toLowerCase</span><span class="p">().</span><span class="na">substring</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="na">startsWith</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">last_part</span><span class="p">))</span><span class="w"> </span><span class="o">||</span>
+<span class="n">flag</span><span class="p">.</span><span class="na">charAt</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;_&#39;</span><span class="w"> </span><span class="o">||</span>
+<span class="n">flag</span><span class="p">.</span><span class="na">charAt</span><span class="p">((</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">(((</span><span class="kt">double</span><span class="p">)</span><span class="w"> </span><span class="n">getY</span><span class="p">())</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">pow</span><span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="w"> </span><span class="n">getX</span><span class="p">(),</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="w"> </span><span class="n">getY</span><span class="p">())))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">flag</span><span class="p">.</span><span class="na">charAt</span><span class="p">(((</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">pow</span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="na">pow</span><span class="p">(</span><span class="mf">2.0d</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0d</span><span class="p">),</span><span class="w"> </span><span class="mf">2.0d</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">||</span>
+<span class="o">!</span><span class="n">bam</span><span class="p">(</span><span class="n">flag</span><span class="p">.</span><span class="na">toUpperCase</span><span class="p">().</span><span class="na">substring</span><span class="p">((</span><span class="n">getY</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">getX</span><span class="p">())</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">getY</span><span class="p">(),</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="na">pow</span><span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="w"> </span><span class="n">getZ</span><span class="p">(),</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="w"> </span><span class="n">getX</span><span class="p">())</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1.0d</span><span class="p">))).</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;ERNYYL&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span>
+<span class="n">flag</span><span class="p">.</span><span class="na">toLowerCase</span><span class="p">().</span><span class="na">charAt</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="w"> </span><span class="o">||</span>
+<span class="n">flag</span><span class="p">.</span><span class="na">charAt</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">flag</span><span class="p">.</span><span class="na">charAt</span><span class="p">(</span><span class="mi">26</span><span class="p">)</span><span class="w"> </span><span class="o">||</span>
+<span class="n">flag</span><span class="p">.</span><span class="na">toUpperCase</span><span class="p">().</span><span class="na">charAt</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">flag</span><span class="p">.</span><span class="na">toUpperCase</span><span class="p">().</span><span class="na">charAt</span><span class="p">(</span><span class="mi">26</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="p">...</span><span class="w"> </span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Rather complicated looking, but if we go through it we can significantly simplify it.</p>
+<p>Function <code>getX()</code>, <code>getY()</code> and <code>getZ()</code> return constant values and can be optimized out and <code>bam</code> function is actually just rot13 cipher.</p>
+<p><code>ctx.getString(R.string.last_part)</code> returns string value from compiled resources (<code>resources.arsc</code> file)  which is kinda just key value store. In Jadx we can find string value under <code>/resources.arsc/res/values/strings.xml</code>.</p>
+<p>Much more readable check from which we can easily find solution:</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span>
+<span class="o">!</span><span class="n">flag</span><span class="p">.</span><span class="na">startsWith</span><span class="p">(</span><span class="s">&quot;MOBISEC{&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span>
+<span class="k">new</span><span class="w"> </span><span class="n">StringBuilder</span><span class="p">(</span><span class="n">flag</span><span class="p">).</span><span class="na">reverse</span><span class="p">().</span><span class="na">toString</span><span class="p">().</span><span class="na">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;}&#39;</span><span class="w"> </span><span class="o">||</span>
+<span class="n">flag</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">35</span><span class="w"> </span><span class="o">||</span>
+<span class="o">!</span><span class="n">flag</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="mi">8</span><span class="p">).</span><span class="na">startsWith</span><span class="p">(</span><span class="s">&quot;this_is_&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span>
+<span class="o">!</span><span class="k">new</span><span class="w"> </span><span class="n">StringBuilder</span><span class="p">(</span><span class="n">flag</span><span class="p">).</span><span class="na">reverse</span><span class="p">().</span><span class="na">toString</span><span class="p">().</span><span class="na">substring</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="na">startsWith</span><span class="p">(</span><span class="s">&quot;ver_cis&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">||</span>
+<span class="n">flag</span><span class="p">.</span><span class="na">charAt</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="w"> </span><span class="o">||</span>
+<span class="n">flag</span><span class="p">.</span><span class="na">charAt</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;_&#39;</span><span class="w"> </span><span class="o">||</span>
+<span class="n">flag</span><span class="p">.</span><span class="na">charAt</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;_&#39;</span><span class="w"> </span><span class="o">||</span>
+<span class="n">flag</span><span class="p">.</span><span class="na">charAt</span><span class="p">(</span><span class="mi">26</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="w"> </span><span class="o">||</span>
+<span class="o">!</span><span class="n">bam</span><span class="p">(</span><span class="n">flag</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="w"> </span><span class="mi">24</span><span class="p">)).</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;ERNYYL&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span>
+<span class="n">flag</span><span class="p">.</span><span class="na">charAt</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">flag</span><span class="p">.</span><span class="na">charAt</span><span class="p">(</span><span class="mi">26</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>After this we also have simple regex that checks if characters are alternating between lowercase and uppercase.</p>
+<p>Putting it all together we get our flag: <code>MOBISEC{ThIs_iS_A_ReAlLy_bAsIc_rEv}</code></p>
+<h2 id="pincode">Pincode</h2>
+<p>This time flag is not directly contained in apk we are reversing. In <code>MainActivity</code> we have:</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">PinChecker</span><span class="p">.</span><span class="na">checkPin</span><span class="p">(</span><span class="n">MainActivity</span><span class="p">.</span><span class="na">this</span><span class="p">,</span><span class="w"> </span><span class="n">pin</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MainActivity</span><span class="p">.</span><span class="na">this</span><span class="p">.</span><span class="na">getFlag</span><span class="p">(</span><span class="n">pin</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">exception</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="na">getMessage</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+</code></pre></div>
+
+<p>So basically if pin we enter passes check, app will contact server (<code>getFlag</code> function) and show us the real flag.</p>
+<p>Code for pin check is:</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">checkPin</span><span class="p">(</span><span class="n">Context</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">pin</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pin</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">pinBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pin</span><span class="p">.</span><span class="na">getBytes</span><span class="p">();</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">25</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">400</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">MessageDigest</span><span class="w"> </span><span class="n">md</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MessageDigest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="s">&quot;MD5&quot;</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">md</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="n">pinBytes</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">pinBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">byte</span><span class="o">[]</span><span class="p">)</span><span class="w"> </span><span class="n">md</span><span class="p">.</span><span class="na">digest</span><span class="p">().</span><span class="na">clone</span><span class="p">();</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">toHexString</span><span class="p">(</span><span class="n">pinBytes</span><span class="p">).</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;d04988522ddfed3133cc24fb6924eae9&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">e</span><span class="p">(</span><span class="s">&quot;MOBISEC&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Exception while checking pin&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+
+<p>So basically, we have 6 digit pin which gets hashed 10000 (400*25) times using md5 and compared to <code>d04988522ddfed3133cc24fb6924eae9</code>. </p>
+<p>With no other smarter solution on mind, I decided to brute force it using Python:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="c1">#iterates over all 6 digit combinations</span>
+<span class="k">for</span> <span class="n">combination</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
+    <span class="n">pin</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">combination</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span> <span class="o">*</span> <span class="mi">400</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">()</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">pin</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;d04988522ddfed3133cc24fb6924eae9&quot;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">combination</span><span class="p">))</span>
+        <span class="k">break</span><span class="p">;</span>
+</code></pre></div>
+
+<p>If we leave our script running for a while (like few hours) we get correct pin <code>703958</code>. Contacting server using <code>https://challs.reyammer.io/pincode/703958</code> we get out flag: <code>MOBISEC{local_checks_can_be_very_bad_for_security}</code></p>
+<h2 id="gnirts">Gnirts</h2>
+<p>This time things get much more messy. Let's look at the source code of check flag (I've added some comments to explain key parts):</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">checkFlag</span><span class="p">(</span><span class="n">Context</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">flag</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">flag</span><span class="p">.</span><span class="na">startsWith</span><span class="p">(</span><span class="s">&quot;MOBISEC{&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">flag</span><span class="p">.</span><span class="na">endsWith</span><span class="p">(</span><span class="s">&quot;}&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flag</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">core</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="c1">//foo() runs base64 decode on hardcoded string 10 times</span>
+<span class="w">        </span><span class="c1">//final result is just &#39;-&#39;</span>
+<span class="w">        </span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">ps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">core</span><span class="p">.</span><span class="na">split</span><span class="p">(</span><span class="n">foo</span><span class="p">());</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ps</span><span class="p">.</span><span class="na">length</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">bim</span><span class="p">(</span><span class="n">ps</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">bum</span><span class="p">(</span><span class="n">ps</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">bam</span><span class="p">(</span><span class="n">ps</span><span class="o">[</span><span class="mi">4</span><span class="o">]</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">core</span><span class="p">.</span><span class="na">replaceAll</span><span class="p">(</span><span class="s">&quot;[A-Z]&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;X&quot;</span><span class="p">).</span><span class="na">replaceAll</span><span class="p">(</span><span class="s">&quot;[a-z]&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">).</span><span class="na">replaceAll</span><span class="p">(</span><span class="s">&quot;[0-9]&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">).</span><span class="na">matches</span><span class="p">(</span><span class="s">&quot;[A-Za-z0-9]+.       .[A-Za-z0-9]+.[Xx ]+.[A-Za-z0-9 ]+&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="c1">//This parts just checks if chars at idxs positions are same</span>
+<span class="w">        </span><span class="kt">char</span><span class="o">[]</span><span class="w"> </span><span class="n">syms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">char</span><span class="o">[</span><span class="mi">4</span><span class="o">]</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">idxs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="o">[]</span><span class="p">{</span><span class="mi">13</span><span class="p">,</span><span class="w"> </span><span class="mi">21</span><span class="p">,</span><span class="w"> </span><span class="mi">27</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">};</span>
+<span class="w">        </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">Character</span><span class="o">&gt;</span><span class="w"> </span><span class="n">chars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashSet</span><span class="p">();</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">syms</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">syms</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flag</span><span class="p">.</span><span class="na">charAt</span><span class="p">(</span><span class="n">idxs</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">);</span>
+<span class="w">            </span><span class="n">chars</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="n">syms</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">syms</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="c1">//Main part of check</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sum</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">180</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">chars</span><span class="p">.</span><span class="na">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>
+<span class="w">        </span><span class="n">m2me</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">m0dh</span><span class="p">(</span><span class="n">m1gs</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">ct1</span><span class="p">),</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">f2k1</span><span class="p">)),</span><span class="w"> </span><span class="n">ps</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">),</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">f9t1</span><span class="p">))</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>
+<span class="w">        </span><span class="n">m2me</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">m0dh</span><span class="p">(</span><span class="n">m1gs</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">ct2</span><span class="p">),</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">f3k2</span><span class="p">)),</span><span class="w"> </span><span class="n">ps</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">),</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">f10t2</span><span class="p">))</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>
+<span class="w">        </span><span class="n">m2me</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">m0dh</span><span class="p">(</span><span class="n">m1gs</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">ct3</span><span class="p">),</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">f4k3</span><span class="p">)),</span><span class="w"> </span><span class="n">ps</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">),</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">f11t3</span><span class="p">))</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>
+<span class="w">        </span><span class="n">m2me</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">m0dh</span><span class="p">(</span><span class="n">m1gs</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">ct4</span><span class="p">),</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">f5k4</span><span class="p">)),</span><span class="w"> </span><span class="n">ps</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="p">),</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">f12t4</span><span class="p">))</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>
+<span class="w">        </span><span class="n">m2me</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">m0dh</span><span class="p">(</span><span class="n">m1gs</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">ct5</span><span class="p">),</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">f6k5</span><span class="p">)),</span><span class="w"> </span><span class="n">ps</span><span class="o">[</span><span class="mi">4</span><span class="o">]</span><span class="p">),</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">f13t5</span><span class="p">))</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>
+<span class="w">        </span><span class="n">m2me</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">m0dh</span><span class="p">(</span><span class="n">m1gs</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">ct6</span><span class="p">),</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">f7k6</span><span class="p">)),</span><span class="w"> </span><span class="n">flag</span><span class="p">),</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">f14t6</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+
+<p>Let's try to simplify one of main check parts:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">//One part of the flag check, other 4 are identical and just use different input</span>
+<span class="c1">//ps[0] is just 1st part of our flag split on &quot;-&quot;</span>
+<span class="n">m2me</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">m0dh</span><span class="p">(</span><span class="n">m1gs</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">ct1</span><span class="p">),</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">f2k1</span><span class="p">)),</span><span class="w"> </span><span class="n">ps</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">),</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">f9t1</span><span class="p">))</span><span class="w"> </span>
+<span class="c1">//Let&#39;s get real strings 1st</span>
+<span class="n">m2me</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">m0dh</span><span class="p">(</span><span class="n">m1gs</span><span class="p">(</span><span class="s">&quot;xwe&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;53P&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">ps</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;6e9a4d130a9b316e9201238844dd5124&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Since <code>m1gs</code> takes two const strings as input we can just copy it to Java file, call it and get output. Doing this we get:</p>
+<div class="highlight"><pre><span></span><code><span class="n">m2me</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">m0dh</span><span class="p">(</span><span class="s">&quot;MD5&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ps</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;6e9a4d130a9b316e9201238844dd5124&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>So now we look at the <code>m0dh</code>, it's actually simple function just hashing second input using hash type specified with first input.</p>
+<p>So lastly we need to figure out <code>m2me</code> function.</p>
+<div class="highlight"><pre><span></span><code><span class="w">   </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">m2me</span><span class="p">(</span><span class="n">Context</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">s1</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">boolean</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">Boolean</span><span class="p">)</span><span class="w"> </span><span class="n">s1</span><span class="p">.</span><span class="na">getClass</span><span class="p">().</span><span class="na">getMethod</span><span class="p">(</span><span class="n">m3r</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">C0055R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">f8m1</span><span class="p">)),</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">Object</span><span class="p">.</span><span class="na">class</span><span class="p">}).</span><span class="na">invoke</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[]</span><span class="p">{</span><span class="n">s2</span><span class="p">})).</span><span class="na">booleanValue</span><span class="p">();</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">res</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="p">...</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+
+<p>Looks complicated? But actually all this code is just checking if two strings are equal.
+We get <code>String</code> class, get equals methods on it (<code>m3r(ctx.getString(C0055R.string.f8m1))</code> returns equals) and invoke it.</p>
+<p>So turns out we just need to break few MD5 hashes and we can get our flag.
+For this we can use <a href="https://crackstation.net/">crackstation</a>.</p>
+<div class="highlight"><pre><span></span><code>t1 = &quot;6e9a4d130a9b316e9201238844dd5124&quot;                peppa 
+t2 = &quot;7c51a5e6ea3214af970a86df89793b19&quot;                9876543
+t3 = &quot;e5f20324ae520a11a86c7602e29ecbb8&quot;                BAAAM
+t4 = &quot;1885eca5a40bc32d5e1bca61fcd308a5&quot;                A1z9
+t5 = &quot;da5062d64347e5e020c5419cebd149a2&quot;                3133337
+</code></pre></div>
+
+<p>Our flag: <code>MOBISEC{peppa-9876543-BAAAM-A1z9-3133337}</code></p>
+<p><code>t6</code> corresponds to SHA-256 of whole flag, but we don't have to use it for flag finding.</p>
+<h2 id="goingnative">GoingNative</h2>
+<p>This time we have apk using native code. We can find <code>.so</code> file used in <code>lib</code> folder in apk (there are few different versions of same library for different architectures).</p>
+<p>In Java code we have only this:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">class</span> <span class="nc">FlagChecker</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">native</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">helloFromTheOtherSide</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">FlagChecker</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">static</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">loadLibrary</span><span class="p">(</span><span class="s">&quot;native-lib&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">checkFlag</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">split</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">str</span><span class="p">.</span><span class="na">split</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">split</span><span class="p">.</span><span class="na">length</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">split</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">.</span><span class="na">startsWith</span><span class="p">(</span><span class="s">&quot;MOBISEC{&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">split</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">.</span><span class="na">endsWith</span><span class="p">(</span><span class="s">&quot;}&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">split</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;MOBISEC{&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">replace2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">split</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;}&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">replace2</span><span class="p">.</span><span class="na">matches</span><span class="p">(</span><span class="s">&quot;^[0-9]*$&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">replace2</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">helloFromTheOtherSide</span><span class="p">(</span><span class="n">replace</span><span class="p">,</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">parseInt</span><span class="p">(</span><span class="n">replace2</span><span class="p">));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+
+<p>To disassembly lib, I am going to use Ghidra.</p>
+<div class="highlight"><pre><span></span><code><span class="n">uint</span><span class="w"> </span><span class="nf">Java_com_mobisec_gonative_FlagChecker_helloFromTheOtherSide</span>
+<span class="w">               </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">env</span><span class="p">,</span><span class="n">undefined4</span><span class="w"> </span><span class="k">this</span><span class="p">,</span><span class="n">undefined4</span><span class="w"> </span><span class="n">res1</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">res2</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">__s</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">sVar1</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">iVar2</span><span class="p">;</span>
+<span class="w">  </span><span class="n">uint</span><span class="w"> </span><span class="n">uVar3</span><span class="p">;</span>
+<span class="w">  </span><span class="n">uint</span><span class="w"> </span><span class="n">booleanRes</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">in_GS_OFFSET</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="n">local_1e</span><span class="w"> </span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+<span class="w">  </span><span class="n">undefined</span><span class="w"> </span><span class="n">local_19</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">local_18</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">local_18</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="p">)(</span><span class="n">in_GS_OFFSET</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x14</span><span class="p">);</span>
+<span class="w">  </span><span class="n">__s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)(</span><span class="o">**</span><span class="p">(</span><span class="n">code</span><span class="w"> </span><span class="o">**</span><span class="p">)(</span><span class="o">*</span><span class="n">env</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x2a4</span><span class="p">))(</span><span class="n">env</span><span class="p">,</span><span class="n">res1</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sVar1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">__s</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">//Len of first part of input is 12 and second part is 31337</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">sVar1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">12</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">res2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">31337</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">//First letter is &#39;n&#39; and last one is &#39;o&#39;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="o">*</span><span class="n">__s</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;n&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">__s</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;o&#39;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">strncpy</span><span class="p">(</span><span class="n">local_1e</span><span class="p">,</span><span class="n">__s</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span>
+<span class="w">      </span><span class="n">local_19</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">      </span><span class="c1">//Input from 1 to 5 is equal to &quot;ative&quot;</span>
+<span class="w">      </span><span class="n">iVar2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strncmp</span><span class="p">(</span><span class="s">&quot;ative&quot;</span><span class="p">,</span><span class="n">local_1e</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iVar2</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">iVar2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">env</span><span class="p">;</span>
+<span class="w">        </span><span class="k">goto</span><span class="w"> </span><span class="n">LAB_00010750</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="c1">//Here we get few more letters</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">((((</span><span class="n">__s</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;_&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">__s</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;_&#39;</span><span class="p">))</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">__s</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;i&#39;</span><span class="p">))</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">__s</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;s&#39;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">//Last two letters are equal to &quot;so&quot;</span>
+<span class="w">        </span><span class="n">uVar3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strcmp</span><span class="p">(</span><span class="s">&quot;so&quot;</span><span class="p">,</span><span class="n">__s</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="w">        </span><span class="n">booleanRes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uVar3</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xffffff00</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">uint</span><span class="p">)(</span><span class="n">uVar3</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">        </span><span class="p">(</span><span class="o">**</span><span class="p">(</span><span class="n">code</span><span class="w"> </span><span class="o">**</span><span class="p">)(</span><span class="o">*</span><span class="n">env</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x2a8</span><span class="p">))(</span><span class="n">env</span><span class="p">,</span><span class="n">res1</span><span class="p">,</span><span class="n">__s</span><span class="p">);</span>
+<span class="w">        </span><span class="k">goto</span><span class="w"> </span><span class="n">LAB_0001075b</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">iVar2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">env</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">iVar2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">env</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Combining all the bits we have gathered we get our flag:
+<code>MOBISEC{native_is_so-031337}</code></p>
+<p>Pay attention to 0 in second part of input, in Java part we see that length of it has to be 6. This means we have to pad with zeroes.</p>
+<h2 id="blockchain">Blockchain</h2>
+<p>This time we again have to do some brute forcing. Let's look at the Java code:</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">checkFlag</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">keyStr</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">flagStr</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">digest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hash</span><span class="p">(</span><span class="n">keyStr</span><span class="p">.</span><span class="na">getBytes</span><span class="p">());</span>
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">currKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hash</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="p">{</span><span class="n">digest</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">digest</span><span class="o">[</span><span class="n">digest</span><span class="p">.</span><span class="na">length</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">digest</span><span class="o">[</span><span class="n">digest</span><span class="p">.</span><span class="na">length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="o">]</span><span class="p">});</span>
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">currPt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flagStr</span><span class="p">.</span><span class="na">getBytes</span><span class="p">();</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">currPt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">encrypt</span><span class="p">(</span><span class="n">currPt</span><span class="p">,</span><span class="w"> </span><span class="n">currKey</span><span class="p">);</span>
+<span class="w">            </span><span class="n">currKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hash</span><span class="p">(</span><span class="n">currKey</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">toHex</span><span class="p">(</span><span class="n">currPt</span><span class="p">).</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;0eef68c5ef95b67428c178f045e6fc8389b36a67bbbd800148f7c285f938a24e696ee2925e12ecf7c11f35a345a2a142639fe87ab2dd7530b29db87ca71ffda2af558131d7da615b6966fb0360d5823b79c26608772580bf14558e6b7500183ed7dfd41dbb5686ea92111667fd1eff9cec8dc29f0cfe01e092607da9f7c2602f5463a361ce5c83922cb6c3f5b872dcc088eb85df80503c92232bf03feed304d669ddd5ed1992a26674ecf2513ab25c20f95a5db49fdf6167fda3465a74e0418b2ea99eb2673d4c7e1ff7c4921c4e2d7b&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="nf">encrypt</span><span class="p">(</span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">in</span><span class="p">,</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">key</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Key</span><span class="w"> </span><span class="n">aesKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SecretKeySpec</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;AES&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Cipher</span><span class="w"> </span><span class="n">encryptCipher</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Cipher</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="s">&quot;AES/ECB/PKCS5Padding&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">encryptCipher</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">aesKey</span><span class="p">);</span>
+<span class="w">        </span><span class="n">ByteArrayOutputStream</span><span class="w"> </span><span class="n">outputStream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ByteArrayOutputStream</span><span class="p">();</span>
+<span class="w">        </span><span class="n">CipherOutputStream</span><span class="w"> </span><span class="n">cipherOutputStream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CipherOutputStream</span><span class="p">(</span><span class="n">outputStream</span><span class="p">,</span><span class="w"> </span><span class="n">encryptCipher</span><span class="p">);</span>
+<span class="w">        </span><span class="n">cipherOutputStream</span><span class="p">.</span><span class="na">write</span><span class="p">(</span><span class="n">in</span><span class="p">);</span>
+<span class="w">        </span><span class="n">cipherOutputStream</span><span class="p">.</span><span class="na">flush</span><span class="p">();</span>
+<span class="w">        </span><span class="n">cipherOutputStream</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">outputStream</span><span class="p">.</span><span class="na">toByteArray</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="nf">hash</span><span class="p">(</span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">MessageDigest</span><span class="w"> </span><span class="n">md</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MessageDigest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="s">&quot;MD5&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">md</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="n">in</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">md</span><span class="p">.</span><span class="na">digest</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+
+<p>First we have to note that key is actually only 3 bytes which is pretty weak.
+Also since AES is symmetric key cipher we can just decrypt final result using same key.</p>
+<p>So how can we solve it? 
+Randomly generate 3 byte sequences, hash them 10 times using MD5 to get 10 keys and decrypt final result using those keys in order from 10 to 1. Once we get results that is just ASCII we (probably) will have our flag.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.ArrayList</span><span class="p">;</span><span class="w"> </span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.io.ByteArrayOutputStream</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.security.Key</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.security.MessageDigest</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">javax.crypto.Cipher</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">javax.crypto.CipherOutputStream</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">javax.crypto.spec.SecretKeySpec</span><span class="p">;</span>
+
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Blockchain</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="nf">hexStringToByteArray</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="na">length</span><span class="p">();</span>
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="n">len</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="o">]</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">len</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">data</span><span class="o">[</span><span class="n">i</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">byte</span><span class="p">)</span><span class="w"> </span><span class="p">((</span><span class="n">Character</span><span class="p">.</span><span class="na">digit</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="na">charAt</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span>
+<span class="w">                                 </span><span class="o">+</span><span class="w"> </span><span class="n">Character</span><span class="p">.</span><span class="na">digit</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="na">charAt</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="mi">16</span><span class="p">));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="nf">decrypt</span><span class="p">(</span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">in</span><span class="p">,</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">key</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Key</span><span class="w"> </span><span class="n">aesKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SecretKeySpec</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;AES&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Cipher</span><span class="w"> </span><span class="n">encryptCipher</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Cipher</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="s">&quot;AES/ECB/PKCS5Padding&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">encryptCipher</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="n">Cipher</span><span class="p">.</span><span class="na">DECRYPT_MODE</span><span class="p">,</span><span class="w"> </span><span class="n">aesKey</span><span class="p">);</span>
+<span class="w">        </span><span class="n">ByteArrayOutputStream</span><span class="w"> </span><span class="n">outputStream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ByteArrayOutputStream</span><span class="p">();</span>
+<span class="w">        </span><span class="n">CipherOutputStream</span><span class="w"> </span><span class="n">cipherOutputStream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CipherOutputStream</span><span class="p">(</span><span class="n">outputStream</span><span class="p">,</span><span class="w"> </span><span class="n">encryptCipher</span><span class="p">);</span>
+<span class="w">        </span><span class="n">cipherOutputStream</span><span class="p">.</span><span class="na">write</span><span class="p">(</span><span class="n">in</span><span class="p">);</span>
+<span class="w">        </span><span class="n">cipherOutputStream</span><span class="p">.</span><span class="na">flush</span><span class="p">();</span>
+<span class="w">        </span><span class="n">cipherOutputStream</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">outputStream</span><span class="p">.</span><span class="na">toByteArray</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="nf">hash</span><span class="p">(</span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">MessageDigest</span><span class="w"> </span><span class="n">md</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MessageDigest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="s">&quot;MD5&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">md</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="n">in</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">md</span><span class="p">.</span><span class="na">digest</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">decodeFlag</span><span class="p">(</span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">key</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="p">{</span>
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">currPt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hexStringToByteArray</span><span class="p">(</span><span class="s">&quot;0eef68c5ef95b67428c178f045e6fc8389b36a67bbbd800148f7c285f938a24e696ee2925e12ecf7c11f35a345a2a142639fe87ab2dd7530b29db87ca71ffda2af558131d7da615b6966fb0360d5823b79c26608772580bf14558e6b7500183ed7dfd41dbb5686ea92111667fd1eff9cec8dc29f0cfe01e092607da9f7c2602f5463a361ce5c83922cb6c3f5b872dcc088eb85df80503c92232bf03feed304d669ddd5ed1992a26674ecf2513ab25c20f95a5db49fdf6167fda3465a74e0418b2ea99eb2673d4c7e1ff7c4921c4e2d7b&quot;</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">currKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">key</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="kt">byte</span><span class="o">[]&gt;</span><span class="w"> </span><span class="n">keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+
+<span class="w">        </span><span class="n">keys</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">hash</span><span class="p">(</span><span class="n">currKey</span><span class="p">));</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">keys</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">hash</span><span class="p">(</span><span class="n">keys</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)));</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">currPt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">decrypt</span><span class="p">(</span><span class="n">currPt</span><span class="p">,</span><span class="w"> </span><span class="n">keys</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="mi">9</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="p">));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">String</span><span class="p">(</span><span class="n">currPt</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">res</span><span class="p">.</span><span class="na">matches</span><span class="p">(</span><span class="s">&quot;\\A\\p{ASCII}*\\z&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">res</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">128</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">128</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">128</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">128</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">128</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">128</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">currKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="p">{(</span><span class="kt">byte</span><span class="p">)</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">byte</span><span class="p">)</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">byte</span><span class="p">)</span><span class="n">i</span><span class="p">};</span>
+<span class="w">                    </span><span class="n">decodeFlag</span><span class="p">(</span><span class="n">currKey</span><span class="p">);</span>
+<span class="w">                </span><span class="p">}</span><span class="w">              </span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div>
+
+<p>After some time, we will get our flag:
+<code>MOBISEC{blockchain_failed_to_deliver_once_again}</code></p>
+                </div>
+                <footer class="text-right">
+                    <p>- F3real</p>
+                </footer>
+    <div id="show-comments" class="span7 text-center">
+        <a href="https://f3real.github.io/mobisec_ctf1.html#disqus_thread"
+          data-disqus-identifier="mobisec_ctf1"
+        class="btn btn-primary twitchy-background">Show Comments</a>
+    </div>
+    <section id="comments" class="comments hidden">
+        <hr/>
+        <h2>Comments</h2>
+        <div id="disqus_thread"></div>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </section>
+            </div>
+        </div>
+    </article>
+</section>
+<footer>
+    <hr>
+    <div class="row">
+        <div class="col-lg-10 text-center">
+            <p><small>
+                Built by <a href="http://docs.getpelican.com/en/latest">Pelican</a> / <a href="https://github.com/F3real/pelican-twitchy">pelican-twitchy</a>
+                &middot;                    &copy; 2024 F3real
+            </small></p>
+        </div>
+    </div>
+</footer>            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+<!-- disqus -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'https-f3real-github-io'; // required: replace example with your forum shortname
+
+            var disqus_identifier = 'mobisec_ctf1';
+        var disqus_url = 'https://f3real.github.io/mobisec_ctf1.html';
+
+    var disqus_config = function () {
+        this.language = "en";
+    };
+
+        var commentsDiv = document.getElementById('show-comments');
+        commentsDiv.onclick = function() {
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+            this.style.display = 'none';        
+        };
+</script>
+<!-- /disqus -->
+    <script>
+        const wrapper = document.getElementById('wrapper');
+        const sidebarBig = document.getElementById('sidebar-wrapper');
+        const sidebarSmall = document.getElementById('sidebar-wrapper-small');
+
+        const triggers = Array.from(document.querySelectorAll('[data-toggle="collapse"]'));
+        for (var i = 0; i < triggers.length; i++) { 
+            triggers[i].addEventListener('click', (ev) => {
+                const elm = ev.currentTarget;    
+                ev.preventDefault();
+                const selector = elm.getAttribute('href').replace('#','');
+                elm.classList.toggle('collapsed');
+                document.getElementById(selector).classList.toggle('show');
+            }, false);
+        } 
+
+        function showBigNav() {;
+            sidebarBig.style.display = 'block';
+            sidebarSmall.style.display = 'none';
+        }
+        function showSmallNav() {
+            sidebarBig.style.display = 'none';
+            sidebarSmall.style.display = 'block';
+        }
+
+        const mediaQuery = window.matchMedia('(min-width:768px)');
+        mediaQuery.onchange = e => {
+            if (wrapper.classList.contains('toggled')) {
+                    wrapper.classList.remove('toggled');
+            } else {
+                if (e.matches) {
+                    showBigNav();
+                } else {
+                    showSmallNav();
+                }
+            }
+        }
+
+        function setNavbar() {
+            var condition = wrapper.classList.contains('toggled');
+            if (!mediaQuery.matches) {
+                condition = !condition;
+            }
+            if (condition) {
+                showSmallNav();
+            } else {
+                showBigNav();
+            }
+        }
+
+        function toggleMenu(){
+            wrapper.classList.toggle('toggled');
+            setNavbar();
+        }
+
+        window.onload = setNavbar;
+    </script>
+	<script data-goatcounter="https://f3real.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

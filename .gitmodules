@@ -1,0 +1,4 @@
+[submodule "pelican-twitchy"]
+	path = pelican-twitchy
+	url = https://github.com/F3real/pelican-twitchy.git
+	ignore = dirty
